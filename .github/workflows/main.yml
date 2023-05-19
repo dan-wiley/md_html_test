@@ -37,6 +37,14 @@ jobs:
               ${file}
           done
 
+      - name: Diff Baseline and Customized HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            echo $file
+            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log
+            echo ""
+          done
+
       - name: Configure Git
         run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
@@ -46,5 +54,6 @@ jobs:
         run: |
           git add *_baseline.html
           git add *_custom.html
+          git add diff.log
           git commit -m "Update README"
           git push origin main
