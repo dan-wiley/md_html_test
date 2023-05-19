@@ -13,14 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Convert Markdown to HTML
+      - name: Convert Markdown to Baseline HTML
         run: |
           for file in $(find . -name "*.md"); do
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
               pandoc/core:3.0 \
-              -o /workspace/${file%.md}.html \
-              /workspace/${file}
+              -o ${file%.md}_baseline.html \
+              ${file}
+          done
+
+      - name: Convert Markdown to Customized HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              pandoc/core:3.0 \
+              --option1 \
+              --option2 \
+              -o ${file%.md}_custom.html \
+              ${file}
           done
 
       - name: Configure Git
@@ -30,6 +44,7 @@ jobs:
 
       - name: Add and Push HTML files
         run: |
-          git add *.html
+          git add *_baseline.html
+          git add *_custom.html
           git commit -m "Update README"
           git push origin main
