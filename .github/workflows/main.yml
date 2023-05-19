@@ -14,16 +14,16 @@ jobs:
       uses: actions/checkout@v3
     
     - name: Convert Markdown to HTML
-      uses: docker://pandoc/core:3.0
-      with:
-        args: |
-          -v ${{ github.workspace }}:/workspace
-          -o /workspace/index.html
+      run: |
+        docker run --rm \
+          -v ${{ github.workspace }}:/workspace \
+          pandoc/core:3.0 \
+          -o /workspace/index.html \
           /workspace/README.md
-          
+    
     - name: Add to file
       run: |
-        echo "hello" >> index.html
+        echo "hello" >> ${{ github.workspace }}/index.html
         
     - name: Configure Git
       run: |
@@ -32,6 +32,6 @@ jobs:
     
     - name: Push
       run: |
-        git add index.html
+        git add ${{ github.workspace }}/index.html
         git commit -m "Update README"
         git push origin main
