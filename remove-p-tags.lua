@@ -1,14 +1,14 @@
-function removePTagsInLiBlocksRegex(element)
+function removePTagsInLiBlocksRecursive(element)
   if element.tag == "BulletList" or element.tag == "OrderedList" then
-    local content = pandoc.utils.stringify(element.content)
-    content = content:gsub("<li>(.-)</li>", function(match)
-      return "<li>" .. match:gsub("<p>(.-)</p>", "%1") .. "</li>"
-    end)
-    element.content = pandoc.read(content).blocks
+    element.content = pandoc.walk_block(element.content, {
+      Para = function(para)
+        return pandoc.Span(para.content)
+      end
+    })
   end
   return element
 end
 
 return {
-  { Block = removePTagsInLiBlocksRegex }
+  { Block = removePTagsInLiBlocksRecursive }
 }
