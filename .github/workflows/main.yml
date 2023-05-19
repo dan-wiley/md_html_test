@@ -38,7 +38,8 @@ jobs:
       - name: Remove <li><p> tags from Customized HTML
         run: |
           for file in $(find . -name "*_custom.html"); do
-            sed -i -E 's#<li><p>([^<]*)</p></li>#<li>\1</li>#g' ${file} 2>/dev/null || true
+            sed -i -E 's#<li><p>([^<]*)</p></li>#<li>\1</li>#g' ${file} >/dev/null 2>&1 || true
+            sed -i -E 's#</p></li>#</li>#g' ${file} >/dev/null 2>&1 || true
           done
 
       - name: Diff Baseline and Customized HTML
