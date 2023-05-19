@@ -35,17 +35,17 @@ jobs:
               ${file}
           done
 
-      - name: Remove <p> tags from Customized HTML
+      - name: Remove <li><p> tags from Customized HTML
         run: |
           for file in $(find . -name "*_custom.html"); do
-            sed -i 's#<p>\(.*\)</p>#\1#g' ${file}
+            sed -i -E 's#<li><p>([^<]*)</p></li>#<li>\1</li>#g' ${file} 2>/dev/null || true
           done
 
       - name: Diff Baseline and Customized HTML
         run: |
           for file in $(find . -name "*.md"); do
             echo $file
-            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>&1 || true
+            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>/dev/null || true
             echo ""
           done
 
