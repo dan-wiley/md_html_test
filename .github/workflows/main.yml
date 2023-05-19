@@ -8,30 +8,23 @@ on:
 jobs:
   convert:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    
-    - name: Convert Markdown to HTML
-      run: |
-        docker run --rm \
-          -v ${{ github.workspace }}:/workspace \
-          pandoc/core:3.0 \
-          -o /workspace/index.html \
-          /workspace/README.md
-    
-    - name: Add to file
-      run: |
-        echo "hello" >> ${{ github.workspace }}/index.html
-        
-    - name: Configure Git
-      run: |
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-        git config --global user.name "${{ github.actor }}"
-    
-    - name: Push
-      run: |
-        git add ${{ github.workspace }}/index.html
-        git commit -m "Update README"
-        git push origin main
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Convert Markdown to HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              pandoc/core:3.0 \
+              -o /workspace/${file%.md}.html \
+              /workspace/${file}
+          done
+
+      - name: Add and Push HTML files
+        run: |
+          git add *.html
+          git commit -m "Update README"
+          git push origin main
