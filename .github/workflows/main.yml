@@ -1,0 +1,22 @@
+name: Convert Markdown to HTML
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Convert Markdown to HTML
+      uses: docker://pandoc/core:2.9
+      with:
+        args: |
+          --standalone
+          --output=index.html
+          $(find . -name '*.md')
