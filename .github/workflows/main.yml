@@ -31,8 +31,7 @@ jobs:
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
               pandoc/core:3.0 \
-              --option1 \
-              --option2 \
+              --lua-filter=add-class.lua \
               -o ${file%.md}_custom.html \
               ${file}
           done
