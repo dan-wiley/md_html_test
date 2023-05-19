@@ -44,7 +44,7 @@ You will then need to log out and log back in.</p>
 <li><p>You will create two docker images and containers from the same
 underlying image. The image is httpd, a well know web server. Visit this
 web page and review the documentation for the image
-https://hub.docker.com/_/httpd/</p></li>
+https://hub.docker.com/_/httpd/</li>
 <li><p>Create two directories for each dockerfile.</p>
 <ul>
 <li><code>mkdir dev-site test-site</code></li>
@@ -60,7 +60,7 @@ https://hub.docker.com/_/httpd/</p></li>
 <li><p>Create a file named <code>dockerfile</code> with this content
 <code>dockerfile     FROM httpd:2.4</code> &gt; The
 <strong>FROM</strong> keyword allows us to specify a base image for our
-docker image to be built from..</p></li>
+docker image to be built from..</li>
 <li><p>Build your dockerfile into an image</p>
 <ul>
 <li><code>sudo docker build -t test-httpd .</code> &gt; This command
@@ -110,7 +110,7 @@ cd into it.</p>
 <li><p>Paste the content below into <code>index.html</code>
 <code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
 &gt; We will use <code>sed</code> to replace the
-<code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+<code>&lt;COHORT&gt;</code> with your actual cohort number</li>
 <li><p>Go back to the root of the dev-site</p>
 <ul>
 <li><code>cd ~/dev-site</code></li>
@@ -197,11 +197,11 @@ long as they will be noticeable in the web browser.</p>
 <li><code>vim ~/dev-site/public-html/index.html</code></li>
 </ul></li>
 <li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
-note if the changes made in step 1 are visible.</p></li>
+note if the changes made in step 1 are visible.</li>
 <li><p>Delete the container and re-create it with a volume mount using
 the <code>docker run</code> command and adding
 <code>-v /full/path/on/host:/path/on/container</code>. The docker run
-command will fail if the container name is already taken.</p></li>
+command will fail if the container name is already taken.</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>

@@ -303,3 +303,23 @@
 < <li><p>List your running docker images</p>
 ---
 > <li>List your running docker images
+47c47
+< https://hub.docker.com/_/httpd/</p></li>
+---
+> https://hub.docker.com/_/httpd/</li>
+63c63
+< docker image to be built from..</p></li>
+---
+> docker image to be built from..</li>
+113c113
+< <code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+---
+> <code>&lt;COHORT&gt;</code> with your actual cohort number</li>
+200c200
+< note if the changes made in step 1 are visible.</p></li>
+---
+> note if the changes made in step 1 are visible.</li>
+204c204
+< command will fail if the container name is already taken.</p></li>
+---
+> command will fail if the container name is already taken.</li>
