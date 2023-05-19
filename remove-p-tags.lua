@@ -1,25 +1,12 @@
--- Load the pandoc.lua library
-local pandoc = require('pandoc')
-
--- Function to remove <p> tags from within <li> tags
-function removePTagsInLiBlocks (blocks)
-  return pandoc.walk_block(pandoc.Div(blocks), {
-    Str = function (el)
-      return el.content
-    end,
-    Space = function ()
-      return {}
-    end
-  }).content
+function removePTagsInLiBlocksRegex (element)
+  if element.tag == "BulletList" or element.tag == "OrderedList" then
+    local content = pandoc.utils.stringify(element.content)
+    content = content:gsub("<li><p>(.-)</p></li>", "<li>%1</li>")
+    element.content = pandoc.read(content).blocks
+  end
+  return element
 end
 
--- Filter function
-function removePTags (doc)
-  doc.blocks = removePTagsInLiBlocks(doc.blocks)
-  return doc
-end
-
--- Apply the filter
 return {
-  { Pandoc = removePTags }
+  { Block = removePTagsInLiBlocksRegex }
 }
