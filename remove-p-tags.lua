@@ -1,22 +1,22 @@
-function removePTagsInLiBlocksRecursive(blocks)
-  for i = 1, #blocks do
-    local block = blocks[i]
-    if block.tag == "BulletList" or block.tag == "OrderedList" then
-      block.content = removePTagsInLiBlocksRecursive(block.content)
-    elseif block.tag == "Plain" then
-      blocks[i] = pandoc.Span(block.content)
+function removePTagsInLiBlocks (element)
+  if element.tag == "BulletList" or element.tag == "OrderedList" then
+    -- Iterate through the list items
+    for i, item in ipairs(element.content) do
+      -- Recursively process the item
+      element.content[i] = pandoc.walk_block(item, {
+        Para = function (para)
+          -- Check if the paragraph is within an <li> block
+          if para.parent and para.parent.tag == "ListItem" then
+            -- Replace the paragraph with its inline contents
+            return pandoc.Span(para.content)
+          end
+        end
+      })
     end
-  end
-  return blocks
-end
-
-function removePTagsInLiBlocks(element)
-  if element.tag == "Document" then
-    element.blocks = removePTagsInLiBlocksRecursive(element.blocks)
   end
   return element
 end
 
 return {
-  { Pandoc = removePTagsInLiBlocks }
+  { Block = removePTagsInLiBlocks }
 }
