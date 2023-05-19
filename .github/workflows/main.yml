@@ -19,9 +19,15 @@ jobs:
         args: |
           --output=index.html
           README.md
+          
     - name: Add to file
       run: |
         echo "hello" >> index.html
+        
+    - name: Configure Git
+      run: |
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
     
     - name: Push
       run: |
