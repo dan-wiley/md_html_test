@@ -1,22 +1,59 @@
-function removePTagsInLiBlocksRecursive(blocks)
-  for i = 1, #blocks do
-    local block = blocks[i]
-    if block.tag == "BulletList" or block.tag == "OrderedList" then
-      block.content = removePTagsInLiBlocksRecursive(block.content)
-    elseif block.tag == "Plain" then
-      blocks[i] = pandoc.Span(block.content)
-    end
-  end
-  return blocks
-end
+name: Convert Markdown to HTML
 
-function removePTagsInLiBlocks(element)
-  if element.tag == "Document" then
-    element.blocks = removePTagsInLiBlocksRecursive(element.blocks)
-  end
-  return element
-end
+on:
+  push:
+    branches:
+      - main
 
-return {
-  { Pandoc = removePTagsInLiBlocks }
-}
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Convert Markdown to Baseline HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              pandoc/minimal:3.1.1 \
+              -o ${file%.md}_baseline.html \
+              ${file}
+          done
+
+      - name: Convert Markdown to Customized HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              -v ${{ github.workspace }}/remove-p-tags.lua:/workspace/remove-p-tags.lua \
+              pandoc/minimal:3.1.1 \
+              --lua-filter=remove-p-tags.lua \
+              -o ${file%.md}_custom.html \
+              ${file}
+          done
+
+      - name: Diff Baseline and Customized HTML
+        run: |
+          for file in $(find . -name "*.md"); do
+            echo $file
+            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>&1 || true
+            echo ""
+          done
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+
+      - name: Add and Push HTML files
+        run: |
+          git add *_baseline.html
+          git add *_custom.html
+          git add diff.log
+          git commit -m "Update README"
+          git push origin main
