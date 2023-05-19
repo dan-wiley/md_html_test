@@ -1,25 +1,25 @@
-function removePTagsInLiBlocks (element)
-  if element.tag == "BulletList" or element.tag == "OrderedList" then
-    -- Iterate through the list items
-    for i, item in ipairs(element.content) do
-      -- Check if the item contains a paragraph block
-      if item.tag == "Plain" then
-        -- Replace the paragraph block with its inline contents
-        element.content[i] = pandoc.walk_inline(item, {
-          Str = function (el)
-            return el.content
-          end,
-          Space = function ()
-            return {}
-          end
-        })
-      end
+-- Load the pandoc.lua library
+local pandoc = require('pandoc')
+
+-- Function to remove <p> tags from within <li> tags
+function removePTagsInLiBlocks (blocks)
+  return pandoc.walk_block(pandoc.Div(blocks), {
+    Str = function (el)
+      return el.content
+    end,
+    Space = function ()
+      return {}
     end
-  end
-  return element
+  }).content
 end
 
+-- Filter function
+function removePTags (doc)
+  doc.blocks = removePTagsInLiBlocks(doc.blocks)
+  return doc
+end
+
+-- Apply the filter
 return {
-  { Inline = removePTagsInLiBlocks },
-  { Block = removePTagsInLiBlocks }
+  { Pandoc = removePTags }
 }
