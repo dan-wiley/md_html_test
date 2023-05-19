@@ -323,3 +323,95 @@
 < command will fail if the container name is already taken.</p></li>
 ---
 > command will fail if the container name is already taken.</li>
+32c32
+< <li><p>Install docker on your amazonlinux2 host OS, then start the
+---
+> <li>Install docker on your amazonlinux2 host OS, then start the
+44c44
+< <li><p>You will create two docker images and containers from the same
+---
+> <li>You will create two docker images and containers from the same
+48c48
+< <li><p>Create two directories for each dockerfile.</p>
+---
+> <li>Create two directories for each dockerfile.</p>
+56c56
+< <li><p>CD into test-site</p>
+---
+> <li>CD into test-site</p>
+60c60
+< <li><p>Create a file named <code>dockerfile</code> with this content
+---
+> <li>Create a file named <code>dockerfile</code> with this content
+64c64
+< <li><p>Build your dockerfile into an image</p>
+---
+> <li>Build your dockerfile into an image</p>
+70c70
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li>List your images to verify your image was created.</p>
+74c74
+< <li><p>Deploy your image to a container. Use –name to name the container
+---
+> <li>Deploy your image to a container. Use –name to name the container
+82c82
+< <li><p>List your running docker images</p>
+---
+> <li>List your running docker images</p>
+90c90
+< <li><p>Visit the website in the browser to make sure it works. You
+---
+> <li>Visit the website in the browser to make sure it works. You
+100c100
+< <li><p>CD into the dev site folder</p>
+---
+> <li>CD into the dev site folder</p>
+104c104
+< <li><p>Make a folder for html files named <code>public-html</code> and
+---
+> <li>Make a folder for html files named <code>public-html</code> and
+110c110
+< <li><p>Paste the content below into <code>index.html</code>
+---
+> <li>Paste the content below into <code>index.html</code>
+114c114
+< <li><p>Go back to the root of the dev-site</p>
+---
+> <li>Go back to the root of the dev-site</p>
+118c118
+< <li><p>Create a file named <code>dockerfile</code> and paste this
+---
+> <li>Create a file named <code>dockerfile</code> and paste this
+147c147
+< <li><p>Build your dockerfile into an image</p>
+---
+> <li>Build your dockerfile into an image</p>
+151c151
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li>List your images to verify your image was created.</p>
+155c155
+< <li><p>Deploy your image to a container.</p>
+---
+> <li>Deploy your image to a container.</p>
+159c159
+< <li><p>List your running docker images</p>
+---
+> <li>List your running docker images</p>
+169c169
+< <li><p>Visit the website in the browser, this time change the port to
+---
+> <li>Visit the website in the browser, this time change the port to
+194c194
+< <li><p>Edit the host HTML file. You can add any changes you like, as
+---
+> <li>Edit the host HTML file. You can add any changes you like, as
+199c199
+< <li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+---
+> <li>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+201c201
+< <li><p>Delete the container and re-create it with a volume mount using
+---
+> <li>Delete the container and re-create it with a volume mount using
