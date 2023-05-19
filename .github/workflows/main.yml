@@ -18,4 +18,4 @@ jobs:
       with:
         args: |
           --output=index.html
-          $(find . -name '*.md')
+          README.md
