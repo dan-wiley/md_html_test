@@ -1,15 +1,18 @@
--- eg. Input
--- <li><p>old</p></li>
--- Output:
--- <li>old</li>
 function removePTagsInLiBlocks (element)
   if element.tag == "BulletList" or element.tag == "OrderedList" then
     -- Iterate through the list items
     for i, item in ipairs(element.content) do
       -- Check if the item contains a paragraph block
       if item.tag == "Plain" then
-        -- Remove the paragraph block and keep its inline contents
-        element.content[i] = pandoc.Span(item.content)
+        -- Replace the paragraph block with its inline contents
+        element.content[i] = pandoc.walk_inline(item, {
+          Str = function (el)
+            return el.content
+          end,
+          Space = function ()
+            return {}
+          end
+        })
       end
     end
   end
