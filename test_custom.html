@@ -45,15 +45,15 @@ You will then need to log out and log back in.</p>
 underlying image. The image is httpd, a well know web server. Visit this
 web page and review the documentation for the image
 https://hub.docker.com/_/httpd/</p></li>
-<li><p>Create two directories for each dockerfile.</p>
+<li>Create two directories for each dockerfile.
 <ul>
 <li><code>mkdir dev-site test-site</code></li>
 </ul></li>
 </ol>
 <h1 id="test-site">Test Site</h1>
-<p>Start with the test website.</p>
+Start with the test website.
 <ol type="1">
-<li><p>CD into test-site</p>
+<li>CD into test-site
 <ul>
 <li><code>cd test-site</code></li>
 </ul></li>
@@ -61,13 +61,13 @@ https://hub.docker.com/_/httpd/</p></li>
 <code>dockerfile     FROM httpd:2.4</code> &gt; The
 <strong>FROM</strong> keyword allows us to specify a base image for our
 docker image to be built from..</p></li>
-<li><p>Build your dockerfile into an image</p>
+<li>Build your dockerfile into an image
 <ul>
 <li><code>sudo docker build -t test-httpd .</code> &gt; This command
 searches for a file named dockerfile in the current directory, builds it
 and tags (-t) the image as <em>test-httpd</em></li>
 </ul></li>
-<li><p>List your images to verify your image was created.</p>
+<li>List your images to verify your image was created.
 <ul>
 <li><code>sudo docker images</code></li>
 </ul></li>
@@ -79,7 +79,7 @@ and the image name at the end of the command.</p>
 connect to your terminal session. &gt; -p is the bort binding, above we
 are binding port 80 of the host OS to port 80 on the container.</li>
 </ul></li>
-<li><p>List your running docker images</p>
+<li>List your running docker images
 <ul>
 <li><code>sudo docker ps -a</code>
 <ul>
@@ -94,10 +94,10 @@ should see the default web page!</p>
 </ul></li>
 </ol>
 <h1 id="dev-site">Dev Site</h1>
-<p>This website will serve our own HTML files.</p>
+This website will serve our own HTML files.
 <h2 id="instructions">Instructions</h2>
 <ol type="1">
-<li><p>CD into the dev site folder</p>
+<li>CD into the dev site folder
 <ul>
 <li><code>cd ~/dev-site</code></li>
 </ul></li>
@@ -111,7 +111,7 @@ cd into it.</p>
 <code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
 &gt; We will use <code>sed</code> to replace the
 <code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
-<li><p>Go back to the root of the dev-site</p>
+<li>Go back to the root of the dev-site
 <ul>
 <li><code>cd ~/dev-site</code></li>
 </ul></li>
@@ -144,19 +144,19 @@ can be removed since the base image already executes the
 <blockquote>
 
 </blockquote></li>
-<li><p>Build your dockerfile into an image</p>
+<li>Build your dockerfile into an image
 <ul>
 <li><code>sudo docker build -t dev-httpd .</code></li>
 </ul></li>
-<li><p>List your images to verify your image was created.</p>
+<li>List your images to verify your image was created.
 <ul>
 <li><code>sudo docker images</code></li>
 </ul></li>
-<li><p>Deploy your image to a container.</p>
+<li>Deploy your image to a container.
 <ul>
 <li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
 </ul></li>
-<li><p>List your running docker images</p>
+<li>List your running docker images
 <ul>
 <li><code>sudo docker ps -a</code>
 <ul>

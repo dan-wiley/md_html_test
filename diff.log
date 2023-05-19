@@ -247,3 +247,59 @@
 > with -fDelete the images.sudo docker rmi dev-httpd test-httpd
 > httpd:2.4Now run these commands to verify you have deleted the images
 > and the containers.sudo docker ps -asudo docker images</p></li>
+4c4
+< <p>hello world</p>
+---
+> hello world
+48c48
+< <li><p>Create two directories for each dockerfile.</p>
+---
+> <li>Create two directories for each dockerfile.
+54c54
+< <p>Start with the test website.</p>
+---
+> Start with the test website.
+56c56
+< <li><p>CD into test-site</p>
+---
+> <li>CD into test-site
+64c64
+< <li><p>Build your dockerfile into an image</p>
+---
+> <li>Build your dockerfile into an image
+70c70
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li>List your images to verify your image was created.
+82c82
+< <li><p>List your running docker images</p>
+---
+> <li>List your running docker images
+97c97
+< <p>This website will serve our own HTML files.</p>
+---
+> This website will serve our own HTML files.
+100c100
+< <li><p>CD into the dev site folder</p>
+---
+> <li>CD into the dev site folder
+114c114
+< <li><p>Go back to the root of the dev-site</p>
+---
+> <li>Go back to the root of the dev-site
+147c147
+< <li><p>Build your dockerfile into an image</p>
+---
+> <li>Build your dockerfile into an image
+151c151
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li>List your images to verify your image was created.
+155c155
+< <li><p>Deploy your image to a container.</p>
+---
+> <li>Deploy your image to a container.
+159c159
+< <li><p>List your running docker images</p>
+---
+> <li>List your running docker images
