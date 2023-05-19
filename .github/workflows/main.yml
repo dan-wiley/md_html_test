@@ -19,6 +19,9 @@ jobs:
         args: |
           --output=index.html
           README.md
+    - name: Add to file
+      run: |
+        echo "hello" >> index.html
     
     - name: Push
       run: |
