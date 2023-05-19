@@ -23,5 +23,5 @@ jobs:
     - name: Save HTML artifact
       uses: actions/upload-artifact@v3
       with:
-        name: converted-html
-        path: index.html
+        name: index.html
+        path: /
