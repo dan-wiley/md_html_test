@@ -41,7 +41,7 @@ jobs:
         run: |
           for file in $(find . -name "*.md"); do
             echo $file
-            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>&1
+            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>&1 || true
             echo ""
           done
 
