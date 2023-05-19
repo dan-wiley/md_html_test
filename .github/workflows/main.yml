@@ -3,7 +3,7 @@ name: Convert Markdown to HTML
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   convert:
@@ -19,3 +19,9 @@ jobs:
         args: |
           --output=index.html
           README.md
+    
+    - name: Save HTML artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: converted-html
+        path: index.html
