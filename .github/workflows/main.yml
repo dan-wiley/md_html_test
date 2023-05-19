@@ -17,6 +17,5 @@ jobs:
       uses: docker://pandoc/core:3.0
       with:
         args: |
-          --standalone
           --output=index.html
           $(find . -name '*.md')
