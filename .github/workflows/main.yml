@@ -17,8 +17,9 @@ jobs:
       uses: docker://pandoc/core:3.0
       with:
         args: |
-          --output=index.html
-          README.md
+          -v ${{ github.workspace }}:/workspace
+          -o /workspace/index.html
+          /workspace/README.md
           
     - name: Add to file
       run: |
