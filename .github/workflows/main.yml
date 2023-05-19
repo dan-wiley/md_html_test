@@ -21,7 +21,7 @@ jobs:
           README.md
     
     - name: Save HTML artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: converted-html
         path: index.html
