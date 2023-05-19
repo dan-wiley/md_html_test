@@ -20,8 +20,8 @@ jobs:
           --output=index.html
           README.md
     
-    - name: Save HTML artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: index.html
-        path: .
+    - name: Push
+      run: |
+        git add index.html
+        git commit -m "Update README"
+        git push origin main
