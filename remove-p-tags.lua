@@ -1,14 +1,22 @@
-function removePTagsInLiBlocksRecursive(element)
-  if element.tag == "BulletList" or element.tag == "OrderedList" then
-    element.content = pandoc.walk_block(element.content, {
-      Para = function(para)
-        return pandoc.Span(para.content)
-      end
-    })
+function removePTagsInLiBlocksRecursive(blocks)
+  for i = 1, #blocks do
+    local block = blocks[i]
+    if block.tag == "BulletList" or block.tag == "OrderedList" then
+      block.content = removePTagsInLiBlocksRecursive(block.content)
+    elseif block.tag == "Plain" then
+      blocks[i] = pandoc.Span(block.content)
+    end
+  end
+  return blocks
+end
+
+function removePTagsInLiBlocks(element)
+  if element.tag == "Document" then
+    element.blocks = removePTagsInLiBlocksRecursive(element.blocks)
   end
   return element
 end
 
 return {
-  { Block = removePTagsInLiBlocksRecursive }
+  { Pandoc = removePTagsInLiBlocks }
 }
