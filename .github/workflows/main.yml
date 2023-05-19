@@ -19,7 +19,7 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              pandoc/core:latest \
+              pandoc/core:3.0 \
               -o ${file%.md}_baseline.html \
               ${file}
           done
@@ -30,8 +30,8 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              pandoc/core:latest \
-              --lua-filter=/workspace/add-class.lua \
+              pandoc/core:3.0 \
+              --lua-filter=/workspace/remove-p-tags.lua \
               -o ${file%.md}_custom.html \
               ${file}
           done
