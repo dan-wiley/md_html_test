@@ -30,18 +30,22 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              -v ${{ github.workspace }}/remove-p-tags.lua:/workspace/remove-p-tags.lua \
               pandoc/minimal:3.1.1 \
-              --lua-filter=remove-p-tags.lua \
               -o ${file%.md}_custom.html \
               ${file}
+          done
+
+      - name: Remove <p> tags from Customized HTML
+        run: |
+          for file in $(find . -name "*_custom.html"); do
+            sed -i 's#<p>\(.*\)</p>#\1#g' ${file}
           done
 
       - name: Diff Baseline and Customized HTML
         run: |
           for file in $(find . -name "*.md"); do
             echo $file
-            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>&1 || true
+            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log
             echo ""
           done
 
