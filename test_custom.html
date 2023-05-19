@@ -1,0 +1,168 @@
+<h1 id="intro-to-docker">IntrotoDocker</h1>
+<p>Inthisactivity,youwillcreatetwodockerimagesanddeploytwocontainers,onefromeachimage.Oneimagewillbeadevenvironmentandtheothertesting.Bothcontainerswillbeawebserverservingdifferentcontentonthesamehostoperatingsystem.</p>
+<p>Thisactivitydemonstratesthepowerofcontainerizationandtheabilitytorunmultipleservicesonasinglehostoperatingsystem.</p>
+<p>Containerizationallowsustorunimagesonthehostoperatingsystem.Amajorbenefitofcontainerizationisthatcontainersusethesamehardware(kernel)asthehostoperatingsystem.Containers.</p>
+<p>Imagesallowbundlinguppackagesorinstallationinstructionsintoafile,eliminatingtheneedtoperforminstallationstepsonthehostOSorcreatedependencyconflicts.ItisimportanttonotethatimagesandcontainerizationdonotnecessarilyrelyonDocker.Dockerisjustasuiteoftoolsforcreatinganddeployingimagesintocontainers.Kubernetes,forexample,canusethesameimagesbutusesadifferentruntimeforrunningthecontainers.</p>
+<h2 id="learning-objectives">LearningObjectives</h2>
+<p>Youwillbeabletocreateadockerfile,buildimages,deploymultiplecontainersonthesamehostOSandunderstanddifferentkeywordsindockerfiles.CompletingthebonusportionwillteachyouaboutvolumesbetweencontainersandthehostOS.</p>
+<h2 id="setup">Setup</h2>
+<ul>
+<li>Makesurethatyouhaveports80and8080openonyourhostOSfirewallbeforestartingthisactivity.IfonAWSnavigatetoyourinstance,thenSecurity,andclickonyourSecurityGroup.Editinboundrules,thenverifyoraddaruleforports8080and80.Forthesourceselect“AnywhereIPv4”.Saveyoursettings.</li>
+</ul>
+<ol type="1">
+<li><p>Installdockeronyouramazonlinux2hostOS,thenstartthedockerdaemon.</p>
+<ul>
+<li><code>sudo yum -y update</code></li>
+<li><code>sudo yum -y install docker</code></li>
+<li><code>sudo service docker start</code></li>
+</ul>
+<blockquote>
+<p>Ifyouwanttorundockerwithoutsudo(recommended)addyourusertothedockergroupbyrunning<code>sudo usermod -aG docker $USER</code>.Youwillthenneedtologoutandlogbackin.</p>
+</blockquote></li>
+<li><p>Youwillcreatetwodockerimagesandcontainersfromthesameunderlyingimage.Theimageishttpd,awellknowwebserver.Visitthiswebpageandreviewthedocumentationfortheimagehttps://hub.docker.com/_/httpd/</p></li>
+<li><p>Createtwodirectoriesforeachdockerfile.</p>
+<ul>
+<li><code>mkdir dev-site test-site</code></li>
+</ul></li>
+</ol>
+<h1 id="test-site">TestSite</h1>
+<p>Startwiththetestwebsite.</p>
+<ol type="1">
+<li><p>CDintotest-site</p>
+<ul>
+<li><code>cd test-site</code></li>
+</ul></li>
+<li><p>Createafilenamed<code>dockerfile</code>withthiscontent
+<code>dockerfile     FROM httpd:2.4</code>
+&gt;The<strong>FROM</strong>keywordallowsustospecifyabaseimageforourdockerimagetobebuiltfrom..</p></li>
+<li><p>Buildyourdockerfileintoanimage</p>
+<ul>
+<li><code>sudo docker build -t test-httpd .</code>
+&gt;Thiscommandsearchesforafilenameddockerfileinthecurrentdirectory,buildsitandtags(-t)theimageas<em>test-httpd</em></li>
+</ul></li>
+<li><p>Listyourimagestoverifyyourimagewascreated.</p>
+<ul>
+<li><code>sudo docker images</code></li>
+</ul></li>
+<li><p>Deployyourimagetoacontainer.Use–nametonamethecontainerandtheimagenameattheendofthecommand.</p>
+<ul>
+<li><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
+&gt;The-dtellsittoruninbackground,-itallowsthecontinertoconnecttoyourterminalsession.
+&gt;-pisthebortbinding,abovewearebindingport80ofthehostOStoport80onthecontainer.</li>
+</ul></li>
+<li><p>Listyourrunningdockerimages</p>
+<ul>
+<li><code>sudo docker ps -a</code>
+<ul>
+<li>Noticethatport80ofthehostisroutedtoport80ofthecontainer.The-aistodisplayalldetails.</li>
+</ul></li>
+</ul></li>
+<li><p>Visitthewebsiteinthebrowsertomakesureitworks.Youshouldseethedefaultwebpage!</p>
+<ul>
+<li><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
+</ul></li>
+</ol>
+<h1 id="dev-site">DevSite</h1>
+<p>ThiswebsitewillserveourownHTMLfiles.</p>
+<h2 id="instructions">Instructions</h2>
+<ol type="1">
+<li><p>CDintothedevsitefolder</p>
+<ul>
+<li><code>cd ~/dev-site</code></li>
+</ul></li>
+<li><p>Makeafolderforhtmlfilesnamed<code>public-html</code>andcdintoit.</p>
+<ul>
+<li><code>mkdir public-html</code></li>
+<li><code>cd public-html</code></li>
+</ul></li>
+<li><p>Pastethecontentbelowinto<code>index.html</code>
+<code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
+&gt;Wewilluse<code>sed</code>toreplacethe<code>&lt;COHORT&gt;</code>withyouractualcohortnumber</p></li>
+<li><p>Gobacktotherootofthedev-site</p>
+<ul>
+<li><code>cd ~/dev-site</code></li>
+</ul></li>
+<li><p>Createafilenamed<code>dockerfile</code>andpastethiscontent.Replace500withyourcohortnumber.
+<code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code>
+&gt;The<strong>COPY</strong>keywordwillcopythefilesfromthehostmachineinpublic-htmltothecontainerhtdocsfolderatimagebuildtime.Httpdwillautomaticallyservefilesinhtdocsfolderwhenitisstarted.</p>
+<blockquote>
+<p>The<strong>ENV</strong>keywordsetsanenviornmentvariablethatwecanaccesslaterwith$cohort.The<strong>RUN</strong>keywordexecutesacommandwhenbuildingtheimage,suchassed.Herewearereplacing<code>&lt;COHORT&gt;</code>withthevalueof$cohortforeachfileinhtdocs.<strong>EXPOSE</strong>openstheport80ofthecontainer,itisnotneededherebecausethebaseimagealreadyexposesthatport.</p>
+</blockquote>
+<blockquote>
+<p>The<strong>CMD</strong>keywordshouldonlybeusedonce,itisdifferentfromRUNbecauseitisnotexecutedwhiletheimageisbeingbuild.Instead,CMDisthecommandtorunwhentheimageisexecutedasacontainer.Thisisknownasthemainprocess,andwhenthisprocessisdoneexecutingthecontainerwillstop.Tokeepyourcontaineralive,thiscommandshouldnotexit.Inthiscase<code>httpd-foreground</code>isthesamecommandthebaseimageexecutes.Therefore,theentirelinecanberemovedsincethebaseimagealreadyexecutesthe<code>httpd-foreground</code>command.</p>
+</blockquote>
+<blockquote>
+
+</blockquote></li>
+<li><p>Buildyourdockerfileintoanimage</p>
+<ul>
+<li><code>sudo docker build -t dev-httpd .</code></li>
+</ul></li>
+<li><p>Listyourimagestoverifyyourimagewascreated.</p>
+<ul>
+<li><code>sudo docker images</code></li>
+</ul></li>
+<li><p>Deployyourimagetoacontainer.</p>
+<ul>
+<li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
+</ul></li>
+<li><p>Listyourrunningdockerimages</p>
+<ul>
+<li><code>sudo docker ps -a</code>
+<ul>
+<li>Noticethatport8080ofthehostOSisbeingroutedtoport80ofthedev-httpdcontainer.Thehttpdserviceisalreadyconfiguredtolistenonport80.Nowallrequeststoport8080areforwardedtoport80ofthecontainer.</li>
+</ul></li>
+</ul></li>
+<li><p>Visitthewebsiteinthebrowser,thistimechangetheportto8080andyoushouldseeyourdevsite.Youcangobackandforthbetweensitessimplybyadjustingtheportsinthebrowser.</p>
+<ul>
+<li><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
+</ul></li>
+</ol>
+<h1 id="volumes-bonus">Volumes(Bonus)</h1>
+<p>AvolumeisasharedfolderbetweenthehostOSorothercontainers.Wecancreateavolumefrompublic-htmlonthehostOStohtdocsonthecontainer.Avolumecouldenableeditingthefilesinthepublic-htmlfolderandreflectingthechangesinthehtdocsfolderofthecontainer.</p>
+<p>Withoutusingvolumesyouwouldhavetorebuildtheimageandcontainereachtimeyouchangedthefilebecausethedockerfile(and<code>COPY</code>command)isonlyexecutedatimagecreation(<code>docker build</code>).Youcouldeditthefilesinthecontainer,butthatrequires<code>docker exec</code>andvolumesarestillmoreconvenient.</p>
+<h2 id="instructions-1">Instructions</h2>
+<p>Theactivitywalksyouthrougheditingthewebpageonthehostbeforeaddingavolume.Thenyouwilleditthefileafteraddingavolumeandcomparethedifference.Thisactivityusesthedevenvironmentonly.</p>
+<ol type="1">
+<li><p>EditthehostHTMLfile.Youcanaddanychangesyoulike,aslongastheywillbenoticeableinthewebbrowser.</p>
+<ul>
+<li><code>vim ~/dev-site/public-html/index.html</code></li>
+</ul></li>
+<li><p>Visit<code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code>andtakenoteifthechangesmadeinstep1arevisible.</p></li>
+<li><p>Deletethecontainerandre-createitwithavolumemountusingthe<code>docker run</code>commandandadding<code>-v /full/path/on/host:/path/on/container</code>.Thedockerruncommandwillfailifthecontainernameisalreadytaken.</p></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+<ol start="4" type="1">
+<li>EditthehostHTMLfileagainwithanoticeablechange.
+<ul>
+<li><code>vim ~/dev-site/public-html/index.html</code></li>
+</ul></li>
+<li>Visit<code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code>andtakenoteifthechangesmadeinstep1andstep4arevisible.</li>
+</ol>
+<h1 id="cleanup">Cleanup</h1>
+<ol type="1">
+<li>Stopthedockercontainers.
+<ul>
+<li><code>sudo docker stop dev-httpd-container test-httpd-container</code>
+&gt;Tostartastoppedcontaineruse<code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+</ul></li>
+<li>Deletethecontainers.
+<ul>
+<li><code>sudo docker rm dev-httpd-container test-httpd-container</code>
+&gt;Youcouldhavestoppedanddeletedinonestepwith-f</li>
+</ul></li>
+<li>Deletetheimages.
+<ul>
+<li><code>sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
+</ul></li>
+<li>Nowrunthesecommandstoverifyyouhavedeletedtheimagesandthecontainers.
+<ul>
+<li><code>sudo docker ps -a</code></li>
+<li><code>sudo docker images</code></li>
+</ul></li>
+</ol>
+<h1 id="conclusion">Conclusion</h1>
+<p>Inthisactivityyoucreatedabasictestdockercontainerandverifieditwasaccessibleovertheinternet.YouthencreatedanothercontainerfromamoresophisticateddockerfileonthesamehostOS.IfyoucompletedthebonusyouaddedavolumelinkingahostdirectorytoacontainerandupdatedthewebsiteviathehostOS.Finally,youperformedtheoperationsneededtoremovethecontainersandimages.Theseskillsareessentialfornavigatingmodernmicroservicestacks.</p>

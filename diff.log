@@ -1,0 +1,296 @@
+2,3c2,3
+< <p>This repo is a test area for building a pipeline to convert markdown
+< to html new new</p>
+---
+> <p>Thisrepoisatestareaforbuildingapipelinetoconvertmarkdowntohtml
+> newnew</p>
+1,22c1,7
+< <h1 id="intro-to-docker">Intro to Docker</h1>
+< <p>In this activity, you will create two docker images and deploy two
+< containers, one from each image. One image will be a dev environment and
+< the other testing. Both containers will be a web server serving
+< different content on the same host operating system.</p>
+< <p>This activity demonstrates the power of containerization and the
+< ability to run multiple services on a single host operating system.</p>
+< <p>Containerization allows us to run images on the host operating
+< system. A major benefit of containerization is that containers use the
+< same hardware (kernel) as the host operating system. Containers.</p>
+< <p>Images allow bundling up packages or installation instructions into a
+< file, eliminating the need to perform installation steps on the host OS
+< or create dependency conflicts. It is important to note that images and
+< containerization do not necessarily rely on Docker. Docker is just a
+< suite of tools for creating and deploying images into containers.
+< Kubernetes, for example, can use the same images but uses a different
+< runtime for running the containers.</p>
+< <h2 id="learning-objectives">Learning Objectives</h2>
+< <p>You will be able to create a dockerfile, build images, deploy
+< multiple containers on the same host OS and understand different
+< keywords in dockerfiles. Completing the bonus portion will teach you
+< about volumes between containers and the host OS.</p>
+---
+> <h1 id="intro-to-docker">IntrotoDocker</h1>
+> <p>Inthisactivity,youwillcreatetwodockerimagesanddeploytwocontainers,onefromeachimage.Oneimagewillbeadevenvironmentandtheothertesting.Bothcontainerswillbeawebserverservingdifferentcontentonthesamehostoperatingsystem.</p>
+> <p>Thisactivitydemonstratesthepowerofcontainerizationandtheabilitytorunmultipleservicesonasinglehostoperatingsystem.</p>
+> <p>Containerizationallowsustorunimagesonthehostoperatingsystem.Amajorbenefitofcontainerizationisthatcontainersusethesamehardware(kernel)asthehostoperatingsystem.Containers.</p>
+> <p>Imagesallowbundlinguppackagesorinstallationinstructionsintoafile,eliminatingtheneedtoperforminstallationstepsonthehostOSorcreatedependencyconflicts.ItisimportanttonotethatimagesandcontainerizationdonotnecessarilyrelyonDocker.Dockerisjustasuiteoftoolsforcreatinganddeployingimagesintocontainers.Kubernetes,forexample,canusethesameimagesbutusesadifferentruntimeforrunningthecontainers.</p>
+> <h2 id="learning-objectives">LearningObjectives</h2>
+> <p>Youwillbeabletocreateadockerfile,buildimages,deploymultiplecontainersonthesamehostOSandunderstanddifferentkeywordsindockerfiles.CompletingthebonusportionwillteachyouaboutvolumesbetweencontainersandthehostOS.</p>
+25,29c10
+< <li>Make sure that you have ports 80 and 8080 open on your host OS
+< firewall before starting this activity. If on AWS navigate to your
+< instance, then Security, and click on your Security Group. Edit inbound
+< rules, then verify or add a rule for ports 8080 and 80. For the source
+< select “Anywhere IPv4”. Save your settings.</li>
+---
+> <li>Makesurethatyouhaveports80and8080openonyourhostOSfirewallbeforestartingthisactivity.IfonAWSnavigatetoyourinstance,thenSecurity,andclickonyourSecurityGroup.Editinboundrules,thenverifyoraddaruleforports8080and80.Forthesourceselect“AnywhereIPv4”.Saveyoursettings.</li>
+32,33c13
+< <li><p>Install docker on your amazonlinux2 host OS, then start the
+< docker daemon.</p>
+---
+> <li><p>Installdockeronyouramazonlinux2hostOS,thenstartthedockerdaemon.</p>
+40,42c20
+< <p>If you want to run docker without sudo (recommended) add your user to
+< the docker group by running <code>sudo usermod -aG docker $USER</code>.
+< You will then need to log out and log back in.</p>
+---
+> <p>Ifyouwanttorundockerwithoutsudo(recommended)addyourusertothedockergroupbyrunning<code>sudo usermod -aG docker $USER</code>.Youwillthenneedtologoutandlogbackin.</p>
+44,48c22,23
+< <li><p>You will create two docker images and containers from the same
+< underlying image. The image is httpd, a well know web server. Visit this
+< web page and review the documentation for the image
+< https://hub.docker.com/_/httpd/</p></li>
+< <li><p>Create two directories for each dockerfile.</p>
+---
+> <li><p>Youwillcreatetwodockerimagesandcontainersfromthesameunderlyingimage.Theimageishttpd,awellknowwebserver.Visitthiswebpageandreviewthedocumentationfortheimagehttps://hub.docker.com/_/httpd/</p></li>
+> <li><p>Createtwodirectoriesforeachdockerfile.</p>
+53,54c28,29
+< <h1 id="test-site">Test Site</h1>
+< <p>Start with the test website.</p>
+---
+> <h1 id="test-site">TestSite</h1>
+> <p>Startwiththetestwebsite.</p>
+56c31
+< <li><p>CD into test-site</p>
+---
+> <li><p>CDintotest-site</p>
+60,68c35,41
+< <li><p>Create a file named <code>dockerfile</code> with this content
+< <code>dockerfile     FROM httpd:2.4</code> &gt; The
+< <strong>FROM</strong> keyword allows us to specify a base image for our
+< docker image to be built from..</p></li>
+< <li><p>Build your dockerfile into an image</p>
+< <ul>
+< <li><code>sudo docker build -t test-httpd .</code> &gt; This command
+< searches for a file named dockerfile in the current directory, builds it
+< and tags (-t) the image as <em>test-httpd</em></li>
+---
+> <li><p>Createafilenamed<code>dockerfile</code>withthiscontent
+> <code>dockerfile     FROM httpd:2.4</code>
+> &gt;The<strong>FROM</strong>keywordallowsustospecifyabaseimageforourdockerimagetobebuiltfrom..</p></li>
+> <li><p>Buildyourdockerfileintoanimage</p>
+> <ul>
+> <li><code>sudo docker build -t test-httpd .</code>
+> &gt;Thiscommandsearchesforafilenameddockerfileinthecurrentdirectory,buildsitandtags(-t)theimageas<em>test-httpd</em></li>
+70c43
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li><p>Listyourimagestoverifyyourimagewascreated.</p>
+74,75c47
+< <li><p>Deploy your image to a container. Use –name to name the container
+< and the image name at the end of the command.</p>
+---
+> <li><p>Deployyourimagetoacontainer.Use–nametonamethecontainerandtheimagenameattheendofthecommand.</p>
+78,80c50,51
+< &gt; The -d tells it to run in background, -it allows the continer to
+< connect to your terminal session. &gt; -p is the bort binding, above we
+< are binding port 80 of the host OS to port 80 on the container.</li>
+---
+> &gt;The-dtellsittoruninbackground,-itallowsthecontinertoconnecttoyourterminalsession.
+> &gt;-pisthebortbinding,abovewearebindingport80ofthehostOStoport80onthecontainer.</li>
+82c53
+< <li><p>List your running docker images</p>
+---
+> <li><p>Listyourrunningdockerimages</p>
+86,87c57
+< <li>Notice that port 80 of the host is routed to port 80 of the
+< container. The -a is to display all details.</li>
+---
+> <li>Noticethatport80ofthehostisroutedtoport80ofthecontainer.The-aistodisplayalldetails.</li>
+90,91c60
+< <li><p>Visit the website in the browser to make sure it works. You
+< should see the default web page!</p>
+---
+> <li><p>Visitthewebsiteinthebrowsertomakesureitworks.Youshouldseethedefaultwebpage!</p>
+96,97c65,66
+< <h1 id="dev-site">Dev Site</h1>
+< <p>This website will serve our own HTML files.</p>
+---
+> <h1 id="dev-site">DevSite</h1>
+> <p>ThiswebsitewillserveourownHTMLfiles.</p>
+100c69
+< <li><p>CD into the dev site folder</p>
+---
+> <li><p>CDintothedevsitefolder</p>
+104,105c73
+< <li><p>Make a folder for html files named <code>public-html</code> and
+< cd into it.</p>
+---
+> <li><p>Makeafolderforhtmlfilesnamed<code>public-html</code>andcdintoit.</p>
+110c78
+< <li><p>Paste the content below into <code>index.html</code>
+---
+> <li><p>Pastethecontentbelowinto<code>index.html</code>
+112,114c80,81
+< &gt; We will use <code>sed</code> to replace the
+< <code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+< <li><p>Go back to the root of the dev-site</p>
+---
+> &gt;Wewilluse<code>sed</code>toreplacethe<code>&lt;COHORT&gt;</code>withyouractualcohortnumber</p></li>
+> <li><p>Gobacktotherootofthedev-site</p>
+118,119c85
+< <li><p>Create a file named <code>dockerfile</code> and paste this
+< content. Replace 500 with your cohort number.
+---
+> <li><p>Createafilenamed<code>dockerfile</code>andpastethiscontent.Replace500withyourcohortnumber.
+121,124c87
+< &gt; The <strong>COPY</strong> keyword will copy the files from the host
+< machine in public-html to the container htdocs folder at image build
+< time. Httpd will automatically serve files in htdocs folder when it is
+< started.</p>
+---
+> &gt;The<strong>COPY</strong>keywordwillcopythefilesfromthehostmachineinpublic-htmltothecontainerhtdocsfolderatimagebuildtime.Httpdwillautomaticallyservefilesinhtdocsfolderwhenitisstarted.</p>
+126,131c89
+< <p>The <strong>ENV</strong> keyword sets an enviornment variable that we
+< can access later with $cohort. The <strong>RUN</strong> keyword executes
+< a command when building the image, such as sed. Here we are replacing
+< <code>&lt;COHORT&gt;</code> with the value of $cohort for each file in
+< htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
+< is not needed here because the base image already exposes that port.</p>
+---
+> <p>The<strong>ENV</strong>keywordsetsanenviornmentvariablethatwecanaccesslaterwith$cohort.The<strong>RUN</strong>keywordexecutesacommandwhenbuildingtheimage,suchassed.Herewearereplacing<code>&lt;COHORT&gt;</code>withthevalueof$cohortforeachfileinhtdocs.<strong>EXPOSE</strong>openstheport80ofthecontainer,itisnotneededherebecausethebaseimagealreadyexposesthatport.</p>
+134,142c92
+< <p>The <strong>CMD</strong> keyword should only be used once, it is
+< different from RUN because it is not executed while the image is being
+< build. Instead, CMD is the command to run when the image is executed as
+< a container. This is known as the main process, and when this process is
+< done executing the container will stop. To keep your container alive,
+< this command should not exit. In this case <code>httpd-foreground</code>
+< is the same command the base image executes. Therefore, the entire line
+< can be removed since the base image already executes the
+< <code>httpd-foreground</code> command.</p>
+---
+> <p>The<strong>CMD</strong>keywordshouldonlybeusedonce,itisdifferentfromRUNbecauseitisnotexecutedwhiletheimageisbeingbuild.Instead,CMDisthecommandtorunwhentheimageisexecutedasacontainer.Thisisknownasthemainprocess,andwhenthisprocessisdoneexecutingthecontainerwillstop.Tokeepyourcontaineralive,thiscommandshouldnotexit.Inthiscase<code>httpd-foreground</code>isthesamecommandthebaseimageexecutes.Therefore,theentirelinecanberemovedsincethebaseimagealreadyexecutesthe<code>httpd-foreground</code>command.</p>
+147c97
+< <li><p>Build your dockerfile into an image</p>
+---
+> <li><p>Buildyourdockerfileintoanimage</p>
+151c101
+< <li><p>List your images to verify your image was created.</p>
+---
+> <li><p>Listyourimagestoverifyyourimagewascreated.</p>
+155c105
+< <li><p>Deploy your image to a container.</p>
+---
+> <li><p>Deployyourimagetoacontainer.</p>
+159c109
+< <li><p>List your running docker images</p>
+---
+> <li><p>Listyourrunningdockerimages</p>
+163,166c113
+< <li>Notice that port 8080 of the host OS is being routed to port 80 of
+< the dev-httpd container. The httpd service is already configured to
+< listen on port 80. Now all requests to port 8080 are forwarded to port
+< 80 of the container.</li>
+---
+> <li>Noticethatport8080ofthehostOSisbeingroutedtoport80ofthedev-httpdcontainer.Thehttpdserviceisalreadyconfiguredtolistenonport80.Nowallrequeststoport8080areforwardedtoport80ofthecontainer.</li>
+169,171c116
+< <li><p>Visit the website in the browser, this time change the port to
+< 8080 and you should see your dev site. You can go back and forth between
+< sites simply by adjusting the ports in the browser.</p>
+---
+> <li><p>Visitthewebsiteinthebrowser,thistimechangetheportto8080andyoushouldseeyourdevsite.Youcangobackandforthbetweensitessimplybyadjustingtheportsinthebrowser.</p>
+176,187c121,123
+< <h1 id="volumes-bonus">Volumes (Bonus)</h1>
+< <p>A volume is a shared folder between the host OS or other containers.
+< We can create a volume from public-html on the host OS to htdocs on the
+< container. A volume could enable editing the files in the public-html
+< folder and reflecting the changes in the htdocs folder of the
+< container.</p>
+< <p>Without using volumes you would have to rebuild the image and
+< container each time you changed the file because the dockerfile (and
+< <code>COPY</code> command) is only executed at image creation
+< (<code>docker build</code>). You could edit the files in the container,
+< but that requires <code>docker exec</code> and volumes are still more
+< convenient.</p>
+---
+> <h1 id="volumes-bonus">Volumes(Bonus)</h1>
+> <p>AvolumeisasharedfolderbetweenthehostOSorothercontainers.Wecancreateavolumefrompublic-htmlonthehostOStohtdocsonthecontainer.Avolumecouldenableeditingthefilesinthepublic-htmlfolderandreflectingthechangesinthehtdocsfolderofthecontainer.</p>
+> <p>Withoutusingvolumesyouwouldhavetorebuildtheimageandcontainereachtimeyouchangedthefilebecausethedockerfile(and<code>COPY</code>command)isonlyexecutedatimagecreation(<code>docker build</code>).Youcouldeditthefilesinthecontainer,butthatrequires<code>docker exec</code>andvolumesarestillmoreconvenient.</p>
+189,192c125
+< <p>The activity walks you through editing the web page on the host
+< before adding a volume. Then you will edit the file after adding a
+< volume and compare the difference. This activity uses the dev
+< environment only.</p>
+---
+> <p>Theactivitywalksyouthrougheditingthewebpageonthehostbeforeaddingavolume.Thenyouwilleditthefileafteraddingavolumeandcomparethedifference.Thisactivityusesthedevenvironmentonly.</p>
+194,195c127
+< <li><p>Edit the host HTML file. You can add any changes you like, as
+< long as they will be noticeable in the web browser.</p>
+---
+> <li><p>EditthehostHTMLfile.Youcanaddanychangesyoulike,aslongastheywillbenoticeableinthewebbrowser.</p>
+199,204c131,132
+< <li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+< note if the changes made in step 1 are visible.</p></li>
+< <li><p>Delete the container and re-create it with a volume mount using
+< the <code>docker run</code> command and adding
+< <code>-v /full/path/on/host:/path/on/container</code>. The docker run
+< command will fail if the container name is already taken.</p></li>
+---
+> <li><p>Visit<code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code>andtakenoteifthechangesmadeinstep1arevisible.</p></li>
+> <li><p>Deletethecontainerandre-createitwithavolumemountusingthe<code>docker run</code>commandandadding<code>-v /full/path/on/host:/path/on/container</code>.Thedockerruncommandwillfailifthecontainernameisalreadytaken.</p></li>
+211c139
+< <li>Edit the host HTML file again with a noticeable change.
+---
+> <li>EditthehostHTMLfileagainwithanoticeablechange.
+215,216c143
+< <li>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
+< if the changes made in step 1 and step 4 are visible.</li>
+---
+> <li>Visit<code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code>andtakenoteifthechangesmadeinstep1andstep4arevisible.</li>
+220c147
+< <li>Stop the docker containers.
+---
+> <li>Stopthedockercontainers.
+223,224c150
+< &gt; To start a stopped container use
+< <code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+---
+> &gt;Tostartastoppedcontaineruse<code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+226c152
+< <li>Delete the containers.
+---
+> <li>Deletethecontainers.
+229c155
+< &gt; You could have stopped and deleted in one step with -f</li>
+---
+> &gt;Youcouldhavestoppedanddeletedinonestepwith-f</li>
+231c157
+< <li>Delete the images.
+---
+> <li>Deletetheimages.
+235,236c161
+< <li>Now run these commands to verify you have deleted the images and the
+< containers.
+---
+> <li>Nowrunthesecommandstoverifyyouhavedeletedtheimagesandthecontainers.
+243,250c168
+< <p>In this activity you created a basic test docker container and
+< verified it was accessible over the internet. You then created another
+< container from a more sophisticated dockerfile on the same host OS. If
+< you completed the bonus you added a volume linking a host directory to a
+< container and updated the website via the host OS. Finally, you
+< performed the operations needed to remove the containers and images.
+< These skills are essential for navigating modern microservice
+< stacks.</p>
+---
+> <p>Inthisactivityyoucreatedabasictestdockercontainerandverifieditwasaccessibleovertheinternet.YouthencreatedanothercontainerfromamoresophisticateddockerfileonthesamehostOS.IfyoucompletedthebonusyouaddedavolumelinkingahostdirectorytoacontainerandupdatedthewebsiteviathehostOS.Finally,youperformedtheoperationsneededtoremovethecontainersandimages.Theseskillsareessentialfornavigatingmodernmicroservicestacks.</p>
