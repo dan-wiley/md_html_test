@@ -19,7 +19,7 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              pandoc/core:3.1.1 \
+              pandoc/latex:3.1.1 \
               -o ${file%.md}_baseline.html \
               ${file}
           done
@@ -30,7 +30,7 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              pandoc/core:3.1.1 \
+              pandoc/latex:3.1.1 \
               --filter remove_p_tags.py \
               -o ${file%.md}_custom.html \
               ${file}
