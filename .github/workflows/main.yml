@@ -23,6 +23,12 @@ jobs:
               -o ${file%.md}_baseline.html \
               ${file}
           done
+          
+      - name: Build Docker image with Python
+        run: |
+          echo "FROM pandoc/core:3.1.1-ubuntu" > Dockerfile
+          echo "RUN apt-get update && apt-get install -y python3" >> Dockerfile
+          docker build -t my-pandoc .
 
       - name: Convert Markdown to Customized HTML
         run: |
