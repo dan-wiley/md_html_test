@@ -30,9 +30,13 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              pandoc/core:3.1.1-ubuntu \
-              pandoc -f markdown -t html -o ${file%.md}_custom.html ${file} --filter remove_p_tags.py
+              my-pandoc \
+              -f markdown -t html \
+              -o ${file%.md}_custom.html \
+              --filter remove_p_tags.py \
+              ${file}
           done
+
 
       - name: Diff Baseline and Customized HTML
         run: |
