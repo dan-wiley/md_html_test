@@ -19,7 +19,7 @@ def has_nested_p_tags(elem):
         return any(has_nested_p_tags(sublist) for sublist in elem)
     return False
 
-def main(doc=None):
+def main(doc):
     return remove_p_tags_within_li(doc, doc)
 
 if __name__ == "__main__":
