@@ -31,7 +31,7 @@ jobs:
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
               pandoc/core:3.1.1-ubuntu \
-              bash -c "apt-get update && apt-get install -y python3 && python3 -m pip install pandocfilters && pandoc -o ${file%.md}_custom.html ${file} --filter remove_p_tags.py"
+              bash -c "apt-get update && apt-get install -y python3 && python3 -m pip install pandocfilters && pandoc -f markdown -t html -o ${file%.md}_custom.html ${file} --filter remove_p_tags.py"
           done
 
       - name: Diff Baseline and Customized HTML
