@@ -13,12 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build Docker image with Python
-        run: |
-          echo "FROM pandoc/minimal:3.1.1" > Dockerfile
-          echo "RUN apt-get update && apt-get install -y python3" >> Dockerfile
-          docker build -t my-pandoc .
-
       - name: Convert Markdown to Baseline HTML
         run: |
           for file in $(find . -name "*.md"); do
@@ -36,8 +30,8 @@ jobs:
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              my-pandoc \
-              -f markdown -t html -o ${file%.md}_custom.html ${file} --filter=remove_p_tags.py
+              pandoc/core:3.1.1-ubuntu \
+              pandoc -f markdown -t html -o ${file%.md}_custom.html ${file} --filter remove_p_tags.py
           done
 
       - name: Diff Baseline and Customized HTML
