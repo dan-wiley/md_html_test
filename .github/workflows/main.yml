@@ -42,12 +42,21 @@ jobs:
               --filter remove_p_tags.py \
               ${file}
           done
+          
+      - name: Build Docker image for HTML modification
+        run: |
+          echo "FROM python:3" > Dockerfile.bs
+          echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
+          docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
         run: |
-          apt-get update && pip install beautifulsoup4
           for file in $(find . -name "*_custom.html"); do
-            python add_class_to_tags.py "$file" "code" "pretty"
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              my-bs \
+              python add_class_to_tags.py "$file" "code" "pretty"
           done
 
       - name: Diff Baseline and Customized HTML
