@@ -15,14 +15,15 @@ jobs:
 
       - name: Convert Markdown to Baseline HTML
         run: |
-          for file in $(find . -name "*.md"); do
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              pandoc/minimal:3.1.1 \
-              -o ${file%.md}_baseline.html \
-              ${file}
-          done
+          find . -name "*.md" -type f -exec sh -c '
+            for file do
+              docker run --rm \
+                -v ${{ github.workspace }}:/workspace \
+                -w /workspace \
+                pandoc/minimal:3.1.1 \
+                -o "${file%.md}_baseline.html" \
+                "$file"
+            done' sh {} +
 
       - name: Build Docker image with Python
         run: |
@@ -32,17 +33,18 @@ jobs:
 
       - name: Convert Markdown to Customized HTML
         run: |
-          for file in $(find . -name "*_custom.md"); do
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              my-pandoc \
-              -f markdown -t html \
-              -o ${file%.md}_custom.html \
-              --filter remove_p_tags.py \
-              ${file}
-          done
-          
+          find . -name "*_custom.md" -type f -exec sh -c '
+            for file do
+              docker run --rm \
+                -v ${{ github.workspace }}:/workspace \
+                -w /workspace \
+                my-pandoc \
+                -f markdown -t html \
+                -o "${file%.md}_custom.html" \
+                --filter remove_p_tags.py \
+                "$file"
+            done' sh {} +
+
       - name: Build Docker image for HTML modification
         run: |
           echo "FROM python:3" > Dockerfile.bs
@@ -51,21 +53,23 @@ jobs:
 
       - name: Modify HTML using Beautiful Soup
         run: |
-          for file in $(find . -name "*_custom.html"); do
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              my-bs \
-              python add_class_to_tags.py "$file" "code" "pretty"
-          done
+          find . -name "*_custom.html" -type f -exec sh -c '
+            for file do
+              docker run --rm \
+                -v ${{ github.workspace }}:/workspace \
+                -w /workspace \
+                my-bs \
+                python add_class_to_tags.py "$file" "code" "pretty"
+            done' sh {} +
 
       - name: Diff Baseline and Customized HTML
         run: |
-          for file in $(find . -name "*.md"); do
-            echo $file
-            diff ${file%.md}_baseline.html ${file%.md}_custom.html >> diff.log 2>/dev/null || true
-            echo ""
-          done
+          find . -name "*.md" -type f -exec sh -c '
+            for file do
+              echo "$file"
+              diff "${file%.md}_baseline.html" "${file%.md}_custom.html" >> diff.log 2>/dev/null || true
+              echo ""
+            done' sh {} +
 
       - name: Configure Git
         run: |
@@ -74,8 +78,6 @@ jobs:
 
       - name: Add and Push HTML files
         run: |
-          git add *_baseline.html
-          git add *_custom.html
-          git add diff.log
+          git add --all
           git commit -m "Update README"
           git push origin main
