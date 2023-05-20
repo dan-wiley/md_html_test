@@ -24,19 +24,13 @@ jobs:
               ${file}
           done
 
-      - name: Build Docker image with Python
-        run: |
-          echo "FROM pandoc/minimal:3.1.1" > Dockerfile
-          echo "RUN apt-get update && apt-get install -y python3" >> Dockerfile
-          docker build -t my-pandoc .
-
       - name: Convert Markdown to Customized HTML
         run: |
           for file in $(find . -name "*.md"); do
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
-              my-pandoc \
+              pandoc/core:3.1.1-ubuntu \
               --filter remove_p_tags.py \
               -o ${file%.md}_custom.html \
               ${file}
