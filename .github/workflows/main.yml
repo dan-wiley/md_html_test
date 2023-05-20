@@ -29,6 +29,7 @@ jobs:
           echo "FROM pandoc/core:3.1.1-ubuntu" > Dockerfile
           echo "RUN apt-get update && apt-get install -y python3" >> Dockerfile
           echo "RUN ln -s /usr/bin/python3 /usr/bin/python" >> Dockerfile
+          echo "RUN pip3 install panflute" >> Dockerfile
           docker build -t my-pandoc .
 
       - name: Convert Markdown to Customized HTML
