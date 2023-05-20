@@ -1137,3 +1137,236 @@
 ---
 > <li><code class="pretty">sudo docker ps -a</code></li>
 > <li><code class="pretty">sudo docker images</code></li>
+32,37c32,35
+< <li><p>Install docker on your amazonlinux2 host OS, then start the
+< docker daemon.</p>
+< <ul>
+< <li><code>sudo yum -y update</code></li>
+< <li><code>sudo yum -y install docker</code></li>
+< <li><code>sudo service docker start</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">sudo yum -y update</code></li>
+> <li><code class="pretty">sudo yum -y install docker</code></li>
+> <li><code class="pretty">sudo service docker start</code></li>
+41c39
+< the docker group by running <code>sudo usermod -aG docker $USER</code>.
+---
+> the docker group by running <code class="pretty">sudo usermod -aG docker $USER</code>.
+44,50c42,44
+< <li><p>You will create two docker images and containers from the same
+< underlying image. The image is httpd, a well know web server. Visit this
+< web page and review the documentation for the image
+< https://hub.docker.com/_/httpd/</p></li>
+< <li><p>Create two directories for each dockerfile.</p>
+< <ul>
+< <li><code>mkdir dev-site test-site</code></li>
+---
+> <li></li>
+> <li><ul>
+> <li><code class="pretty">mkdir dev-site test-site</code></li>
+56,58c50,51
+< <li><p>CD into test-site</p>
+< <ul>
+< <li><code>cd test-site</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">cd test-site</code></li>
+60,66c53,55
+< <li><p>Create a file named <code>dockerfile</code> with this content
+< <code>dockerfile     FROM httpd:2.4</code> &gt; The
+< <strong>FROM</strong> keyword allows us to specify a base image for our
+< docker image to be built from..</p></li>
+< <li><p>Build your dockerfile into an image</p>
+< <ul>
+< <li><code>sudo docker build -t test-httpd .</code> &gt; This command
+---
+> <li></li>
+> <li><ul>
+> <li><code class="pretty">sudo docker build -t test-httpd .</code> &gt; This command
+70,72c59,60
+< <li><p>List your images to verify your image was created.</p>
+< <ul>
+< <li><code>sudo docker images</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker images</code></li>
+74,77c62,63
+< <li><p>Deploy your image to a container. Use –name to name the container
+< and the image name at the end of the command.</p>
+< <ul>
+< <li><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
+82,84c68,69
+< <li><p>List your running docker images</p>
+< <ul>
+< <li><code>sudo docker ps -a</code>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker ps -a</code>
+90,93c75,76
+< <li><p>Visit the website in the browser to make sure it works. You
+< should see the default web page!</p>
+< <ul>
+< <li><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
+100,102c83,84
+< <li><p>CD into the dev site folder</p>
+< <ul>
+< <li><code>cd ~/dev-site</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">cd ~/dev-site</code></li>
+104,125c86,94
+< <li><p>Make a folder for html files named <code>public-html</code> and
+< cd into it.</p>
+< <ul>
+< <li><code>mkdir public-html</code></li>
+< <li><code>cd public-html</code></li>
+< </ul></li>
+< <li><p>Paste the content below into <code>index.html</code>
+< <code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
+< &gt; We will use <code>sed</code> to replace the
+< <code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+< <li><p>Go back to the root of the dev-site</p>
+< <ul>
+< <li><code>cd ~/dev-site</code></li>
+< </ul></li>
+< <li><p>Create a file named <code>dockerfile</code> and paste this
+< content. Replace 500 with your cohort number.
+< <code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code>
+< &gt; The <strong>COPY</strong> keyword will copy the files from the host
+< machine in public-html to the container htdocs folder at image build
+< time. Httpd will automatically serve files in htdocs folder when it is
+< started.</p>
+< <blockquote>
+---
+> <li><ul>
+> <li><code class="pretty">mkdir public-html</code></li>
+> <li><code class="pretty">cd public-html</code></li>
+> </ul></li>
+> <li></li>
+> <li><ul>
+> <li><code class="pretty">cd ~/dev-site</code></li>
+> </ul></li>
+> <li><blockquote>
+129c98
+< <code>&lt;COHORT&gt;</code> with the value of $cohort for each file in
+---
+> <code class="pretty">&lt;COHORT&gt;</code> with the value of $cohort for each file in
+139c108
+< this command should not exit. In this case <code>httpd-foreground</code>
+---
+> this command should not exit. In this case <code class="pretty">httpd-foreground</code>
+142c111
+< <code>httpd-foreground</code> command.</p>
+---
+> <code class="pretty">httpd-foreground</code> command.</p>
+145d113
+< 
+147,149c115,116
+< <li><p>Build your dockerfile into an image</p>
+< <ul>
+< <li><code>sudo docker build -t dev-httpd .</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker build -t dev-httpd .</code></li>
+151,153c118,119
+< <li><p>List your images to verify your image was created.</p>
+< <ul>
+< <li><code>sudo docker images</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker images</code></li>
+155,157c121,122
+< <li><p>Deploy your image to a container.</p>
+< <ul>
+< <li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
+159,161c124,125
+< <li><p>List your running docker images</p>
+< <ul>
+< <li><code>sudo docker ps -a</code>
+---
+> <li><ul>
+> <li><code class="pretty">sudo docker ps -a</code>
+169,173c133,134
+< <li><p>Visit the website in the browser, this time change the port to
+< 8080 and you should see your dev site. You can go back and forth between
+< sites simply by adjusting the ports in the browser.</p>
+< <ul>
+< <li><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
+184,186c145,147
+< <code>COPY</code> command) is only executed at image creation
+< (<code>docker build</code>). You could edit the files in the container,
+< but that requires <code>docker exec</code> and volumes are still more
+---
+> <code class="pretty">COPY</code> command) is only executed at image creation
+> (<code class="pretty">docker build</code>). You could edit the files in the container,
+> but that requires <code class="pretty">docker exec</code> and volumes are still more
+194,197c155,156
+< <li><p>Edit the host HTML file. You can add any changes you like, as
+< long as they will be noticeable in the web browser.</p>
+< <ul>
+< <li><code>vim ~/dev-site/public-html/index.html</code></li>
+---
+> <li><ul>
+> <li><code class="pretty">vim ~/dev-site/public-html/index.html</code></li>
+199,204c158,159
+< <li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+< note if the changes made in step 1 are visible.</p></li>
+< <li><p>Delete the container and re-create it with a volume mount using
+< the <code>docker run</code> command and adding
+< <code>-v /full/path/on/host:/path/on/container</code>. The docker run
+< command will fail if the container name is already taken.</p></li>
+---
+> <li></li>
+> <li></li>
+206,209c161,163
+< <div class="sourceCode" id="cb1"><pre
+< class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
+< <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
+< <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+---
+> <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="pretty"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
+> <span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
+> <span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+213c167
+< <li><code>vim ~/dev-site/public-html/index.html</code></li>
+---
+> <li><code class="pretty">vim ~/dev-site/public-html/index.html</code></li>
+215c169
+< <li>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
+---
+> <li>Visit <code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
+222c176
+< <li><code>sudo docker stop dev-httpd-container test-httpd-container</code>
+---
+> <li><code class="pretty">sudo docker stop dev-httpd-container test-httpd-container</code>
+224c178
+< <code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+---
+> <code class="pretty">sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+228c182
+< <li><code>sudo docker rm dev-httpd-container test-httpd-container</code>
+---
+> <li><code class="pretty">sudo docker rm dev-httpd-container test-httpd-container</code>
+233c187
+< <li><code>sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
+---
+> <li><code class="pretty">sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
+238,239c192,193
+< <li><code>sudo docker ps -a</code></li>
+< <li><code>sudo docker images</code></li>
+---
+> <li><code class="pretty">sudo docker ps -a</code></li>
+> <li><code class="pretty">sudo docker images</code></li>
