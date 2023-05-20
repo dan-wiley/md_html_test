@@ -33,7 +33,7 @@ jobs:
 
       - name: Convert Markdown to Customized HTML
         run: |
-          find . -name "*_custom.md" -type f -exec sh -c '
+          find . -name "*.md" -type f -exec sh -c '
             for file do
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
