@@ -30,50 +30,50 @@ select “Anywhere IPv4”. Save your settings.</li>
 </ul>
 <ol type="1">
 <li><ul>
-<li><code class="pretty">sudo yum -y update</code></li>
-<li><code class="pretty">sudo yum -y install docker</code></li>
-<li><code class="pretty">sudo service docker start</code></li>
+<li><code>sudo yum -y update</code></li>
+<li><code>sudo yum -y install docker</code></li>
+<li><code>sudo service docker start</code></li>
 </ul>
 <blockquote>
 <p>If you want to run docker without sudo (recommended) add your user to
-the docker group by running <code class="pretty">sudo usermod -aG docker $USER</code>.
+the docker group by running <code>sudo usermod -aG docker $USER</code>.
 You will then need to log out and log back in.</p>
 </blockquote></li>
 <li></li>
 <li><ul>
-<li><code class="pretty">mkdir dev-site test-site</code></li>
+<li><code>mkdir dev-site test-site</code></li>
 </ul></li>
 </ol>
 <h1 id="test-site">Test Site</h1>
 <p>Start with the test website.</p>
 <ol type="1">
 <li><ul>
-<li><code class="pretty">cd test-site</code></li>
+<li><code>cd test-site</code></li>
 </ul></li>
 <li></li>
 <li><ul>
-<li><code class="pretty">sudo docker build -t test-httpd .</code> &gt; This command
+<li><code>sudo docker build -t test-httpd .</code> &gt; This command
 searches for a file named dockerfile in the current directory, builds it
 and tags (-t) the image as <em>test-httpd</em></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker images</code></li>
+<li><code>sudo docker images</code></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
+<li><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
 &gt; The -d tells it to run in background, -it allows the continer to
 connect to your terminal session. &gt; -p is the bort binding, above we
 are binding port 80 of the host OS to port 80 on the container.</li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker ps -a</code>
+<li><code>sudo docker ps -a</code>
 <ul>
 <li>Notice that port 80 of the host is routed to port 80 of the
 container. The -a is to display all details.</li>
 </ul></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
+<li><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
 </ul></li>
 </ol>
 <h1 id="dev-site">Dev Site</h1>
@@ -81,21 +81,21 @@ container. The -a is to display all details.</li>
 <h2 id="instructions">Instructions</h2>
 <ol type="1">
 <li><ul>
-<li><code class="pretty">cd ~/dev-site</code></li>
+<li><code>cd ~/dev-site</code></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">mkdir public-html</code></li>
-<li><code class="pretty">cd public-html</code></li>
+<li><code>mkdir public-html</code></li>
+<li><code>cd public-html</code></li>
 </ul></li>
 <li></li>
 <li><ul>
-<li><code class="pretty">cd ~/dev-site</code></li>
+<li><code>cd ~/dev-site</code></li>
 </ul></li>
 <li><blockquote>
 <p>The <strong>ENV</strong> keyword sets an enviornment variable that we
 can access later with $cohort. The <strong>RUN</strong> keyword executes
 a command when building the image, such as sed. Here we are replacing
-<code class="pretty">&lt;COHORT&gt;</code> with the value of $cohort for each file in
+<code>&lt;COHORT&gt;</code> with the value of $cohort for each file in
 htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
 is not needed here because the base image already exposes that port.</p>
 </blockquote>
@@ -105,24 +105,25 @@ different from RUN because it is not executed while the image is being
 build. Instead, CMD is the command to run when the image is executed as
 a container. This is known as the main process, and when this process is
 done executing the container will stop. To keep your container alive,
-this command should not exit. In this case <code class="pretty">httpd-foreground</code>
+this command should not exit. In this case <code>httpd-foreground</code>
 is the same command the base image executes. Therefore, the entire line
 can be removed since the base image already executes the
-<code class="pretty">httpd-foreground</code> command.</p>
+<code>httpd-foreground</code> command.</p>
 </blockquote>
 <blockquote>
+
 </blockquote></li>
 <li><ul>
-<li><code class="pretty">sudo docker build -t dev-httpd .</code></li>
+<li><code>sudo docker build -t dev-httpd .</code></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker images</code></li>
+<li><code>sudo docker images</code></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
+<li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">sudo docker ps -a</code>
+<li><code>sudo docker ps -a</code>
 <ul>
 <li>Notice that port 8080 of the host OS is being routed to port 80 of
 the dev-httpd container. The httpd service is already configured to
@@ -131,7 +132,7 @@ listen on port 80. Now all requests to port 8080 are forwarded to port
 </ul></li>
 </ul></li>
 <li><ul>
-<li><code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
+<li><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
 </ul></li>
 </ol>
 <h1 id="volumes-bonus">Volumes (Bonus)</h1>
@@ -142,9 +143,9 @@ folder and reflecting the changes in the htdocs folder of the
 container.</p>
 <p>Without using volumes you would have to rebuild the image and
 container each time you changed the file because the dockerfile (and
-<code class="pretty">COPY</code> command) is only executed at image creation
-(<code class="pretty">docker build</code>). You could edit the files in the container,
-but that requires <code class="pretty">docker exec</code> and volumes are still more
+<code>COPY</code> command) is only executed at image creation
+(<code>docker build</code>). You could edit the files in the container,
+but that requires <code>docker exec</code> and volumes are still more
 convenient.</p>
 <h2 id="instructions-1">Instructions</h2>
 <p>The activity walks you through editing the web page on the host
@@ -153,44 +154,45 @@ volume and compare the difference. This activity uses the dev
 environment only.</p>
 <ol type="1">
 <li><ul>
-<li><code class="pretty">vim ~/dev-site/public-html/index.html</code></li>
+<li><code>vim ~/dev-site/public-html/index.html</code></li>
 </ul></li>
 <li></li>
 <li></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="pretty"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
 <ol start="4" type="1">
 <li>Edit the host HTML file again with a noticeable change.
 <ul>
-<li><code class="pretty">vim ~/dev-site/public-html/index.html</code></li>
+<li><code>vim ~/dev-site/public-html/index.html</code></li>
 </ul></li>
-<li>Visit <code class="pretty">http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
+<li>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
 if the changes made in step 1 and step 4 are visible.</li>
 </ol>
 <h1 id="cleanup">Cleanup</h1>
 <ol type="1">
 <li>Stop the docker containers.
 <ul>
-<li><code class="pretty">sudo docker stop dev-httpd-container test-httpd-container</code>
+<li><code>sudo docker stop dev-httpd-container test-httpd-container</code>
 &gt; To start a stopped container use
-<code class="pretty">sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+<code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
 </ul></li>
 <li>Delete the containers.
 <ul>
-<li><code class="pretty">sudo docker rm dev-httpd-container test-httpd-container</code>
+<li><code>sudo docker rm dev-httpd-container test-httpd-container</code>
 &gt; You could have stopped and deleted in one step with -f</li>
 </ul></li>
 <li>Delete the images.
 <ul>
-<li><code class="pretty">sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
+<li><code>sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
 </ul></li>
 <li>Now run these commands to verify you have deleted the images and the
 containers.
 <ul>
-<li><code class="pretty">sudo docker ps -a</code></li>
-<li><code class="pretty">sudo docker images</code></li>
+<li><code>sudo docker ps -a</code></li>
+<li><code>sudo docker images</code></li>
 </ul></li>
 </ol>
 <h1 id="conclusion">Conclusion</h1>

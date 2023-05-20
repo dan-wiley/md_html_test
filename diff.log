@@ -1370,3 +1370,131 @@
 ---
 > <li><code class="pretty">sudo docker ps -a</code></li>
 > <li><code class="pretty">sudo docker images</code></li>
+32,34c32
+< <li><p>Install docker on your amazonlinux2 host OS, then start the
+< docker daemon.</p>
+< <ul>
+---
+> <li><ul>
+44,49c42,43
+< <li><p>You will create two docker images and containers from the same
+< underlying image. The image is httpd, a well know web server. Visit this
+< web page and review the documentation for the image
+< https://hub.docker.com/_/httpd/</p></li>
+< <li><p>Create two directories for each dockerfile.</p>
+< <ul>
+---
+> <li></li>
+> <li><ul>
+56,57c50
+< <li><p>CD into test-site</p>
+< <ul>
+---
+> <li><ul>
+60,65c53,54
+< <li><p>Create a file named <code>dockerfile</code> with this content
+< <code>dockerfile     FROM httpd:2.4</code> &gt; The
+< <strong>FROM</strong> keyword allows us to specify a base image for our
+< docker image to be built from..</p></li>
+< <li><p>Build your dockerfile into an image</p>
+< <ul>
+---
+> <li></li>
+> <li><ul>
+70,71c59
+< <li><p>List your images to verify your image was created.</p>
+< <ul>
+---
+> <li><ul>
+74,76c62
+< <li><p>Deploy your image to a container. Use –name to name the container
+< and the image name at the end of the command.</p>
+< <ul>
+---
+> <li><ul>
+82,83c68
+< <li><p>List your running docker images</p>
+< <ul>
+---
+> <li><ul>
+90,92c75
+< <li><p>Visit the website in the browser to make sure it works. You
+< should see the default web page!</p>
+< <ul>
+---
+> <li><ul>
+100,101c83
+< <li><p>CD into the dev site folder</p>
+< <ul>
+---
+> <li><ul>
+104,106c86
+< <li><p>Make a folder for html files named <code>public-html</code> and
+< cd into it.</p>
+< <ul>
+---
+> <li><ul>
+110,115c90,91
+< <li><p>Paste the content below into <code>index.html</code>
+< <code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
+< &gt; We will use <code>sed</code> to replace the
+< <code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+< <li><p>Go back to the root of the dev-site</p>
+< <ul>
+---
+> <li></li>
+> <li><ul>
+118,125c94
+< <li><p>Create a file named <code>dockerfile</code> and paste this
+< content. Replace 500 with your cohort number.
+< <code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code>
+< &gt; The <strong>COPY</strong> keyword will copy the files from the host
+< machine in public-html to the container htdocs folder at image build
+< time. Httpd will automatically serve files in htdocs folder when it is
+< started.</p>
+< <blockquote>
+---
+> <li><blockquote>
+147,148c116
+< <li><p>Build your dockerfile into an image</p>
+< <ul>
+---
+> <li><ul>
+151,152c119
+< <li><p>List your images to verify your image was created.</p>
+< <ul>
+---
+> <li><ul>
+155,156c122
+< <li><p>Deploy your image to a container.</p>
+< <ul>
+---
+> <li><ul>
+159,160c125
+< <li><p>List your running docker images</p>
+< <ul>
+---
+> <li><ul>
+169,172c134
+< <li><p>Visit the website in the browser, this time change the port to
+< 8080 and you should see your dev site. You can go back and forth between
+< sites simply by adjusting the ports in the browser.</p>
+< <ul>
+---
+> <li><ul>
+194,196c156
+< <li><p>Edit the host HTML file. You can add any changes you like, as
+< long as they will be noticeable in the web browser.</p>
+< <ul>
+---
+> <li><ul>
+199,204c159,160
+< <li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+< note if the changes made in step 1 are visible.</p></li>
+< <li><p>Delete the container and re-create it with a volume mount using
+< the <code>docker run</code> command and adding
+< <code>-v /full/path/on/host:/path/on/container</code>. The docker run
+< command will fail if the container name is already taken.</p></li>
+---
+> <li></li>
+> <li></li>
