@@ -47,7 +47,7 @@ jobs:
         run: |
           apt-get update && apt-get install -y python3-bs4
           for file in $(find . -name "*_custom.html"); do
-            python modify_html.py "$file" "code" "pretty"
+            python add_class_to_tags.py "$file" "code" "pretty"
           done
 
       - name: Diff Baseline and Customized HTML
