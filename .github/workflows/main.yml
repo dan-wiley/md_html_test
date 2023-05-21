@@ -66,13 +66,16 @@ jobs:
                 python python_scripts/edit_html.py "$file"
             done' sh {} +     
             
-      - name: Move files to doc
+      - name: Move files to doc and Generate index.html
         run: |
           mkdir -p docs 2> /dev/null || true
           find . -name "*.html" -type f -exec sh -c '
             for file do
               cp "$file" "docs/$(basename "$file")"
-            done' sh {} +
+              echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
+            done' sh {} + > index.html
+          mv index.html docs/
+
 
       - name: Diff Baseline and Customized HTML
         run: |
