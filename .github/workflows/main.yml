@@ -43,7 +43,8 @@ jobs:
                 my-pandoc \
                 -f markdown -t html \
                 -o "${file%.md}_custom.html" \
-                --filter remove_p_tags.py \
+                --filter python_scripts/wrap_code_tags_with_pre_filter.py.py \
+                --filter python_scripts/remove_p_tags_from_li_filter.py
                 "$file"
             done' sh {} +
             
@@ -61,7 +62,7 @@ jobs:
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 my-bs \
-                python add_class_to_tags.py "$file" "code" "pretty"
+                python python_scripts/edit_html.py
             done' sh {} +            
 
       - name: Diff Baseline and Customized HTML
