@@ -5,9 +5,9 @@ def wrap_code_blocks(elem, doc):
         return None
 
     if isinstance(elem, pf.Code):
-        pre_tag = pf.RawBlock("<pre>")
+        pre_tag = pf.Plain(pf.RawInline("<pre>"))
         pre_tag.content.append(elem)
-        pre_tag.content.append(pf.RawBlock("</pre>"))
+        pre_tag.content.append(pf.RawInline("</pre>"))
         return pre_tag
 
 if __name__ == "__main__":
