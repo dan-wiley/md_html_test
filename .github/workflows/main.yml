@@ -68,10 +68,10 @@ jobs:
             
       - name: Move files to doc
         run: |
-          mkdir -p doc 2> /dev/null || true
+          mkdir -p docs 2> /dev/null || true
           find . -name "*.html" -type f -exec sh -c '
             for file do
-              cp "$file" "doc/$(basename "$file")"
+              cp "$file" "docs/$(basename "$file")"
             done' sh {} +
 
       - name: Diff Baseline and Customized HTML
