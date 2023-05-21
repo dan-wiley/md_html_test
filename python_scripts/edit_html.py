@@ -17,6 +17,7 @@ def add_class_to_tags(html_file, tag):
         'js': 'lang-js',
         'jsx': 'lang-jsx',
         'py': 'lang-py',
+        'python': 'lang-py',
         'sql': 'lang-sql',
         'cs': 'lang-cs',
         'html': 'lang-html',
