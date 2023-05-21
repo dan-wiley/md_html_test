@@ -1,7 +1,3 @@
-# md_html_test
-This repo is a test area for building a pipeline to convert markdown to html
-new new
+# Markdown to HTML
+- This repository takes all markdown files and converts them to html
 
-
-hello
-world
