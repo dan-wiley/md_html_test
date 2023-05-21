@@ -63,7 +63,15 @@ jobs:
                 -w /workspace \
                 my-bs \
                 python python_scripts/edit_html.py "$file" "code" "pretty"
-            done' sh {} +            
+            done' sh {} +     
+            
+      - name: Move files to doc
+        run: |
+          mkdir -p doc 2> /dev/null || true
+          find . -name "*.html" -type f -exec sh -c '
+            for file do
+              cp "$file" "doc/$(basename "$file")"
+            done' sh {} +
 
       - name: Diff Baseline and Customized HTML
         run: |
