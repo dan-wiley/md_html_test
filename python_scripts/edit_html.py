@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 import sys
 
-def add_class_to_tags(html_file, tag):
+def wrap_code_blocks(html_file, tag):
     """
-    Add class names to specific HTML tags in a file based on the language.
+    Wrap code blocks in <pre> tags if the immediate parent is not <pre>.
 
     Args:
         html_file (str): Path to the HTML file.
@@ -29,15 +29,19 @@ def add_class_to_tags(html_file, tag):
         html_content = f.read()
 
     soup = BeautifulSoup(html_content, 'html.parser')
-    tags = soup.find_all(tag)
-    for tag in tags:
-        classes = ['prettyprint']
-        language = tag.get('class', None)
-        if language:
-            for lang in language:
-                if lang in class_map:
-                    classes.append(class_map[lang])
-        tag['class'] = ' '.join(classes)
+    code_blocks = soup.find_all(tag)
+    for code_block in code_blocks:
+        if code_block.parent.name != 'pre':
+            pre_tag = soup.new_tag('pre')
+            code_block.wrap(pre_tag)
+
+            classes = ['prettyprint']
+            language = code_block.get('class', None)
+            if language:
+                for lang in language:
+                    if lang in class_map:
+                        classes.append(class_map[lang])
+            pre_tag['class'] = ' '.join(classes)
 
     with open(html_file, 'w') as f:
         f.write(str(soup))
@@ -48,5 +52,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     html_file = sys.argv[1]
-    tag = 'pre'
-    add_class_to_tags(html_file, tag)
+    tag = 'code'
+    wrap_code_blocks(html_file, tag)
