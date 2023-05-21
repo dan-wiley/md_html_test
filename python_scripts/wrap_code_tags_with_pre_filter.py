@@ -1,11 +1,8 @@
 import panflute as pf
 
 def wrap_code_blocks(elem, doc):
-    if isinstance(elem, pf.Code) and isinstance(elem.parent, pf.RawBlock) and elem.parent.format == "html" and elem.parent.text.strip().lower() == "<pre>":
-        return None
-
-    if isinstance(elem, pf.Code):
-        pre_tag = pf.Plain(pf.RawInline("<pre>"))
+    if isinstance(elem, pf.Code) and (not isinstance(elem.parent, pf.RawInline) or elem.parent.text.strip().lower() != "<pre>"):
+        pre_tag = pf.RawInline("<pre>")
         pre_tag.content.append(elem)
         pre_tag.content.append(pf.RawInline("</pre>"))
         return pre_tag
