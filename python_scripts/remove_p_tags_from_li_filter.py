@@ -1,36 +1,26 @@
-import sys
-from bs4 import BeautifulSoup
+import panflute as pf
 
-def add_class_to_tags(html_file, tag, class_name):
-    """
-    Add a class to specific HTML tags in a file.
+def remove_p_tags_within_li(elem):
+    if isinstance(elem, (pf.OrderedList, pf.BulletList)):
+        elem.content = [remove_p_tags_within_li(item) if isinstance(item, pf.ListItem) else item for item in elem.content]
+    elif isinstance(elem, pf.ListItem):
+        elem.content = [remove_p_tags_within_li(subelem) if isinstance(subelem, pf.Para) else subelem for subelem in elem.content]
+        elem.content = [subelem for subelem in elem.content if not (isinstance(subelem, pf.Para) and has_nested_p_tags(subelem))]
+    return elem
 
-    Args:
-        html_file (str): Path to the HTML file.
-        tag (str): HTML tag to modify.
-        class_name (str): Class name to add to the tag.
+def has_nested_p_tags(elem):
+    if isinstance(elem, pf.Para):
+        return True
+    elif isinstance(elem, (pf.Div, pf.Span, pf.Quoted, pf.Math)):
+        return any(has_nested_p_tags(subelem) for subelem in elem.content)
+    elif isinstance(elem, pf.Code):
+        return has_nested_p_tags(elem.text)
+    elif isinstance(elem, (list, tuple)):
+        return any(has_nested_p_tags(sublist) for sublist in elem)
+    return False
 
-    Returns:
-        None
-    """
-    with open(html_file, 'r') as f:
-        html_content = f.read()
-
-    soup = BeautifulSoup(html_content, 'html.parser')
-    tags = soup.find_all(tag)
-    for tag in tags:
-        tag['class'] = class_name
-
-    with open(html_file, 'w') as f:
-        f.write(str(soup))
+def main(doc, *args):
+    return remove_p_tags_within_li(doc)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python modify_html.py <html_file> <tag> <class_name>")
-        sys.exit(1)
-
-    html_file = sys.argv[1]
-    tag = sys.argv[2]
-    class_name = sys.argv[3]
-
-    add_class_to_tags(html_file, tag, class_name)
+    pf.run_filter(main)
