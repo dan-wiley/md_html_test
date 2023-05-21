@@ -1,40 +1,48 @@
 """
-This file gets ran after pandoc to perform some finishing touches
+This file gets run after pandoc to perform some finishing touches
 """
 
-import sys
 from bs4 import BeautifulSoup
 
-def add_class_to_tags(html_file, tag, class_name):
+def add_class_to_tags(html_file, tag):
     """
-    Add a class to specific HTML tags in a file.
+    Add class names to specific HTML tags in a file based on the language.
 
     Args:
         html_file (str): Path to the HTML file.
         tag (str): HTML tag to modify.
-        class_name (str): Class name to add to the tag.
 
     Returns:
         None
     """
+    class_map = {
+        'java': 'lang-java',
+        'js': 'lang-js',
+        'jsx': 'lang-jsx',
+        'py': 'lang-py',
+        'sql': 'lang-sql',
+        'cs': 'lang-cs',
+        'html': 'lang-html',
+        'css': 'lang-css',
+        'swift': 'lang-swift'
+    }
+
     with open(html_file, 'r') as f:
         html_content = f.read()
 
     soup = BeautifulSoup(html_content, 'html.parser')
     tags = soup.find_all(tag)
     for tag in tags:
-        tag['class'] = class_name
+        classes = ['prettyprint']
+        language = tag.get('class', None)
+        if language and language[0] in class_map:
+            classes.append(class_map[language[0]])
+        tag['class'] = ' '.join(classes)
 
     with open(html_file, 'w') as f:
         f.write(str(soup))
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python modify_html.py <html_file> <tag> <class_name>")
-        sys.exit(1)
-
-    html_file = sys.argv[1]
-    tag = sys.argv[2]
-    class_name = sys.argv[3]
-
-    add_class_to_tags(html_file, tag, class_name)
+    html_file = "<path-to-html-file>"
+    tag = 'pre'
+    add_class_to_tags(html_file, tag)
