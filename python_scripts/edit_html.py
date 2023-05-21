@@ -1,8 +1,5 @@
-"""
-This file gets run after pandoc to perform some finishing touches
-"""
-
 from bs4 import BeautifulSoup
+import sys
 
 def add_class_to_tags(html_file, tag):
     """
@@ -43,6 +40,10 @@ def add_class_to_tags(html_file, tag):
         f.write(str(soup))
 
 if __name__ == "__main__":
-    html_file = "<path-to-html-file>"
+    if len(sys.argv) != 2:
+        print("Usage: python modify_html.py <html_file>")
+        sys.exit(1)
+
+    html_file = sys.argv[1]
     tag = 'pre'
     add_class_to_tags(html_file, tag)
