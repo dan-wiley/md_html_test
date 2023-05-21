@@ -29,7 +29,9 @@ rules, then verify or add a rule for ports 8080 and 80. For the source
 select “Anywhere IPv4”. Save your settings.</li>
 </ul>
 <ol type="1">
-<li><ul>
+<li><p>Install docker on your amazonlinux2 host OS, then start the
+docker daemon.</p>
+<ul>
 <li><code>sudo yum -y update</code></li>
 <li><code>sudo yum -y install docker</code></li>
 <li><code>sudo service docker start</code></li>
@@ -39,40 +41,55 @@ select “Anywhere IPv4”. Save your settings.</li>
 the docker group by running <code>sudo usermod -aG docker $USER</code>.
 You will then need to log out and log back in.</p>
 </blockquote></li>
-<li></li>
-<li><ul>
+<li><p>You will create two docker images and containers from the same
+underlying image. The image is httpd, a well know web server. Visit this
+web page and review the documentation for the image
+https://hub.docker.com/_/httpd/</p></li>
+<li><p>Create two directories for each dockerfile.</p>
+<ul>
 <li><code>mkdir dev-site test-site</code></li>
 </ul></li>
 </ol>
 <h1 id="test-site">Test Site</h1>
 <p>Start with the test website.</p>
 <ol type="1">
-<li><ul>
+<li><p>CD into test-site</p>
+<ul>
 <li><code>cd test-site</code></li>
 </ul></li>
-<li></li>
-<li><ul>
+<li><p>Create a file named <code>dockerfile</code> with this content
+<code>dockerfile     FROM httpd:2.4</code> &gt; The
+<strong>FROM</strong> keyword allows us to specify a base image for our
+docker image to be built from..</p></li>
+<li><p>Build your dockerfile into an image</p>
+<ul>
 <li><code>sudo docker build -t test-httpd .</code> &gt; This command
 searches for a file named dockerfile in the current directory, builds it
 and tags (-t) the image as <em>test-httpd</em></li>
 </ul></li>
-<li><ul>
+<li><p>List your images to verify your image was created.</p>
+<ul>
 <li><code>sudo docker images</code></li>
 </ul></li>
-<li><ul>
+<li><p>Deploy your image to a container. Use –name to name the container
+and the image name at the end of the command.</p>
+<ul>
 <li><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
 &gt; The -d tells it to run in background, -it allows the continer to
 connect to your terminal session. &gt; -p is the bort binding, above we
 are binding port 80 of the host OS to port 80 on the container.</li>
 </ul></li>
-<li><ul>
+<li><p>List your running docker images</p>
+<ul>
 <li><code>sudo docker ps -a</code>
 <ul>
 <li>Notice that port 80 of the host is routed to port 80 of the
 container. The -a is to display all details.</li>
 </ul></li>
 </ul></li>
-<li><ul>
+<li><p>Visit the website in the browser to make sure it works. You
+should see the default web page!</p>
+<ul>
 <li><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
 </ul></li>
 </ol>
@@ -80,18 +97,32 @@ container. The -a is to display all details.</li>
 <p>This website will serve our own HTML files.</p>
 <h2 id="instructions">Instructions</h2>
 <ol type="1">
-<li><ul>
+<li><p>CD into the dev site folder</p>
+<ul>
 <li><code>cd ~/dev-site</code></li>
 </ul></li>
-<li><ul>
+<li><p>Make a folder for html files named <code>public-html</code> and
+cd into it.</p>
+<ul>
 <li><code>mkdir public-html</code></li>
 <li><code>cd public-html</code></li>
 </ul></li>
-<li></li>
-<li><ul>
+<li><p>Paste the content below into <code>index.html</code>
+<code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
+&gt; We will use <code>sed</code> to replace the
+<code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
+<li><p>Go back to the root of the dev-site</p>
+<ul>
 <li><code>cd ~/dev-site</code></li>
 </ul></li>
-<li><blockquote>
+<li><p>Create a file named <code>dockerfile</code> and paste this
+content. Replace 500 with your cohort number.
+<code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code>
+&gt; The <strong>COPY</strong> keyword will copy the files from the host
+machine in public-html to the container htdocs folder at image build
+time. Httpd will automatically serve files in htdocs folder when it is
+started.</p>
+<blockquote>
 <p>The <strong>ENV</strong> keyword sets an enviornment variable that we
 can access later with $cohort. The <strong>RUN</strong> keyword executes
 a command when building the image, such as sed. Here we are replacing
@@ -111,17 +142,22 @@ can be removed since the base image already executes the
 <code>httpd-foreground</code> command.</p>
 </blockquote>
 <blockquote>
+
 </blockquote></li>
-<li><ul>
+<li><p>Build your dockerfile into an image</p>
+<ul>
 <li><code>sudo docker build -t dev-httpd .</code></li>
 </ul></li>
-<li><ul>
+<li><p>List your images to verify your image was created.</p>
+<ul>
 <li><code>sudo docker images</code></li>
 </ul></li>
-<li><ul>
+<li><p>Deploy your image to a container.</p>
+<ul>
 <li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
 </ul></li>
-<li><ul>
+<li><p>List your running docker images</p>
+<ul>
 <li><code>sudo docker ps -a</code>
 <ul>
 <li>Notice that port 8080 of the host OS is being routed to port 80 of
@@ -130,7 +166,10 @@ listen on port 80. Now all requests to port 8080 are forwarded to port
 80 of the container.</li>
 </ul></li>
 </ul></li>
-<li><ul>
+<li><p>Visit the website in the browser, this time change the port to
+8080 and you should see your dev site. You can go back and forth between
+sites simply by adjusting the ports in the browser.</p>
+<ul>
 <li><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
 </ul></li>
 </ol>
@@ -152,15 +191,22 @@ before adding a volume. Then you will edit the file after adding a
 volume and compare the difference. This activity uses the dev
 environment only.</p>
 <ol type="1">
-<li><ul>
+<li><p>Edit the host HTML file. You can add any changes you like, as
+long as they will be noticeable in the web browser.</p>
+<ul>
 <li><code>vim ~/dev-site/public-html/index.html</code></li>
 </ul></li>
-<li></li>
-<li></li>
+<li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
+note if the changes made in step 1 are visible.</p></li>
+<li><p>Delete the container and re-create it with a volume mount using
+the <code>docker run</code> command and adding
+<code>-v /full/path/on/host:/path/on/container</code>. The docker run
+command will fail if the container name is already taken.</p></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="prettyprint"><code class="sourceCode bash"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
 <ol start="4" type="1">
 <li>Edit the host HTML file again with a noticeable change.
 <ul>
