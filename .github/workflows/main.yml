@@ -43,7 +43,7 @@ jobs:
                 my-pandoc \
                 -f markdown -t html \
                 -o "${file%.md}_custom.html" \
-                --filter python_scripts/wrap_code_tags_with_pre_filter.py \
+                # --filter python_scripts/wrap_code_tags_with_pre_filter.py \
                 --filter python_scripts/remove_p_tags_from_li_filter.py
                 "$file"
             done' sh {} +
