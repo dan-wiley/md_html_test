@@ -1,3 +1,6 @@
+from bs4 import BeautifulSoup
+import sys
+
 def add_class_to_tags(html_file, tag):
     """
     Add class names to specific HTML tags in a file based on the language.
@@ -38,3 +41,12 @@ def add_class_to_tags(html_file, tag):
 
     with open(html_file, 'w') as f:
         f.write(str(soup))
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python modify_html.py <html_file>")
+        sys.exit(1)
+
+    html_file = sys.argv[1]
+    tag = 'pre'
+    add_class_to_tags(html_file, tag)
