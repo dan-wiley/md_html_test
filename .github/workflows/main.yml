@@ -69,7 +69,7 @@ jobs:
           find . -name "*.md" -type f -exec sh -c '
             for file do
               echo "$file"
-              diff "${file%.md}_baseline.html" "${file%.md}_custom.html" >> diff.log 2>/dev/null || true
+              diff "${file%.md}_baseline.html" "${file%.md}_custom.html" || true
               echo ""
             done' sh {} +
 
