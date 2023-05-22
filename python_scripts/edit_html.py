@@ -33,7 +33,7 @@ def wrap_code_blocks(html_file, tag):
     for code_block in code_blocks:
         if code_block.parent.name != 'pre':
             code_block.wrap(pre_tag)
-         pre_tag = soup.new_tag('pre')
+        pre_tag = soup.new_tag('pre')
         classes = ['prettyprint']
         language = code_block.get('class', None)
         if language:
