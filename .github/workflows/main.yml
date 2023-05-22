@@ -94,5 +94,6 @@ jobs:
       - name: Add and Push HTML files
         run: |
           git add --all
+          git restore --staged Dockerfile*
           git commit -m "Update README"
           git push origin main
