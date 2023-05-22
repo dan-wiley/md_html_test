@@ -41,7 +41,7 @@ def wrap_code_blocks(html_file, tag):
             for lang in language:
                 if lang in class_map:
                     classes.append(class_map[lang])
-        pre_tag['class'] = ' '.join(classes)
+            pre_tag['class'] = ' '.join(classes)
 
     with open(html_file, 'w') as f:
         f.write(str(soup))
