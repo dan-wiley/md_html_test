@@ -68,7 +68,8 @@ jobs:
             
       - name: Move files to doc and Generate index.html
         run: |
-          mkdir -p docs 2> /dev/null || true
+          rm -rf docs 2> /dev/null || true
+          mkdir -p docs
           find . -name "*.html" -type f -exec sh -c '
             for file do
               cp "$file" "docs/$(basename "$file")"
