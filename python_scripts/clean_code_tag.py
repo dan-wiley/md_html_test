@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 from bs4 import BeautifulSoup
-from panflute import Code, run_filter
+from panflute import run_filter, RawInline
 
 
 def strip_code_tags(elem, doc):
-    if isinstance(elem, Code):
-        soup = BeautifulSoup(elem.text, 'html.parser')
-        # Remove all child tags within <code>
-        for tag in soup.find_all():
-            tag.unwrap()
-        elem.text = str(soup)
-    return elem
+    if elem.tag == 'code':
+        soup = BeautifulSoup(str(elem), 'html.parser')
+        text = soup.get_text()
+        return RawInline(text)
+    return None
 
 
 def main(doc=None):
