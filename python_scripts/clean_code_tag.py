@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from bs4 import BeautifulSoup
-from panflute import Code, RawInline, run_filter
+from panflute import Code, run_filter
 
 
 def strip_code_tags(elem, doc):
@@ -10,7 +10,6 @@ def strip_code_tags(elem, doc):
         for tag in soup.find_all():
             tag.unwrap()
         elem.text = str(soup)
-        elem.content = [RawInline(elem.text)]
     return elem
 
 
