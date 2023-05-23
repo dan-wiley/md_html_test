@@ -5,8 +5,8 @@ from panflute import run_filter, RawInline
 
 def strip_code_tags(elem, doc):
     if elem.tag == 'code':
-        # Remove all child elements and keep the text
-        elem.content = [RawInline(elem.text)]
+        # Remove all child elements
+        elem.content = []
     return None
 
 
