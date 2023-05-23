@@ -45,11 +45,11 @@ def modify_code_tags(soup):
             tag.unwrap()
             
 def remove_p_tags_from_li(soup):
-    li_tags =soup.find_all('li'):
-        for li in li_tags:
-            p_tags =soup.find_all('p'):
-                for p in p_tags:
-                    p.unwrap()
+    li_tags =soup.find_all('li')
+    for li in li_tags:
+        p_tags =soup.find_all('p')
+        for p in p_tags:
+            p.unwrap()
                 
     
 if __name__ == "__main__":
