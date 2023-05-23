@@ -69,8 +69,10 @@ if __name__ == "__main__":
         
     html_file = sys.argv[1]
     
+    html_content = "<div class='lesson-content'>"
+    
     with open(html_file, 'r') as f:
-        html_content = f.read()
+        html_content += f.read() + "</div>"
         
     soup = BeautifulSoup(html_content, 'html.parser')
     place_content_in_div(soup)
