@@ -30,7 +30,7 @@ jobs:
           echo "FROM pandoc/minimal:3.1.1-ubuntu" > Dockerfile
           echo "RUN apt-get update && apt-get install -y python3 python3-pip">> Dockerfile
           echo "RUN pip install panflute" >> Dockerfile
-          echo "pip install pandocfilters" >> Dockerfile
+          echo "RUN pip install pandocfilters" >> Dockerfile
           echo "RUN ln -s /usr/bin/python3 /usr/bin/python" >> Dockerfile
           docker build -t my-pandoc .
 
