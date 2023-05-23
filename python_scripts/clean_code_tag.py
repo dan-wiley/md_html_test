@@ -1,14 +1,13 @@
-from pandocfilters import Code, toJSONFilter
+#!/usr/bin/env python
+import panflute as pf
 
+def remove_code_attributes(elem):
+    if isinstance(elem, pf.Code):
+        elem.classes = []
+    return elem
 
-def remove_code_attributes(key, value, format_, meta):
-    if key == 'Code':
-        [attrs, contents] = value
-        # Remove class and other attributes
-        attrs = []
-        return Code(attrs, contents)
-    return None
-
+def main(doc=None):
+    return pf.run_filter(remove_code_attributes, doc=doc)
 
 if __name__ == "__main__":
-    toJSONFilter(remove_code_attributes)
+    main()
