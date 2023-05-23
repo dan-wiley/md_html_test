@@ -2,7 +2,7 @@
 from panflute import Code, RawInline, run_filter
 
 
-def strip_code_tags(elem):
+def strip_code_tags(elem, doc):
     if isinstance(elem, Code):
         # Remove all child elements within <code>
         elem.content = [RawInline(elem.text)]
