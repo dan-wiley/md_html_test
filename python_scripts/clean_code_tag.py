@@ -6,11 +6,13 @@ def strip_code_tags(elem, doc):
     if isinstance(elem, Code):
         # Parse the code text with BeautifulSoup
         soup = BeautifulSoup(elem.text, 'html.parser')
-        # Remove all child elements within the <code> tag
-        for child in soup.find('code').find_all():
-            child.extract()
-        # Update the code text with the modified content
-        elem.text = str(soup)
+        code_tag = soup.find('code')
+        if code_tag:
+            # Remove all child elements within the <code> tag
+            for child in code_tag.find_all():
+                child.extract()
+            # Update the code text with the modified content
+            elem.text = str(soup)
         return elem
 
 
