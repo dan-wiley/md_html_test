@@ -1,34 +1,54 @@
-<div class="lesson-content"><h1 id="intro-to-docker">Intro to Docker</h1></div>
-In this activity, you will create two docker images and deploy two
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="lesson-content"><h1 id="intro-to-docker">Intro to Docker</h1>In this activity, you will create two docker images and deploy two
 containers, one from each image. One image will be a dev environment and
 the other testing. Both containers will be a web server serving
-different content on the same host operating system.
-This activity demonstrates the power of containerization and the
-ability to run multiple services on a single host operating system.
-Containerization allows us to run images on the host operating
+different content on the same host operating system.This activity demonstrates the power of containerization and the
+ability to run multiple services on a single host operating system.Containerization allows us to run images on the host operating
 system. A major benefit of containerization is that containers use the
-same hardware (kernel) as the host operating system. Containers.
-Images allow bundling up packages or installation instructions into a
+same hardware (kernel) as the host operating system. Containers.Images allow bundling up packages or installation instructions into a
 file, eliminating the need to perform installation steps on the host OS
 or create dependency conflicts. It is important to note that images and
 containerization do not necessarily rely on Docker. Docker is just a
 suite of tools for creating and deploying images into containers.
 Kubernetes, for example, can use the same images but uses a different
-runtime for running the containers.
-<h2 id="learning-objectives">Learning Objectives</h2>
-You will be able to create a dockerfile, build images, deploy
+runtime for running the containers.<h2 id="learning-objectives">Learning Objectives</h2>You will be able to create a dockerfile, build images, deploy
 multiple containers on the same host OS and understand different
 keywords in dockerfiles. Completing the bonus portion will teach you
-about volumes between containers and the host OS.
-<h2 id="setup">Setup</h2>
-<ul>
+about volumes between containers and the host OS.<h2 id="setup">Setup</h2><ul>
 <li>Make sure that you have ports 80 and 8080 open on your host OS
 firewall before starting this activity. If on AWS navigate to your
 instance, then Security, and click on your Security Group. Edit inbound
 rules, then verify or add a rule for ports 8080 and 80. For the source
 select “Anywhere IPv4”. Save your settings.</li>
-</ul>
-<ol type="1">
+</ul><ol type="1">
 <li>Install docker on your amazonlinux2 host OS, then start the
 docker daemon.
 <ul>
@@ -49,10 +69,7 @@ https://hub.docker.com/_/httpd/</li>
 <ul>
 <li><pre class="prettyprint"><code>mkdir dev-site test-site</code></pre></li>
 </ul></li>
-</ol>
-<h1 id="test-site">Test Site</h1>
-Start with the test website.
-<ol type="1">
+</ol><h1 id="test-site">Test Site</h1>Start with the test website.<ol type="1">
 <li>CD into test-site
 <ul>
 <li><pre class="prettyprint"><code>cd test-site</code></pre></li>
@@ -92,11 +109,7 @@ should see the default web page!
 <ul>
 <li><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></pre></li>
 </ul></li>
-</ol>
-<h1 id="dev-site">Dev Site</h1>
-This website will serve our own HTML files.
-<h2 id="instructions">Instructions</h2>
-<ol type="1">
+</ol><h1 id="dev-site">Dev Site</h1>This website will serve our own HTML files.<h2 id="instructions">Instructions</h2><ol type="1">
 <li>CD into the dev site folder
 <ul>
 <li><pre class="prettyprint"><code>cd ~/dev-site</code></pre></li>
@@ -171,25 +184,19 @@ sites simply by adjusting the ports in the browser.
 <ul>
 <li><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></li>
 </ul></li>
-</ol>
-<h1 id="volumes-bonus">Volumes (Bonus)</h1>
-A volume is a shared folder between the host OS or other containers.
+</ol><h1 id="volumes-bonus">Volumes (Bonus)</h1>A volume is a shared folder between the host OS or other containers.
 We can create a volume from public-html on the host OS to htdocs on the
 container. A volume could enable editing the files in the public-html
 folder and reflecting the changes in the htdocs folder of the
-container.
-Without using volumes you would have to rebuild the image and
+container.Without using volumes you would have to rebuild the image and
 container each time you changed the file because the dockerfile (and
 <pre class="prettyprint"><code>COPY</code></pre> command) is only executed at image creation
 (<pre class="prettyprint"><code>docker build</code></pre>). You could edit the files in the container,
 but that requires <pre class="prettyprint"><code>docker exec</code></pre> and volumes are still more
-convenient.
-<h2 id="instructions-1">Instructions</h2>
-The activity walks you through editing the web page on the host
+convenient.<h2 id="instructions-1">Instructions</h2>The activity walks you through editing the web page on the host
 before adding a volume. Then you will edit the file after adding a
 volume and compare the difference. This activity uses the dev
-environment only.
-<ol type="1">
+environment only.<ol type="1">
 <li>Edit the host HTML file. You can add any changes you like, as
 long as they will be noticeable in the web browser.
 <ul>
@@ -201,20 +208,16 @@ note if the changes made in step 1 are visible.</li>
 the <pre class="prettyprint"><code>docker run</code></pre> command and adding
 <pre class="prettyprint"><code>-v /full/path/on/host:/path/on/container</code></pre>. The docker run
 command will fail if the container name is already taken.</li>
-</ol>
-<div class="sourceCode" id="cb1"><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
+</ol><div class="sourceCode" id="cb1"><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
 sudo docker run -dit -v /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs \
---name dev-httpd-container -p 8080:80 dev-httpd</code></pre></div>
-<ol start="4" type="1">
+--name dev-httpd-container -p 8080:80 dev-httpd</code></pre></div><ol start="4" type="1">
 <li>Edit the host HTML file again with a noticeable change.
 <ul>
 <li><pre class="prettyprint"><code>vim ~/dev-site/public-html/index.html</code></pre></li>
 </ul></li>
 <li>Visit <pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre> and take note
 if the changes made in step 1 and step 4 are visible.</li>
-</ol>
-<h1 id="cleanup">Cleanup</h1>
-<ol type="1">
+</ol><h1 id="cleanup">Cleanup</h1><ol type="1">
 <li>Stop the docker containers.
 <ul>
 <li><pre class="prettyprint"><code>sudo docker stop dev-httpd-container test-httpd-container</code></pre>
@@ -236,13 +239,11 @@ containers.
 <li><pre class="prettyprint"><code>sudo docker ps -a</code></pre></li>
 <li><pre class="prettyprint"><code>sudo docker images</code></pre></li>
 </ul></li>
-</ol>
-<h1 id="conclusion">Conclusion</h1>
-In this activity you created a basic test docker container and
+</ol><h1 id="conclusion">Conclusion</h1>In this activity you created a basic test docker container and
 verified it was accessible over the internet. You then created another
 container from a more sophisticated dockerfile on the same host OS. If
 you completed the bonus you added a volume linking a host directory to a
 container and updated the website via the host OS. Finally, you
 performed the operations needed to remove the containers and images.
 These skills are essential for navigating modern microservice
-stacks.
+stacks.</div>
