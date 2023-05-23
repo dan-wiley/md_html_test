@@ -44,6 +44,7 @@ def modify_code_tags(html_file):
                 if lang in class_map:
                     classes.append(class_map[lang])
         pre_tag['class'] = ' '.join(classes)
+        code_block['class']=None
 
         for tag in code_block.find_all():
             tag.unwrap()
