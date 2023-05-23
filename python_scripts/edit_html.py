@@ -52,21 +52,15 @@ def remove_p_tags_from_li(soup):
             p.unwrap()
             
 def place_content_in_div(soup):
-    # Create a new <div> tag
     div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
-
-    # Extract the contents of the soup object
-    contents = soup.contents
-
-    # Clear the existing contents of the soup object
-    soup.clear()
-
-    # Append the new <div> tag to the soup object
-    soup.append(div_tag)
-
-    # Append the extracted contents to the new <div> tag
-    for content in contents:
+    
+    # Copy the contents before appending to avoid inserting the tag into itself
+    contents_copy = [content.extract() for content in soup.contents]
+    
+    for content in contents_copy:
         div_tag.append(content)
+    
+    soup.append(div_tag)
                 
     
 if __name__ == "__main__":
