@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import sys
 
-def modify_code_tags(html_file):
+def modify_code_tags(soup):
     """
     Wrap <code> tags in <pre> tags if the immediate parent is not <pre>.
     Adds the 
@@ -24,12 +24,7 @@ def modify_code_tags(html_file):
         'html': 'lang-html',
         'css': 'lang-css',
         'swift': 'lang-swift'
-    }
-
-    with open(html_file, 'r') as f:
-        html_content = f.read()
-
-    soup = BeautifulSoup(html_content, 'html.parser')
+    }    
     code_blocks = soup.find_all('code')
     for code_block in code_blocks:
         pre_tag = code_block.find_parent('pre')
@@ -49,14 +44,18 @@ def modify_code_tags(html_file):
         for tag in code_block.find_all():
             tag.unwrap()
 
-    with open(html_file, 'w') as f:
-        f.write(str(soup))
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python modify_html.py <html_file>")
         sys.exit(1)
-
+        
     html_file = sys.argv[1]
-    tag = 'code'
-    modify_code_tags(html_file)
+    
+    with open(html_file, 'r') as f:
+        html_content = f.read()
+        
+    soup = BeautifulSoup(html_content, 'html.parser')
+    modify_code_tags(soup)
+    
+    with open(html_file, 'w') as f:
+        f.write(str(soup))
