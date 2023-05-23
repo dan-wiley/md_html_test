@@ -55,8 +55,12 @@ def place_content_in_div(soup):
     # Create a new <div> tag
     div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
 
-    # Wrap the contents of the root tag with the new <div> tag
-    soup.html.wrap(div_tag)
+    # Get the top-level elements in the HTML document
+    top_level_elements = soup.contents
+
+    # Wrap the first element with the new <div> tag
+    if top_level_elements:
+        top_level_elements[0].wrap(div_tag)
 
                 
     
