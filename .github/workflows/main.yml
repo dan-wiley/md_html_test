@@ -54,6 +54,7 @@ jobs:
         run: |
           echo "FROM python:3" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
+          echo "pip install pandocfilters" >> Dockerfile.bs
           docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
