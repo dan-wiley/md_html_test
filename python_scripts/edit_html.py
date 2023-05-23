@@ -52,8 +52,11 @@ def remove_p_tags_from_li(soup):
             p.unwrap()
             
 def place_content_in_div(soup):
+    # Create a new <div> tag
     div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
-    soup.wrap(div_tag)
+
+    # Wrap the existing HTML content with the new <div> tag
+    soup.wrap_all(div_tag)
 
                 
     
