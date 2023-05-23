@@ -50,6 +50,13 @@ def remove_p_tags_from_li(soup):
         p_tags =soup.find_all('p')
         for p in p_tags:
             p.unwrap()
+            
+def place_content_in_div(soup):
+    div_tag = soup.new_tag('div')
+    div_tag['class'] = 'lesson-content'
+    div_tag.append(soup.contents)
+    soup.clear()
+    soup.append(div_tag)
                 
     
 if __name__ == "__main__":
@@ -65,6 +72,7 @@ if __name__ == "__main__":
     soup = BeautifulSoup(html_content, 'html.parser')
     modify_code_tags(soup)
     remove_p_tags_from_li(soup)
+    place_content_in_div(soup)
     
     with open(html_file, 'w') as f:
         f.write(str(soup))
