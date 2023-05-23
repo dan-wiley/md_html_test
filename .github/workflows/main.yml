@@ -25,15 +25,6 @@ jobs:
                 "$file"
             done' sh {} +
 
-      - name: Build Docker image with Python
-        run: |
-          echo "FROM pandoc/minimal:3.1.1-ubuntu" > Dockerfile
-          echo "RUN apt-get update && apt-get install -y python3 python3-pip">> Dockerfile
-          echo "RUN pip install panflute" >> Dockerfile
-          echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
-          echo "RUN ln -s /usr/bin/python3 /usr/bin/python" >> Dockerfile
-          docker build -t my-pandoc .
-
       - name: Convert Markdown to Customized HTML
         run: |
           find . -name "*.md" -type f -exec sh -c '
@@ -41,21 +32,13 @@ jobs:
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                my-pandoc \
+                danwiley/pandoc-python:main \
                 -f markdown -t html \
                 -o "/workspace/${file%.md}_custom.html" \
                 --filter /workspace/python_scripts/clean_code_tag.py \
                 --filter /workspace/python_scripts/remove_p_tags_from_li_filter.py \
                 "/workspace/$file"
             done' sh {} +
-
-
-            
-      - name: Build Docker image for Beautifulsoup
-        run: |
-          echo "FROM python:3" > Dockerfile.bs
-          echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
-          docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
         run: |
@@ -64,7 +47,7 @@ jobs:
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                my-pandoc \
+                danwiley/pandoc-python:main \
                 python python_scripts/edit_html.py "$file"
             done' sh {} +     
             
