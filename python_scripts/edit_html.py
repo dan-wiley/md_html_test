@@ -55,8 +55,14 @@ def place_content_in_div(soup):
     # Create a new <div> tag
     div_tag = soup.new_tag('div')
 
-    # Move all the contents of the document under the <div> tag
-    soup.contents = div_tag.append(soup.contents)
+    # Move the contents of the document into the <div> tag
+    div_tag.contents.extend(soup.contents)
+
+    # Clear the contents of the document
+    soup.clear()
+
+    # Append the <div> tag as the new root element
+    soup.append(div_tag)
 
     # Return the modified HTML document
     return soup.prettify()
