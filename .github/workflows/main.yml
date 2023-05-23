@@ -54,7 +54,7 @@ jobs:
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 my-bs \
-                /usr/bin/python python_scripts/edit_html.py "$file"
+                python python_scripts/edit_html.py "$file"
             done' sh {} +     
             
       - name: Move files to doc and Generate index.html
