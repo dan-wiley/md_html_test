@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import panflute as pf
 
-def remove_code_attributes(elem):
+def remove_code_attributes(elem, doc):
     if isinstance(elem, pf.Code):
         elem.classes = []
     return elem
