@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 import sys
 
-def wrap_code_blocks(html_file, tag):
+def modify_code_tags(html_file, tag):
     """
-    Wrap code blocks in <pre> tags if the immediate parent is not <pre>.
+    Wrap <code> tags in <pre> tags if the immediate parent is not <pre>.
+    Adds the 
 
     Args:
         html_file (str): Path to the HTML file.
@@ -35,7 +36,7 @@ def wrap_code_blocks(html_file, tag):
         if pre_tag is None:
             pre_tag = soup.new_tag('pre')
             code_block.wrap(pre_tag)
-        
+
         classes = ['prettyprint']
         language = code_block.get('class', None)
         if language:
@@ -43,6 +44,9 @@ def wrap_code_blocks(html_file, tag):
                 if lang in class_map:
                     classes.append(class_map[lang])
         pre_tag['class'] = ' '.join(classes)
+
+        # Remove tags inside <code> and replace with text
+        code_block.unwrap()
 
     with open(html_file, 'w') as f:
         f.write(str(soup))
@@ -54,4 +58,4 @@ if __name__ == "__main__":
 
     html_file = sys.argv[1]
     tag = 'code'
-    wrap_code_blocks(html_file, tag)
+    modify_code_tags(html_file, tag)
