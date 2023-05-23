@@ -53,20 +53,12 @@ def remove_p_tags_from_li(soup):
             
 def place_content_in_div(soup):
 
-    # Create a new <div> tag
-    div_tag = soup.new_tag('div')
+    # Create a new soup with a single <div>
+    new_soup = BeautifulSoup('<div></div>', 'html.parser')
 
-    # Move the contents of the document into the <div> tag
-    div_tag.contents.extend(soup.contents)
+    new_soup.div.append(soup.contents)
 
-    # Clear the contents of the document
-    soup.clear()
-
-    # Append the <div> tag as a child of the document
-    soup.append(div_tag)
-
-    # Return the modified HTML document
-    return soup.prettify()
+    soup = new_soup
                 
     
 if __name__ == "__main__":
