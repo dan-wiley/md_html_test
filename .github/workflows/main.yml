@@ -48,7 +48,7 @@ jobs:
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 danwiley/pandoc-python:main \
-                python3 python_scripts/edit_html.py "$file"
+                /usr/bin/python3 python_scripts/edit_html.py "$file"
             done' sh {} +     
             
       - name: Move files to doc and Generate index.html
