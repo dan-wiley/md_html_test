@@ -30,6 +30,7 @@ jobs:
           echo "FROM pandoc/minimal:3.1.1-ubuntu" > Dockerfile
           echo "RUN apt-get update && apt-get install -y python3 python3-pip">> Dockerfile
           echo "RUN pip install panflute" >> Dockerfile
+          echo "pip install pandocfilters" >> Dockerfile
           echo "RUN ln -s /usr/bin/python3 /usr/bin/python" >> Dockerfile
           docker build -t my-pandoc .
 
@@ -54,7 +55,6 @@ jobs:
         run: |
           echo "FROM python:3" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
-          echo "pip install pandocfilters" >> Dockerfile.bs
           docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
