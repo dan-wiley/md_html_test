@@ -52,20 +52,10 @@ def remove_p_tags_from_li(soup):
             p.unwrap()
             
 def place_content_in_div(soup):
-    # Create a new <div> tag
     div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
 
-    # Create a new parent element to wrap the entire HTML document
-    parent_tag = soup.new_tag('div')
-    parent_tag.append(soup.contents)
-
-    # Wrap the parent element with the new <div> tag
-    parent_tag.wrap(div_tag)
-
-    # Replace the soup object with the new parent element
-    soup.clear()
-    soup.append(parent_tag)
-
+    # Wrap all the contents of the soup object with the new <div> tag
+    soup.wrap_all(div_tag)
                 
     
 if __name__ == "__main__":
