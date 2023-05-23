@@ -52,11 +52,9 @@ def remove_p_tags_from_li(soup):
             p.unwrap()
             
 def place_content_in_div(soup):
-    div_tag = soup.new_tag('div')
-    div_tag['class'] = 'lesson-content'
-    div_tag.append(soup.contents)
-    soup.clear()
-    soup.append(div_tag)
+    div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
+    soup.wrap(div_tag)
+
                 
     
 if __name__ == "__main__":
