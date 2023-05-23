@@ -43,7 +43,15 @@ def modify_code_tags(soup):
 
         for tag in code_block.find_all():
             tag.unwrap()
-
+            
+def remove_p_tags_from_li(soup):
+    li_tags =soup.find_all('li'):
+        for li in li_tags:
+            p_tags =soup.find_all('p'):
+                for p in p_tags:
+                    p.unwrap()
+                
+    
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python modify_html.py <html_file>")
@@ -56,6 +64,7 @@ if __name__ == "__main__":
         
     soup = BeautifulSoup(html_content, 'html.parser')
     modify_code_tags(soup)
+    remove_p_tags_from_li(soup)
     
     with open(html_file, 'w') as f:
         f.write(str(soup))
