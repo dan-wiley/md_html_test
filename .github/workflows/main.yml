@@ -40,6 +40,12 @@ jobs:
                 "/workspace/$file"
             done' sh {} +
 
+      - name: Build Docker image for Beautifulsoup
+        run: |
+          echo "FROM python:3" > Dockerfile.bs
+          echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
+          docker build -t my-bs -f Dockerfile.bs .
+
       - name: Modify HTML using Beautiful Soup
         run: |
           find . -name "*_custom.html" -type f -exec sh -c '
@@ -47,7 +53,7 @@ jobs:
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                danwiley/pandoc-python:main \
+                my-bs \
                 /usr/bin/python python_scripts/edit_html.py "$file"
             done' sh {} +     
             
