@@ -43,6 +43,7 @@ def modify_code_tags(soup):
 
         for tag in code_block.find_all():
             tag.unwrap()
+    return soup
             
 def remove_p_tags_from_li(soup):
     li_tags =soup.find_all('li')
@@ -50,17 +51,7 @@ def remove_p_tags_from_li(soup):
         p_tags =soup.find_all('p')
         for p in p_tags:
             p.unwrap()
-            
-def place_content_in_div(soup):
-
-    # Create a new soup with a single <div>
-    new_soup = BeautifulSoup('<div></div>', 'html.parser')
-
-    # Append contents from the original soup to the new soup in order
-    for content in soup.contents:
-        new_soup.div.append(content)
-
-    soup = new_soup
+    return soup
     
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -75,9 +66,9 @@ if __name__ == "__main__":
         html_content += f.read() + "</div>"
         
     soup = BeautifulSoup(html_content, 'html.parser')
-    place_content_in_div(soup)
-    modify_code_tags(soup)
-    remove_p_tags_from_li(soup)
+
+    soup = modify_code_tags(soup)
+    soup = remove_p_tags_from_li(soup)
     
     
     with open(html_file, 'w') as f:
