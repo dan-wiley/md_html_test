@@ -73,7 +73,7 @@ container. The -a is to display all details.</li>
 </ul></li>
 </ul></li>
 <li><ul>
-<li><pre class="prettyprint"><code>http://</code></pre></li>
+<li><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></pre></li>
 </ul></li>
 </ol>
 <h1 id="dev-site">Dev Site</h1>
@@ -95,9 +95,9 @@ container. The -a is to display all details.</li>
 <p>The <strong>ENV</strong> keyword sets an enviornment variable that we
 can access later with $cohort. The <strong>RUN</strong> keyword executes
 a command when building the image, such as sed. Here we are replacing
-<pre class="prettyprint"><code></code></pre> with the value of $cohort for each file in htdocs.
-<strong>EXPOSE</strong> opens the port 80 of the container, it is not
-needed here because the base image already exposes that port.</p>
+<pre class="prettyprint"><code>&lt;COHORT&gt;</code></pre> with the value of $cohort for each file in
+htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
+is not needed here because the base image already exposes that port.</p>
 </blockquote>
 <blockquote>
 <p>The <strong>CMD</strong> keyword should only be used once, it is
@@ -131,7 +131,7 @@ listen on port 80. Now all requests to port 8080 are forwarded to port
 </ul></li>
 </ul></li>
 <li><ul>
-<li><pre class="prettyprint"><code>http://:8080</code></pre></li>
+<li><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></li>
 </ul></li>
 </ol>
 <h1 id="volumes-bonus">Volumes (Bonus)</h1>
@@ -166,8 +166,8 @@ environment only.</p>
 <ul>
 <li><pre class="prettyprint"><code>vim ~/dev-site/public-html/index.html</code></pre></li>
 </ul></li>
-<li>Visit <pre class="prettyprint"><code>http://:8080</code></pre> and take note if the changes made in
-step 1 and step 4 are visible.</li>
+<li>Visit <pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre> and take note
+if the changes made in step 1 and step 4 are visible.</li>
 </ol>
 <h1 id="cleanup">Cleanup</h1>
 <ol type="1">
@@ -175,7 +175,7 @@ step 1 and step 4 are visible.</li>
 <ul>
 <li><pre class="prettyprint"><code>sudo docker stop dev-httpd-container test-httpd-container</code></pre>
 &gt; To start a stopped container use
-<pre class="prettyprint"><code>sudo docker start </code></pre></li>
+<pre class="prettyprint"><code>sudo docker start &lt;CONTAINER_NAME&gt;</code></pre></li>
 </ul></li>
 <li>Delete the containers.
 <ul>
