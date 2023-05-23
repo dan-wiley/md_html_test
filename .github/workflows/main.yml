@@ -29,7 +29,7 @@ jobs:
         run: |
           find . -name "*.md" -type f -exec sh -c '
             for file do
-              docker run --rm -it \
+              docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 danwiley/pandoc-python:main \
