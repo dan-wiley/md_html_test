@@ -25,18 +25,16 @@ jobs:
                 "$file"
             done' sh {} +
 
-      - name: Convert Markdown to Customized HTML
+      - name: Convert Markdown to Custom HTML
         run: |
           find . -name "*.md" -type f -exec sh -c '
             for file do
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                danwiley/pandoc-python:main \
-                -f markdown -t html \
-                -o "/workspace/${file%.md}_custom.html" \
-                #--filter /workspace/python_scripts/remove_p_tags_from_li_filter.py \
-                "/workspace/$file"
+                pandoc/minimal:3.1.1 \
+                -o "${file%.md}_custom.html" \
+                "$file"
             done' sh {} +
 
       - name: Build Docker image for Beautifulsoup
