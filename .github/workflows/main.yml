@@ -35,7 +35,7 @@ jobs:
                 danwiley/pandoc-python:main \
                 -f markdown -t html \
                 -o "/workspace/${file%.md}_custom.html" \
-                --filter /workspace/python_scripts/remove_p_tags_from_li_filter.py \
+                #--filter /workspace/python_scripts/remove_p_tags_from_li_filter.py \
                 "/workspace/$file"
             done' sh {} +
 
