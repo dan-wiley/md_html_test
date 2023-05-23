@@ -1,15 +1,14 @@
-#!/usr/bin/env python3
 import re
-from panflute import run_filter
+from panflute import run_filter, RawInline
 
 
 def strip_code_tags(elem, doc):
-    if elem.tag == 'code':
-        # Remove all child elements within the <code> tag
-        elem.text = re.sub(r'<.*?>', '', elem.text)
-        # Remove leading and trailing whitespaces
-        elem.text = elem.text.strip()
-        return elem
+    if isinstance(elem, RawInline) and elem.format == 'html' and elem.text.startswith('<code>'):
+        # Extract the text content within the <code> tag
+        text_content = re.sub(r'<.*?>', '', elem.text)
+        # Create a new RawInline element with the extracted text content
+        new_elem = RawInline(text_content)
+        return new_elem
 
 
 def main(doc=None):
