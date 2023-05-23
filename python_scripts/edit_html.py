@@ -56,10 +56,11 @@ def place_content_in_div(soup):
     # Create a new soup with a single <div>
     new_soup = BeautifulSoup('<div></div>', 'html.parser')
 
-    new_soup.div.extend(soup.contents)
+    # Append contents from the original soup to the new soup in order
+    for content in soup.contents:
+        new_soup.div.append(content)
 
     soup = new_soup
-                
     
 if __name__ == "__main__":
     if len(sys.argv) != 2:
