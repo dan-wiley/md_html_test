@@ -55,8 +55,9 @@ def place_content_in_div(soup):
     # Create a new <div> tag
     div_tag = soup.new_tag('div', attrs={'class': 'lesson-content'})
 
-    # Wrap the existing HTML content with the new <div> tag
-    soup.wrap_all(div_tag)
+    if soup is not None:
+        # Wrap the existing HTML content with the new <div> tag
+        soup.wrap_all(div_tag)
 
                 
     
