@@ -56,7 +56,7 @@ def place_content_in_div(soup):
     # Create a new soup with a single <div>
     new_soup = BeautifulSoup('<div></div>', 'html.parser')
 
-    new_soup.div.append(soup.contents)
+    new_soup.div.extend(soup.contents)
 
     soup = new_soup
                 
