@@ -71,9 +71,10 @@ if __name__ == "__main__":
         html_content = f.read()
         
     soup = BeautifulSoup(html_content, 'html.parser')
+    place_content_in_div(soup)
     modify_code_tags(soup)
     remove_p_tags_from_li(soup)
-    place_content_in_div(soup)
+    
     
     with open(html_file, 'w') as f:
         f.write(str(soup))
