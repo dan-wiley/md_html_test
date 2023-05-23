@@ -52,8 +52,6 @@ def remove_p_tags_from_li(soup):
             p.unwrap()
             
 def place_content_in_div(soup):
-    # Parse the HTML document
-    soup = BeautifulSoup(html, 'html.parser')
 
     # Create a new <div> tag
     div_tag = soup.new_tag('div')
