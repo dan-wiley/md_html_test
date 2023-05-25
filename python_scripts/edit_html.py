@@ -73,7 +73,8 @@ def blockquotes_to_aside(soup):
 
 def add_bootstrap_to_table(soup):
     table = soup.find('table')
-    table['class'] = ['table', 'table-bordered', 'table-striped', 'table-hover']
+    if table:
+        table['class'] = ['table', 'table-bordered', 'table-striped', 'table-hover']
     return soup
     
 if __name__ == "__main__":
