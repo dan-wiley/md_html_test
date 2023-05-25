@@ -36,11 +36,11 @@ docker daemon.
 <li><pre class="prettyprint"><code>sudo yum -y install docker</code></pre></li>
 <li><pre class="prettyprint"><code>sudo service docker start</code></pre></li>
 </ul>
-<blockquote>
+<aside>
 If you want to run docker without sudo (recommended) add your user to
 the docker group by running <pre class="prettyprint"><code>sudo usermod -aG docker $USER</code></pre>.
 You will then need to log out and log back in.
-</blockquote></li>
+</aside></li>
 <li>You will create two docker images and containers from the same
 underlying image. The image is httpd, a well know web server. Visit this
 web page and review the documentation for the image
@@ -122,15 +122,15 @@ content. Replace 500 with your cohort number.
 machine in public-html to the container htdocs folder at image build
 time. Httpd will automatically serve files in htdocs folder when it is
 started.
-<blockquote>
+<aside>
 The <strong>ENV</strong> keyword sets an enviornment variable that we
 can access later with $cohort. The <strong>RUN</strong> keyword executes
 a command when building the image, such as sed. Here we are replacing
 <pre class="prettyprint"><code>&lt;COHORT&gt;</code></pre> with the value of $cohort for each file in
 htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
 is not needed here because the base image already exposes that port.
-</blockquote>
-<blockquote>
+</aside>
+<aside>
 The <strong>CMD</strong> keyword should only be used once, it is
 different from RUN because it is not executed while the image is being
 build. Instead, CMD is the command to run when the image is executed as
@@ -140,9 +140,9 @@ this command should not exit. In this case <pre class="prettyprint"><code>httpd-
 is the same command the base image executes. Therefore, the entire line
 can be removed since the base image already executes the
 <pre class="prettyprint"><code>httpd-foreground</code></pre> command.
-</blockquote>
-<blockquote>
-</blockquote></li>
+</aside>
+<aside>
+</aside></li>
 <li>Build your dockerfile into an image
 <ul>
 <li><pre class="prettyprint"><code>sudo docker build -t dev-httpd .</code></pre></li>
