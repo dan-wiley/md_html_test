@@ -27,10 +27,16 @@ def modify_code_tags(soup):
     }    
     code_blocks = soup.find_all('code')
     for code_block in code_blocks:
+        
         pre_tag = code_block.find_parent('pre')
         if pre_tag is None:
             pre_tag = soup.new_tag('pre')
             code_block.wrap(pre_tag)
+            
+        figure_tag = pre_tag.find_parent('figure')
+        if figure_tag is None:
+            figure_tag = soup.new_tag('pre')
+            pre_tag.wrap(figure_tag)
 
         classes = ['prettyprint']
         language = code_block.get('class', None)
