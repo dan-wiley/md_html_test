@@ -35,7 +35,7 @@ def modify_code_tags(soup):
             
         figure_tag = pre_tag.find_parent('figure')
         if figure_tag is None:
-            figure_tag = soup.new_tag('pre')
+            figure_tag = soup.new_tag('figure')
             pre_tag.wrap(figure_tag)
 
         classes = ['prettyprint']
