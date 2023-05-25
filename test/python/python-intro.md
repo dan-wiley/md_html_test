@@ -1,6 +1,6 @@
-# Docker Lesson 1
+## Docker Lesson 1
 
-In this module ....
+> In this module ....
 
 
 - Docker is fun
@@ -10,4 +10,9 @@ In this module ....
 
 ```python
 print("hello")
+text="new text"
+text += " again"
+if text:
+    print(text)
+    # prints new text again
 ```
