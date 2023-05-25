@@ -16,3 +16,9 @@ if text:
     print(text)
     # prints new text again
 ```
+
+
+| Python | C |
+| ----------- | ----------- |
+| VM | Native |
+| Interpreted programming language thats loads of fun | Have to allocate memory and not leak over... not fun |
