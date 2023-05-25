@@ -70,6 +70,11 @@ def blockquotes_to_aside(soup):
         # Unwrap the blockquote tag without removing children
         blockquote.unwrap()
     return soup 
+
+def add_bootstrap_to_table(soup):
+    table = soup.find('table')
+    table['class'] = ['table', 'table-bordered', 'table-striped', 'table-hover']
+    return soup
     
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -78,8 +83,8 @@ if __name__ == "__main__":
         
     html_file = sys.argv[1]
     
-    html_content = "<div class='lesson-content'>"
-    
+    # put all content in this div
+    html_content = "<div class='lesson-content'>" 
     with open(html_file, 'r') as f:
         html_content += f.read() + "</div>"
         
@@ -87,6 +92,7 @@ if __name__ == "__main__":
     soup = modify_code_tags(soup)
     soup = remove_p_tags_from_li(soup)
     soup = blockquotes_to_aside(soup)
+    soup = add_bootstrap_to_table(soup)
     
     with open(html_file, 'w') as f:
         f.write(str(soup))
