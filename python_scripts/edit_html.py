@@ -52,6 +52,18 @@ def remove_p_tags_from_li(soup):
         for p in p_tags:
             p.unwrap()
     return soup
+
+def blockquotes_to_aside(soup):
+    for blockquote in soup.find_all('blockquote'):
+        # Create a new aside tag
+        aside = soup.new_tag('aside')
+
+        # Replace the blockquote with the aside tag
+        blockquote.wrap(aside)
+
+        # Unwrap the blockquote tag without removing children
+        blockquote.unwrap()
+    return soup 
     
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -66,10 +78,9 @@ if __name__ == "__main__":
         html_content += f.read() + "</div>"
         
     soup = BeautifulSoup(html_content, 'html.parser')
-
     soup = modify_code_tags(soup)
     soup = remove_p_tags_from_li(soup)
-    
+    soup = blockquotes_to_aside(soup)
     
     with open(html_file, 'w') as f:
         f.write(str(soup))
