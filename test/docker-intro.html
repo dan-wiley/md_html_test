@@ -117,7 +117,7 @@ cd into it.
 </ul></li>
 <li>Create a file named <figure><pre class="prettyprint nocode"><code>dockerfile</code></pre></figure> and paste this
 content. Replace 500 with your cohort number.
-<figure><pre class="prettyprint nocode"><code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code></pre></figure>
+<figure><pre class="prettyprint nocode"><code>bash     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code></pre></figure>
 &gt; The <strong>COPY</strong> keyword will copy the files from the host
 machine in public-html to the container htdocs folder at image build
 time. Httpd will automatically serve files in htdocs folder when it is
