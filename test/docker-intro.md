@@ -85,10 +85,15 @@ This website will serve our own HTML files.
 5. Create a file named `dockerfile` and paste this content. Replace 500 with your cohort number.  
     ```
     FROM httpd:2.4
+    
     COPY ./public-html/ /usr/local/apache2/htdocs/
+    
     ENV cohort=500
+    
     RUN sed -i "s/<COHORT>/$cohort/g" /usr/local/apache2/htdocs/*
+    
     EXPOSE 80
+    
     CMD ["httpd-foreground"]
     ```  
     > The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
