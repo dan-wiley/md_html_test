@@ -1,25 +1,25 @@
-<h1 id="intro-to-docker">Intro to Docker</h1>
-<p>In this activity, you will create two docker images and deploy two
+<div class="lesson-content"><h1 id="intro-to-docker">Intro to Docker</h1>
+In this activity, you will create two docker images and deploy two
 containers, one from each image. One image will be a dev environment and
 the other testing. Both containers will be a web server serving
-different content on the same host operating system.</p>
-<p>This activity demonstrates the power of containerization and the
-ability to run multiple services on a single host operating system.</p>
-<p>Containerization allows us to run images on the host operating
+different content on the same host operating system.
+This activity demonstrates the power of containerization and the
+ability to run multiple services on a single host operating system.
+Containerization allows us to run images on the host operating
 system. A major benefit of containerization is that containers use the
-same hardware (kernel) as the host operating system. Containers.</p>
-<p>Images allow bundling up packages or installation instructions into a
+same hardware (kernel) as the host operating system. Containers.
+Images allow bundling up packages or installation instructions into a
 file, eliminating the need to perform installation steps on the host OS
 or create dependency conflicts. It is important to note that images and
 containerization do not necessarily rely on Docker. Docker is just a
 suite of tools for creating and deploying images into containers.
 Kubernetes, for example, can use the same images but uses a different
-runtime for running the containers.</p>
+runtime for running the containers.
 <h2 id="learning-objectives">Learning Objectives</h2>
-<p>You will be able to create a dockerfile, build images, deploy
+You will be able to create a dockerfile, build images, deploy
 multiple containers on the same host OS and understand different
 keywords in dockerfiles. Completing the bonus portion will teach you
-about volumes between containers and the host OS.</p>
+about volumes between containers and the host OS.
 <h2 id="setup">Setup</h2>
 <ul>
 <li>Make sure that you have ports 80 and 8080 open on your host OS
@@ -29,136 +29,135 @@ rules, then verify or add a rule for ports 8080 and 80. For the source
 select “Anywhere IPv4”. Save your settings.</li>
 </ul>
 <ol type="1">
-<li><p>Install docker on your amazonlinux2 host OS, then start the
-docker daemon.</p>
+<li>Install docker on your amazonlinux2 host OS, then start the
+docker daemon.
 <ul>
-<li><code>sudo yum -y update</code></li>
-<li><code>sudo yum -y install docker</code></li>
-<li><code>sudo service docker start</code></li>
+<li><figure><pre class="prettyprint"><code>sudo yum -y update</code></pre></figure></li>
+<li><figure><pre class="prettyprint"><code>sudo yum -y install docker</code></pre></figure></li>
+<li><figure><pre class="prettyprint"><code>sudo service docker start</code></pre></figure></li>
 </ul>
-<blockquote>
-<p>If you want to run docker without sudo (recommended) add your user to
-the docker group by running <code>sudo usermod -aG docker $USER</code>.
-You will then need to log out and log back in.</p>
-</blockquote></li>
-<li><p>You will create two docker images and containers from the same
+<aside>
+If you want to run docker without sudo (recommended) add your user to
+the docker group by running <figure><pre class="prettyprint"><code>sudo usermod -aG docker $USER</code></pre></figure>.
+You will then need to log out and log back in.
+</aside></li>
+<li>You will create two docker images and containers from the same
 underlying image. The image is httpd, a well know web server. Visit this
 web page and review the documentation for the image
-https://hub.docker.com/_/httpd/</p></li>
-<li><p>Create two directories for each dockerfile.</p>
+https://hub.docker.com/_/httpd/</li>
+<li>Create two directories for each dockerfile.
 <ul>
-<li><code>mkdir dev-site test-site</code></li>
+<li><figure><pre class="prettyprint"><code>mkdir dev-site test-site</code></pre></figure></li>
 </ul></li>
 </ol>
 <h1 id="test-site">Test Site</h1>
-<p>Start with the test website.</p>
+Start with the test website.
 <ol type="1">
-<li><p>CD into test-site</p>
+<li>CD into test-site
 <ul>
-<li><code>cd test-site</code></li>
+<li><figure><pre class="prettyprint"><code>cd test-site</code></pre></figure></li>
 </ul></li>
-<li><p>Create a file named <code>dockerfile</code> with this content
-<code>dockerfile     FROM httpd:2.4</code> &gt; The
+<li>Create a file named <figure><pre class="prettyprint"><code>dockerfile</code></pre></figure> with this content
+<figure><pre class="prettyprint"><code>dockerfile     FROM httpd:2.4</code></pre></figure> &gt; The
 <strong>FROM</strong> keyword allows us to specify a base image for our
-docker image to be built from..</p></li>
-<li><p>Build your dockerfile into an image</p>
+docker image to be built from..</li>
+<li>Build your dockerfile into an image
 <ul>
-<li><code>sudo docker build -t test-httpd .</code> &gt; This command
+<li><figure><pre class="prettyprint"><code>sudo docker build -t test-httpd .</code></pre></figure> &gt; This command
 searches for a file named dockerfile in the current directory, builds it
 and tags (-t) the image as <em>test-httpd</em></li>
 </ul></li>
-<li><p>List your images to verify your image was created.</p>
+<li>List your images to verify your image was created.
 <ul>
-<li><code>sudo docker images</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker images</code></pre></figure></li>
 </ul></li>
-<li><p>Deploy your image to a container. Use –name to name the container
-and the image name at the end of the command.</p>
+<li>Deploy your image to a container. Use –name to name the container
+and the image name at the end of the command.
 <ul>
-<li><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code>
+<li><figure><pre class="prettyprint"><code>sudo docker run -dit --name test-httpd-container -p 80:80 test-httpd</code></pre></figure>
 &gt; The -d tells it to run in background, -it allows the continer to
 connect to your terminal session. &gt; -p is the bort binding, above we
 are binding port 80 of the host OS to port 80 on the container.</li>
 </ul></li>
-<li><p>List your running docker images</p>
+<li>List your running docker images
 <ul>
-<li><code>sudo docker ps -a</code>
+<li><figure><pre class="prettyprint"><code>sudo docker ps -a</code></pre></figure>
 <ul>
 <li>Notice that port 80 of the host is routed to port 80 of the
 container. The -a is to display all details.</li>
 </ul></li>
 </ul></li>
-<li><p>Visit the website in the browser to make sure it works. You
-should see the default web page!</p>
+<li>Visit the website in the browser to make sure it works. You
+should see the default web page!
 <ul>
-<li><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></li>
+<li><figure><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;</code></pre></figure></li>
 </ul></li>
 </ol>
 <h1 id="dev-site">Dev Site</h1>
-<p>This website will serve our own HTML files.</p>
+This website will serve our own HTML files.
 <h2 id="instructions">Instructions</h2>
 <ol type="1">
-<li><p>CD into the dev site folder</p>
+<li>CD into the dev site folder
 <ul>
-<li><code>cd ~/dev-site</code></li>
+<li><figure><pre class="prettyprint"><code>cd ~/dev-site</code></pre></figure></li>
 </ul></li>
-<li><p>Make a folder for html files named <code>public-html</code> and
-cd into it.</p>
+<li>Make a folder for html files named <figure><pre class="prettyprint"><code>public-html</code></pre></figure> and
+cd into it.
 <ul>
-<li><code>mkdir public-html</code></li>
-<li><code>cd public-html</code></li>
+<li><figure><pre class="prettyprint"><code>mkdir public-html</code></pre></figure></li>
+<li><figure><pre class="prettyprint"><code>cd public-html</code></pre></figure></li>
 </ul></li>
-<li><p>Paste the content below into <code>index.html</code>
-<code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code>
-&gt; We will use <code>sed</code> to replace the
-<code>&lt;COHORT&gt;</code> with your actual cohort number</p></li>
-<li><p>Go back to the root of the dev-site</p>
+<li>Paste the content below into <figure><pre class="prettyprint"><code>index.html</code></pre></figure>
+<figure><pre class="prettyprint"><code>html     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code></pre></figure>
+&gt; We will use <figure><pre class="prettyprint"><code>sed</code></pre></figure> to replace the
+<figure><pre class="prettyprint"><code>&lt;COHORT&gt;</code></pre></figure> with your actual cohort number</li>
+<li>Go back to the root of the dev-site
 <ul>
-<li><code>cd ~/dev-site</code></li>
+<li><figure><pre class="prettyprint"><code>cd ~/dev-site</code></pre></figure></li>
 </ul></li>
-<li><p>Create a file named <code>dockerfile</code> and paste this
+<li>Create a file named <figure><pre class="prettyprint"><code>dockerfile</code></pre></figure> and paste this
 content. Replace 500 with your cohort number.
-<code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code>
+<figure><pre class="prettyprint"><code>DOCKERFILE     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code></pre></figure>
 &gt; The <strong>COPY</strong> keyword will copy the files from the host
 machine in public-html to the container htdocs folder at image build
 time. Httpd will automatically serve files in htdocs folder when it is
-started.</p>
-<blockquote>
-<p>The <strong>ENV</strong> keyword sets an enviornment variable that we
+started.
+<aside>
+The <strong>ENV</strong> keyword sets an enviornment variable that we
 can access later with $cohort. The <strong>RUN</strong> keyword executes
 a command when building the image, such as sed. Here we are replacing
-<code>&lt;COHORT&gt;</code> with the value of $cohort for each file in
+<figure><pre class="prettyprint"><code>&lt;COHORT&gt;</code></pre></figure> with the value of $cohort for each file in
 htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
-is not needed here because the base image already exposes that port.</p>
-</blockquote>
-<blockquote>
-<p>The <strong>CMD</strong> keyword should only be used once, it is
+is not needed here because the base image already exposes that port.
+</aside>
+<aside>
+The <strong>CMD</strong> keyword should only be used once, it is
 different from RUN because it is not executed while the image is being
 build. Instead, CMD is the command to run when the image is executed as
 a container. This is known as the main process, and when this process is
 done executing the container will stop. To keep your container alive,
-this command should not exit. In this case <code>httpd-foreground</code>
+this command should not exit. In this case <figure><pre class="prettyprint"><code>httpd-foreground</code></pre></figure>
 is the same command the base image executes. Therefore, the entire line
 can be removed since the base image already executes the
-<code>httpd-foreground</code> command.</p>
-</blockquote>
-<blockquote>
-
-</blockquote></li>
-<li><p>Build your dockerfile into an image</p>
+<figure><pre class="prettyprint"><code>httpd-foreground</code></pre></figure> command.
+</aside>
+<aside>
+</aside></li>
+<li>Build your dockerfile into an image
 <ul>
-<li><code>sudo docker build -t dev-httpd .</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker build -t dev-httpd .</code></pre></figure></li>
 </ul></li>
-<li><p>List your images to verify your image was created.</p>
+<li>List your images to verify your image was created.
 <ul>
-<li><code>sudo docker images</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker images</code></pre></figure></li>
 </ul></li>
-<li><p>Deploy your image to a container.</p>
+<li>Deploy your image to a container.
 <ul>
-<li><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker run -dit --name dev-httpd-container -p 8080:80 dev-httpd</code></pre></figure></li>
 </ul></li>
-<li><p>List your running docker images</p>
+<li>List your running docker images
 <ul>
-<li><code>sudo docker ps -a</code>
+<li><figure><pre class="prettyprint"><code>sudo docker ps -a</code></pre></figure>
 <ul>
 <li>Notice that port 8080 of the host OS is being routed to port 80 of
 the dev-httpd container. The httpd service is already configured to
@@ -166,85 +165,85 @@ listen on port 80. Now all requests to port 8080 are forwarded to port
 80 of the container.</li>
 </ul></li>
 </ul></li>
-<li><p>Visit the website in the browser, this time change the port to
+<li>Visit the website in the browser, this time change the port to
 8080 and you should see your dev site. You can go back and forth between
-sites simply by adjusting the ports in the browser.</p>
+sites simply by adjusting the ports in the browser.
 <ul>
-<li><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></li>
+<li><figure><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></figure></li>
 </ul></li>
 </ol>
 <h1 id="volumes-bonus">Volumes (Bonus)</h1>
-<p>A volume is a shared folder between the host OS or other containers.
+A volume is a shared folder between the host OS or other containers.
 We can create a volume from public-html on the host OS to htdocs on the
 container. A volume could enable editing the files in the public-html
 folder and reflecting the changes in the htdocs folder of the
-container.</p>
-<p>Without using volumes you would have to rebuild the image and
+container.
+Without using volumes you would have to rebuild the image and
 container each time you changed the file because the dockerfile (and
-<code>COPY</code> command) is only executed at image creation
-(<code>docker build</code>). You could edit the files in the container,
-but that requires <code>docker exec</code> and volumes are still more
-convenient.</p>
+<figure><pre class="prettyprint"><code>COPY</code></pre></figure> command) is only executed at image creation
+(<figure><pre class="prettyprint"><code>docker build</code></pre></figure>). You could edit the files in the container,
+but that requires <figure><pre class="prettyprint"><code>docker exec</code></pre></figure> and volumes are still more
+convenient.
 <h2 id="instructions-1">Instructions</h2>
-<p>The activity walks you through editing the web page on the host
+The activity walks you through editing the web page on the host
 before adding a volume. Then you will edit the file after adding a
 volume and compare the difference. This activity uses the dev
-environment only.</p>
+environment only.
 <ol type="1">
-<li><p>Edit the host HTML file. You can add any changes you like, as
-long as they will be noticeable in the web browser.</p>
+<li>Edit the host HTML file. You can add any changes you like, as
+long as they will be noticeable in the web browser.
 <ul>
-<li><code>vim ~/dev-site/public-html/index.html</code></li>
+<li><figure><pre class="prettyprint"><code>vim ~/dev-site/public-html/index.html</code></pre></figure></li>
 </ul></li>
-<li><p>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take
-note if the changes made in step 1 are visible.</p></li>
-<li><p>Delete the container and re-create it with a volume mount using
-the <code>docker run</code> command and adding
-<code>-v /full/path/on/host:/path/on/container</code>. The docker run
-command will fail if the container name is already taken.</p></li>
+<li>Visit <figure><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></figure> and take
+note if the changes made in step 1 are visible.</li>
+<li>Delete the container and re-create it with a volume mount using
+the <figure><pre class="prettyprint"><code>docker run</code></pre></figure> command and adding
+<figure><pre class="prettyprint"><code>-v /full/path/on/host:/path/on/container</code></pre></figure>. The docker run
+command will fail if the container name is already taken.</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker rm <span class="at">-f</span> dev-httpd-container</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">-dit</span> <span class="at">-v</span> /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs <span class="dt">\</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>--name dev-httpd-container <span class="at">-p</span> 8080:80 dev-httpd</span></code></pre></div>
+<div class="sourceCode" id="cb1"><figure><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
+sudo docker run -dit -v /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs \
+--name dev-httpd-container -p 8080:80 dev-httpd</code></pre></figure></div>
 <ol start="4" type="1">
 <li>Edit the host HTML file again with a noticeable change.
 <ul>
-<li><code>vim ~/dev-site/public-html/index.html</code></li>
+<li><figure><pre class="prettyprint"><code>vim ~/dev-site/public-html/index.html</code></pre></figure></li>
 </ul></li>
-<li>Visit <code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code> and take note
+<li>Visit <figure><pre class="prettyprint"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></figure> and take note
 if the changes made in step 1 and step 4 are visible.</li>
 </ol>
 <h1 id="cleanup">Cleanup</h1>
 <ol type="1">
 <li>Stop the docker containers.
 <ul>
-<li><code>sudo docker stop dev-httpd-container test-httpd-container</code>
+<li><figure><pre class="prettyprint"><code>sudo docker stop dev-httpd-container test-httpd-container</code></pre></figure>
 &gt; To start a stopped container use
-<code>sudo docker start &lt;CONTAINER_NAME&gt;</code></li>
+<figure><pre class="prettyprint"><code>sudo docker start &lt;CONTAINER_NAME&gt;</code></pre></figure></li>
 </ul></li>
 <li>Delete the containers.
 <ul>
-<li><code>sudo docker rm dev-httpd-container test-httpd-container</code>
+<li><figure><pre class="prettyprint"><code>sudo docker rm dev-httpd-container test-httpd-container</code></pre></figure>
 &gt; You could have stopped and deleted in one step with -f</li>
 </ul></li>
 <li>Delete the images.
 <ul>
-<li><code>sudo docker rmi dev-httpd test-httpd httpd:2.4</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker rmi dev-httpd test-httpd httpd:2.4</code></pre></figure></li>
 </ul></li>
 <li>Now run these commands to verify you have deleted the images and the
 containers.
 <ul>
-<li><code>sudo docker ps -a</code></li>
-<li><code>sudo docker images</code></li>
+<li><figure><pre class="prettyprint"><code>sudo docker ps -a</code></pre></figure></li>
+<li><figure><pre class="prettyprint"><code>sudo docker images</code></pre></figure></li>
 </ul></li>
 </ol>
 <h1 id="conclusion">Conclusion</h1>
-<p>In this activity you created a basic test docker container and
+In this activity you created a basic test docker container and
 verified it was accessible over the internet. You then created another
 container from a more sophisticated dockerfile on the same host OS. If
 you completed the bonus you added a volume linking a host directory to a
 container and updated the website via the host OS. Finally, you
 performed the operations needed to remove the containers and images.
 These skills are essential for navigating modern microservice
-stacks.</p>
+stacks.
+</div>
