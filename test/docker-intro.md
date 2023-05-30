@@ -69,7 +69,7 @@ This website will serve our own HTML files.
     - `mkdir public-html`
     - `cd public-html`
 3. Paste the content below into `index.html`
-    ```html
+    ```python
     <html>
     <body>
         <h1>
