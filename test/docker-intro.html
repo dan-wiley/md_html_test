@@ -101,53 +101,46 @@ This website will serve our own HTML files.
 <ul>
 <li><figure><pre class="prettyprint nocode"><code>cd ~/dev-site</code></pre></figure></li>
 </ul></li>
-<li>Make a folder for html files named <figure><pre class="prettyprint nocode"><code>public-html</code></pre></figure> and
-cd into it.
+<li>Make a folder for html files named <figure><pre class="prettyprint nocode"><code>public-html</code></pre></figure> and cd
+into it.
 <ul>
 <li><figure><pre class="prettyprint nocode"><code>mkdir public-html</code></pre></figure></li>
 <li><figure><pre class="prettyprint nocode"><code>cd public-html</code></pre></figure></li>
 </ul></li>
-<li>Paste the content below into <figure><pre class="prettyprint nocode"><code>index.html</code></pre></figure>
-<figure><pre class="prettyprint nocode"><code>&lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code></pre></figure>
-&gt; We will use <figure><pre class="prettyprint nocode"><code>sed</code></pre></figure> to replace the
-<figure><pre class="prettyprint nocode"><code>&lt;COHORT&gt;</code></pre></figure> with your actual cohort number</li>
+<li>Paste the content below into <figure><pre class="prettyprint nocode"><code>index.html</code></pre></figure></li>
+</ol>
+<div class="sourceCode" id="cb1"><figure><pre class="prettyprint lang-html"><code>&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;
+    This is the Dev Site
+    &lt;/h1&gt;
+    &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></figure></div>
+<figure><pre class="prettyprint nocode"><code>&gt; We will use `sed` to replace the `&lt;COHORT&gt;` with your actual cohort number</code></pre></figure>
+<ol start="4" type="1">
 <li>Go back to the root of the dev-site
 <ul>
 <li><figure><pre class="prettyprint nocode"><code>cd ~/dev-site</code></pre></figure></li>
 </ul></li>
-<li>Create a file named <figure><pre class="prettyprint nocode"><code>dockerfile</code></pre></figure> and paste this
-content. Replace 500 with your cohort number.<br/>
-``` FROM httpd:2.4
+<li>Create a file named <figure><pre class="prettyprint nocode"><code>dockerfile</code></pre></figure> and paste this content.
+Replace 500 with your cohort number.<br/>
+</li>
+</ol>
+<div class="sourceCode" id="cb3"><figure><pre class="prettyprint"><code>FROM httpd:2.4  
 COPY ./public-html/ /usr/local/apache2/htdocs/
 ENV cohort=500
-RUN sed -i “s/<cohort>/$cohort/g” /usr/local/apache2/htdocs/*</cohort>
+RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*
 EXPOSE 80
-CMD [“httpd-foreground”] ```<br/>
-&gt; The <strong>COPY</strong> keyword will copy the files from the host
-machine in public-html to the container htdocs folder at image build
-time. Httpd will automatically serve files in htdocs folder when it is
-started.
-<aside>
-The <strong>ENV</strong> keyword sets an enviornment variable that we
-can access later with $cohort. The <strong>RUN</strong> keyword executes
-a command when building the image, such as sed. Here we are replacing
-<figure><pre class="prettyprint nocode"><code>&lt;COHORT&gt;</code></pre></figure> with the value of $cohort for each file in
-htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
-is not needed here because the base image already exposes that port.
-</aside>
-<aside>
-The <strong>CMD</strong> keyword should only be used once, it is
-different from RUN because it is not executed while the image is being
-build. Instead, CMD is the command to run when the image is executed as
-a container. This is known as the main process, and when this process is
-done executing the container will stop. To keep your container alive,
-this command should not exit. In this case <figure><pre class="prettyprint nocode"><code>httpd-foreground</code></pre></figure>
-is the same command the base image executes. Therefore, the entire line
-can be removed since the base image already executes the
-<figure><pre class="prettyprint nocode"><code>httpd-foreground</code></pre></figure> command.
-</aside>
-<aside>
-</aside></li>
+CMD ["httpd-foreground"]</code></pre></figure></div>
+<figure><pre class="prettyprint nocode"><code>&gt; The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
+
+&gt; The **ENV** keyword sets an enviornment variable that we can access later with $cohort. The **RUN** keyword executes a command when building the image, such as sed. Here we are replacing `&lt;COHORT&gt;` with the value of $cohort for each file in htdocs. **EXPOSE** opens the port 80 of the container, it is not needed here because the base image already exposes that port.
+
+&gt; The **CMD** keyword should only be used once, it is different from RUN because it is not executed while the image is being build. Instead, CMD is the command to run when the image is executed as a container. This is known as the main process, and when this process is done executing the container will stop. To keep your container alive, this command should not exit. In this case `httpd-foreground` is the same command the base image executes. Therefore, the entire line can be removed since the base image already executes the `httpd-foreground` command.
+
+&gt; </code></pre></figure>
+<ol start="6" type="1">
 <li>Build your dockerfile into an image
 <ul>
 <li><figure><pre class="prettyprint nocode"><code>sudo docker build -t dev-httpd .</code></pre></figure></li>
@@ -170,8 +163,8 @@ listen on port 80. Now all requests to port 8080 are forwarded to port
 80 of the container.</li>
 </ul></li>
 </ul></li>
-<li>Visit the website in the browser, this time change the port to
-8080 and you should see your dev site. You can go back and forth between
+<li>Visit the website in the browser, this time change the port to 8080
+and you should see your dev site. You can go back and forth between
 sites simply by adjusting the ports in the browser.
 <ul>
 <li><figure><pre class="prettyprint nocode"><code>http://&lt;YOUR_PUBLIC_IP&gt;:8080</code></pre></figure></li>
@@ -207,7 +200,7 @@ the <figure><pre class="prettyprint nocode"><code>docker run</code></pre></figur
 <figure><pre class="prettyprint nocode"><code>-v /full/path/on/host:/path/on/container</code></pre></figure>. The docker run
 command will fail if the container name is already taken.</li>
 </ol>
-<div class="sourceCode" id="cb1"><figure><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
+<div class="sourceCode" id="cb5"><figure><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
 sudo docker run -dit -v /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs \
 --name dev-httpd-container -p 8080:80 dev-httpd</code></pre></figure></div>
 <ol start="4" type="1">
