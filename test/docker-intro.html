@@ -108,7 +108,7 @@ cd into it.
 <li><figure><pre class="prettyprint nocode"><code>cd public-html</code></pre></figure></li>
 </ul></li>
 <li>Paste the content below into <figure><pre class="prettyprint nocode"><code>index.html</code></pre></figure>
-<figure><pre class="prettyprint nocode"><code>python     &lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code></pre></figure>
+<figure><pre class="prettyprint nocode"><code>&lt;html&gt;     &lt;body&gt;         &lt;h1&gt;         This is the Dev Site         &lt;/h1&gt;         &lt;h2&gt;Cohort number &lt;COHORT&gt; &lt;/h2&gt;     &lt;/body&gt;     &lt;/html&gt;</code></pre></figure>
 &gt; We will use <figure><pre class="prettyprint nocode"><code>sed</code></pre></figure> to replace the
 <figure><pre class="prettyprint nocode"><code>&lt;COHORT&gt;</code></pre></figure> with your actual cohort number</li>
 <li>Go back to the root of the dev-site
@@ -116,8 +116,8 @@ cd into it.
 <li><figure><pre class="prettyprint nocode"><code>cd ~/dev-site</code></pre></figure></li>
 </ul></li>
 <li>Create a file named <figure><pre class="prettyprint nocode"><code>dockerfile</code></pre></figure> and paste this
-content. Replace 500 with your cohort number.
-<figure><pre class="prettyprint nocode"><code>bash     FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code></pre></figure>
+content. Replace 500 with your cohort number.<br/>
+<figure><pre class="prettyprint nocode"><code>FROM httpd:2.4     COPY ./public-html/ /usr/local/apache2/htdocs/     ENV cohort=500     RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*     EXPOSE 80     CMD ["httpd-foreground"]</code></pre></figure><br/>
 &gt; The <strong>COPY</strong> keyword will copy the files from the host
 machine in public-html to the container htdocs folder at image build
 time. Httpd will automatically serve files in htdocs folder when it is
