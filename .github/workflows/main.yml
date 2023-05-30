@@ -21,19 +21,7 @@ jobs:
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 pandoc/minimal:3.1.1 \
-                -o "${file%.md}_baseline.html" \
-                "$file"
-            done' sh {} +
-
-      - name: Convert Markdown to Custom HTML
-        run: |
-          find . -name "*.md" -type f -exec sh -c '
-            for file do
-              docker run --rm \
-                -v ${{ github.workspace }}:/workspace \
-                -w /workspace \
-                pandoc/minimal:3.1.1 \
-                -o "${file%.md}_custom.html" \
+                -o "${file%.md}.html" \
                 "$file"
             done' sh {} +
 
@@ -45,7 +33,7 @@ jobs:
 
       - name: Modify HTML using Beautiful Soup
         run: |
-          find . -name "*_custom.html" -type f -exec sh -c '
+          find . -name "*.html" -type f -exec sh -c '
             for file do
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
@@ -64,16 +52,6 @@ jobs:
               echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
             done' sh {} + > index.html
           mv index.html docs/
-
-
-      - name: Diff Baseline and Customized HTML
-        run: |
-          find . -name "*.md" -type f -exec sh -c '
-            for file do
-              echo "$file"
-              diff "${file%.md}_baseline.html" "${file%.md}_custom.html" || true
-              echo ""
-            done' sh {} +
 
       - name: Configure Git
         run: |
