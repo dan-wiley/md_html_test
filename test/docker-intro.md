@@ -91,13 +91,11 @@ This website will serve our own HTML files.
   EXPOSE 80
   CMD ["httpd-foreground"]
   ```  
-    > The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
+  > The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
 
-    > The **ENV** keyword sets an enviornment variable that we can access later with $cohort. The **RUN** keyword executes a command when building the image, such as sed. Here we are replacing `<COHORT>` with the value of $cohort for each file in htdocs. **EXPOSE** opens the port 80 of the container, it is not needed here because the base image already exposes that port.
+  > The **ENV** keyword sets an enviornment variable that we can access later with $cohort. The **RUN** keyword executes a command when building the image, such as sed. Here we are replacing `<COHORT>` with the value of $cohort for each file in htdocs. **EXPOSE** opens the port 80 of the container, it is not needed here because the base image already exposes that port.
 
-    > The **CMD** keyword should only be used once, it is different from RUN because it is not executed while the image is being build. Instead, CMD is the command to run when the image is executed as a container. This is known as the main process, and when this process is done executing the container will stop. To keep your container alive, this command should not exit. In this case `httpd-foreground` is the same command the base image executes. Therefore, the entire line can be removed since the base image already executes the `httpd-foreground` command.
-    
-    > 
+  > The **CMD** keyword should only be used once, it is different from RUN because it is not executed while the image is being build. Instead, CMD is the command to run when the image is executed as a container. This is known as the main process, and when this process is done executing the container will stop. To keep your container alive, this command should not exit. In this case `httpd-foreground` is the same command the base image executes. Therefore, the entire line can be removed since the base image already executes the `httpd-foreground` command.   
 
 6. Build your dockerfile into an image
     - `sudo docker build -t dev-httpd .`
