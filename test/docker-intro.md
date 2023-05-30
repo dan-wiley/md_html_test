@@ -70,14 +70,14 @@ This website will serve our own HTML files.
     - `cd public-html`
 3. Paste the content below into `index.html`
     ```html
-    <html>  
-    <body>  
-        <h1>  
-        This is the Dev Site  
-        </h1>  
-        <h2>Cohort number <COHORT> </h2>  
-    </body>  
-    </html>  
+    <html>
+    <body>
+        <h1>
+        This is the Dev Site
+        </h1>
+        <h2>Cohort number <COHORT> </h2>
+    </body>
+    </html>
     ```
     > We will use `sed` to replace the `<COHORT>` with your actual cohort number
 4. Go back to the root of the dev-site
