@@ -133,13 +133,31 @@ ENV cohort=500
 RUN sed -i "s/&lt;COHORT&gt;/$cohort/g" /usr/local/apache2/htdocs/*
 EXPOSE 80
 CMD ["httpd-foreground"]</code></pre></figure></div>
-<figure><pre class="prettyprint nocode"><code>&gt; The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
-
-&gt; The **ENV** keyword sets an enviornment variable that we can access later with $cohort. The **RUN** keyword executes a command when building the image, such as sed. Here we are replacing `&lt;COHORT&gt;` with the value of $cohort for each file in htdocs. **EXPOSE** opens the port 80 of the container, it is not needed here because the base image already exposes that port.
-
-&gt; The **CMD** keyword should only be used once, it is different from RUN because it is not executed while the image is being build. Instead, CMD is the command to run when the image is executed as a container. This is known as the main process, and when this process is done executing the container will stop. To keep your container alive, this command should not exit. In this case `httpd-foreground` is the same command the base image executes. Therefore, the entire line can be removed since the base image already executes the `httpd-foreground` command.
-
-&gt; </code></pre></figure>
+<aside>
+The <strong>COPY</strong> keyword will copy the files from the host
+machine in public-html to the container htdocs folder at image build
+time. Httpd will automatically serve files in htdocs folder when it is
+started.
+</aside>
+<aside>
+The <strong>ENV</strong> keyword sets an enviornment variable that we
+can access later with $cohort. The <strong>RUN</strong> keyword executes
+a command when building the image, such as sed. Here we are replacing
+<figure><pre class="prettyprint nocode"><code>&lt;COHORT&gt;</code></pre></figure> with the value of $cohort for each file in
+htdocs. <strong>EXPOSE</strong> opens the port 80 of the container, it
+is not needed here because the base image already exposes that port.
+</aside>
+<aside>
+The <strong>CMD</strong> keyword should only be used once, it is
+different from RUN because it is not executed while the image is being
+build. Instead, CMD is the command to run when the image is executed as
+a container. This is known as the main process, and when this process is
+done executing the container will stop. To keep your container alive,
+this command should not exit. In this case <figure><pre class="prettyprint nocode"><code>httpd-foreground</code></pre></figure>
+is the same command the base image executes. Therefore, the entire line
+can be removed since the base image already executes the
+<figure><pre class="prettyprint nocode"><code>httpd-foreground</code></pre></figure> command.
+</aside>
 <ol start="6" type="1">
 <li>Build your dockerfile into an image
 <ul>
@@ -200,7 +218,7 @@ the <figure><pre class="prettyprint nocode"><code>docker run</code></pre></figur
 <figure><pre class="prettyprint nocode"><code>-v /full/path/on/host:/path/on/container</code></pre></figure>. The docker run
 command will fail if the container name is already taken.</li>
 </ol>
-<div class="sourceCode" id="cb5"><figure><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
+<div class="sourceCode" id="cb4"><figure><pre class="prettyprint"><code>sudo docker rm -f dev-httpd-container
 sudo docker run -dit -v /home/ec2-user/dev-site/public-html:/usr/local/apache2/htdocs \
 --name dev-httpd-container -p 8080:80 dev-httpd</code></pre></figure></div>
 <ol start="4" type="1">
