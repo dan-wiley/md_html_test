@@ -40,10 +40,13 @@ def modify_code_tags(soup):
 
         classes = ['prettyprint']
         language = code_block.get('class', None)
+        
         if language:
             for lang in language:
                 if lang in class_map:
                     classes.append(class_map[lang])
+        else:
+            classes.append('nocode')
         pre_tag['class'] = ' '.join(classes)
         del code_block['class']
 
