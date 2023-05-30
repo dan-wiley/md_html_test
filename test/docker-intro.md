@@ -69,7 +69,7 @@ This website will serve our own HTML files.
     - `mkdir public-html`
     - `cd public-html`
 3. Paste the content below into `index.html`
-    ```python
+    ```
     <html>
     <body>
         <h1>
@@ -82,15 +82,15 @@ This website will serve our own HTML files.
     > We will use `sed` to replace the `<COHORT>` with your actual cohort number
 4. Go back to the root of the dev-site
     - `cd ~/dev-site`
-5. Create a file named `dockerfile` and paste this content. Replace 500 with your cohort number.
-    ```bash
+5. Create a file named `dockerfile` and paste this content. Replace 500 with your cohort number.  
+    ```
     FROM httpd:2.4
     COPY ./public-html/ /usr/local/apache2/htdocs/
     ENV cohort=500
     RUN sed -i "s/<COHORT>/$cohort/g" /usr/local/apache2/htdocs/*
     EXPOSE 80
     CMD ["httpd-foreground"]
-    ```
+    ```  
     > The **COPY** keyword will copy the files from the host machine in public-html to the container htdocs folder at image build time. Httpd will automatically serve files in htdocs folder when it is started. 
 
     > The **ENV** keyword sets an enviornment variable that we can access later with $cohort. The **RUN** keyword executes a command when building the image, such as sed. Here we are replacing `<COHORT>` with the value of $cohort for each file in htdocs. **EXPOSE** opens the port 80 of the container, it is not needed here because the base image already exposes that port.
