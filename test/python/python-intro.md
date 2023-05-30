@@ -9,10 +9,10 @@
   - Has packages installed on images already!
 
 1. Use this image to run the code below
-    ```
-    FROM python:3.10.0
-    # this is all you need for basic python
-    ```
+  ```
+  FROM python:3.10.0
+  # this is all you need for basic python
+  ```
 
 ```python
 print("hello")
