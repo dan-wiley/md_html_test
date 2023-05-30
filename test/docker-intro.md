@@ -83,7 +83,7 @@ This website will serve our own HTML files.
 4. Go back to the root of the dev-site
     - `cd ~/dev-site`
 5. Create a file named `dockerfile` and paste this content. Replace 500 with your cohort number.
-    ```DOCKERFILE
+    ```bash
     FROM httpd:2.4
     COPY ./public-html/ /usr/local/apache2/htdocs/
     ENV cohort=500
