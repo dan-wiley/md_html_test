@@ -26,7 +26,7 @@ if text:
 > This is a block quote
 
 - hello world
-  > This is a nested block quote
+> This is not a nested block quote
 
 
 | Python | C |
