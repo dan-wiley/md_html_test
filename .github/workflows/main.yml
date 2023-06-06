@@ -13,9 +13,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Determine modified files
+        id: get_modified_files
+        run: |
+          echo "::set-output name=md_files::$(git diff --name-only $(git rev-parse HEAD^) HEAD -- '*.md')"
+
       - name: Convert modified Markdown to Baseline HTML
         run: |
-          for file in $(git diff --name-only HEAD~1 HEAD -- '*.md'); do
+          for file in ${{ steps.get_modified_files.outputs.md_files }}; do
             echo "Converting $file to HTML"
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
@@ -30,9 +35,15 @@ jobs:
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
           docker build -t my-bs -f Dockerfile.bs .
 
+      - name: Determine modified files
+        id: get_modified_html
+        run: |
+          echo "::set-output name=html_files::$(git diff --name-only $(git rev-parse HEAD^) HEAD -- '*.html')"
+
+
       - name: Modify HTML using Beautiful Soup
         run: |
-          for file in $(git diff --name-only HEAD~1 HEAD -- '*.html'); do
+          for file in ${{ steps.get_modified_files.outputs.html_files }}; do
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
@@ -40,11 +51,11 @@ jobs:
               python python_scripts/edit_html.py "$file"
           done
 
-      - name: Move modified HTML files to doc and Generate index.html
+      - name: Move modified HTML files to docs and Generate index.html
         run: |
           rm -rf docs
           mkdir -p docs
-          for file in $(git diff --name-only HEAD~1 HEAD -- '*.html'); do
+          for file in ${{ steps.get_modified_files.outputs.html_files }}; do
             cp "$file" "docs/$(basename "$file")"
             echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
           done > index.html
