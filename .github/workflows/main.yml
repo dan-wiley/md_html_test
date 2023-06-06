@@ -16,7 +16,8 @@ jobs:
       - name: Determine modified Markdown files
         id: get_modified_md_files
         run: |
-          MD_FILES=$(git log --name-only --pretty="" --diff-filter=AM ${{ github.sha }} -- '*.md')
+          MD_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          #MD_FILES=$(git log --name-only --pretty="" --diff-filter=AM ${{ github.sha }} -- '*.md')
           echo "MD_FILES=$MD_FILES" >> $GITHUB_ENV
           echo "Modified Markdown files: $MD_FILES"
 
