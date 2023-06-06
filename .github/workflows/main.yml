@@ -16,7 +16,9 @@ jobs:
       - name: Determine modified Markdown files
         id: get_modified_md_files
         run: |
-          echo "MD_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- '*.md')" >> $GITHUB_ENV
+          MD_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- '*.md')
+          echo "MD_FILES=$MD_FILES" >> $GITHUB_ENV
+          echo "Modified Markdown files: $MD_FILES"
 
       - name: Convert modified Markdown to Baseline HTML
         run: |
@@ -38,7 +40,9 @@ jobs:
       - name: Determine modified HTML files
         id: get_modified_html_files
         run: |
-          echo "HTML_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- '*.html')" >> $GITHUB_ENV
+          HTML_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- '*.html')
+          echo "HTML_FILES=$HTML_FILES" >> $GITHUB_ENV
+          echo "Modified HTML files: $HTML_FILES"
 
       - name: Modify HTML using Beautiful Soup
         run: |
