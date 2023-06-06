@@ -17,9 +17,14 @@ jobs:
         id: get_modified_md_files
         uses: jitterbit/get-changed-files@v1
 
+      - name: Set up environment variables
+        id: set_env_vars
+        run: |
+          echo "MD_FILES=${{ steps.get_modified_md_files.outputs.files }}" >> $GITHUB_ENV
+ 
       - name: Convert modified Markdown to Baseline HTML
         run: |
-          mapfile -d ',' -t md_files < <(printf '%s,' '${{ steps.get_modified_md_files.outputs.files }}')
+          mapfile -d ',' -t md_files < <(printf '%s,' "${{ env.MD_FILES }}")
           for file in "${md_files[@]}"; do
             echo "Converting $file to HTML"
             docker run --rm \
@@ -34,13 +39,6 @@ jobs:
           echo "FROM python:3" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
           docker build -t my-bs -f Dockerfile.bs .
-
-      - name: Determine modified HTML files
-        id: get_modified_html_files
-        run: |
-          HTML_FILES=$(git log --name-only --pretty="" --diff-filter=AM ${{ github.sha }} -- '*.html')
-          echo "HTML_FILES=$HTML_FILES" >> $GITHUB_ENV
-          echo "Modified HTML files: $HTML_FILES"
 
       - name: Modify HTML using Beautiful Soup
         run: |
