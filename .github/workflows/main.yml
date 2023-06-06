@@ -16,8 +16,6 @@ jobs:
       - name: Determine modified Markdown files
         id: get_modified_md_files
         uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'md'
 
       - name: Convert modified Markdown to Baseline HTML
         run: |
