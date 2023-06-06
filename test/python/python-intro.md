@@ -16,7 +16,7 @@
 
 ```python
 print("hello worldzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
-text="new text"
+text="new textzz"
 text += " again"
 if text:
     print(text)
