@@ -14,22 +14,15 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Determine modified Markdown files
-        id: print_modified_md_files
-        run: |
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-
-
-      - name: Determine modified Markdown files
         id: get_modified_md_files
-        run: |
-          MD_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
-          #MD_FILES=$(git log --name-only --pretty="" --diff-filter=AM ${{ github.sha }} -- '*.md')
-          echo "MD_FILES=$MD_FILES" >> $GITHUB_ENV
-          echo "Modified Markdown files: $MD_FILES"
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'csv'
 
       - name: Convert modified Markdown to Baseline HTML
         run: |
-          for file in ${{ env.MD_FILES }}; do
+          mapfile -d ',' -t md_files < <(printf '%s,' '${{ steps.get_modified_md_files.outputs.files }}')
+          for file in "${md_files[@]}"; do
             echo "Converting $file to HTML"
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
