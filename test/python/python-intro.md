@@ -4,7 +4,7 @@
 
 
 - Docker is funzzzz
-- Docker works
+- Docker workszzzz
   - Same on every machine
   - Has packages installed on images already!
 
