@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      
+      - name: Determine modified Markdown files
+        id: print_modified_md_files
+        run: |
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+
 
       - name: Determine modified Markdown files
         id: get_modified_md_files
