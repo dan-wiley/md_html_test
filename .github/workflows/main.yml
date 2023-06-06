@@ -19,7 +19,7 @@ jobs:
           echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD -- '*.md')"
 
       - name: Convert modified Markdown to Baseline HTML
-        uses: docker://pandoc/core:3.14
+        uses: docker://pandoc/minimal:3.1.1
         with:
           args: |
             bash -c '
