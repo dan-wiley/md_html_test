@@ -43,9 +43,14 @@ jobs:
           docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
-        container: my-bs
         run: |
-          python python_scripts/edit_html.py ${{ steps.get_modified_html_files.outputs.files }}
+          for file in ${{ steps.get_modified_html_files.outputs.files }}; do
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              my-bs \
+              python python_scripts/edit_html.py "$file"
+          done
 
       - name: Move modified HTML files to doc
         run: |
