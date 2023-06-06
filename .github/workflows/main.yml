@@ -22,7 +22,7 @@ jobs:
               echo "Converting $file to HTML"
               pandoc -f markdown -t html -o "${file%.md}.html" "$file"
             done
-          '
+            '
 
       - name: Build Docker image for Beautifulsoup
         run: |
