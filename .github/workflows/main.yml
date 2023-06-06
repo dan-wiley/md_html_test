@@ -14,15 +14,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Convert modified Markdown to Baseline HTML
-        uses: docker://pandoc/minimal:3.1.1
-        with:
-          args: |
-            bash -c '
-            for file in $(git diff --name-only HEAD^ HEAD -- "*.md"); do
-              echo "Converting $file to HTML"
+        run: |
+          for file in $(git diff --name-only HEAD^ HEAD -- "*.md"); do
+            echo "Converting $file to HTML"
+            docker run --rm \
+              -v ${{ github.workspace }}:/workspace \
+              -w /workspace \
+              pandoc/minimal:3.1.1 \
               pandoc -f markdown -t html -o "${file%.md}.html" "$file"
-            done
-            '
+          done
 
       - name: Build Docker image for Beautifulsoup
         run: |
