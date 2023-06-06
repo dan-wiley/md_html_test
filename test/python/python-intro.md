@@ -1,6 +1,6 @@
 ## Docker Lesson 1
 
-> In this module ....z
+> In this module ....zzzz
 
 
 - Docker is funzzzz
