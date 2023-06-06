@@ -16,7 +16,8 @@ jobs:
       - name: Convert modified Markdown to Baseline HTML
         uses: docker://pandoc/minimal:3.1.1
         with:
-          args: bash -c '
+          args: |
+            bash -c '
             for file in $(git diff --name-only HEAD^ HEAD -- "*.md"); do
               echo "Converting $file to HTML"
               pandoc -f markdown -t html -o "${file%.md}.html" "$file"
