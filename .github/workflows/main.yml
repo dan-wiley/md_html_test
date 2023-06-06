@@ -13,34 +13,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get modified Markdown files
+      - name: Determine modified Markdown files
         id: get_modified_md_files
-        uses: colpal/actions-changed-files@v1
-        with:
-          files: '*.md'
+        run: |
+          echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD -- '*.md')"
 
       - name: Convert modified Markdown to Baseline HTML
-        uses: docker://pandoc/minimal:3.1.1
+        uses: docker://pandoc/core:3.14
         with:
           args: |
-            sh -c '
+            bash -c '
               for file in ${{ steps.get_modified_md_files.outputs.files }}; do
                 echo "Converting $file to HTML"
-                pandoc -v ${{ github.workspace }}:/workspace -w /workspace -o "${file%.md}.html" "$file"
+                pandoc -f markdown -t html -o "${file%.md}.html" "$file"
               done
             '
-
-      - name: Get modified HTML files
-        id: get_modified_html_files
-        uses: colpal/actions-changed-files@v1
-        with:
-          files: '*.html'
 
       - name: Build Docker image for Beautifulsoup
         run: |
           echo "FROM python:3" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
           docker build -t my-bs -f Dockerfile.bs .
+
+      - name: Determine modified HTML files
+        id: get_modified_html_files
+        run: |
+          echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD -- '*.html')"
 
       - name: Modify HTML using Beautiful Soup
         run: |
@@ -52,23 +50,21 @@ jobs:
               python python_scripts/edit_html.py "$file"
           done
 
-      - name: Move modified HTML files to doc
+      - name: Move modified HTML files to doc and Generate index.html
         run: |
+          rm -rf docs
           mkdir -p docs
           for file in ${{ steps.get_modified_html_files.outputs.files }}; do
             cp "$file" "docs/$(basename "$file")"
             echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
           done > index.html
+
           mv index.html docs/
 
-      - name: Configure Git
-        run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
 
-      - name: Add and Push HTML files
-        run: |
           git add --all
           git restore --staged Dockerfile*
-          git commit -m "Update README"
+          git commit -m "Update HTML files"
           git push origin main
