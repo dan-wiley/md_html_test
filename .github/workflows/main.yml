@@ -13,17 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Convert Markdown to Baseline HTML
-        run: |
-          find . -name "*.md" -type f -exec sh -c '
-            for file do
-              docker run --rm \
-                -v ${{ github.workspace }}:/workspace \
-                -w /workspace \
-                pandoc/minimal:3.1.1 \
-                -o "${file%.md}.html" \
-                "$file"
-            done' sh {} +
+      - name: Get modified Markdown files
+        id: get_modified_md_files
+        uses: colpal/actions-changed-files@v1
+        with:
+          files: '*.md'
+
+      - name: Convert modified Markdown to Baseline HTML
+        uses: docker://pandoc/minimal:3.1.1
+        with:
+          args: |
+            sh -c '
+              for file in ${{ steps.get_modified_md_files.outputs.files }}; do
+                echo "Converting $file to HTML"
+                pandoc -v ${{ github.workspace }}:/workspace -w /workspace -o "${file%.md}.html" "$file"
+              done
+            '
+
+      - name: Get modified HTML files
+        id: get_modified_html_files
+        uses: colpal/actions-changed-files@v1
+        with:
+          files: '*.html'
 
       - name: Build Docker image for Beautifulsoup
         run: |
@@ -32,25 +43,17 @@ jobs:
           docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
+        container: my-bs
         run: |
-          find . -name "*.html" -type f -exec sh -c '
-            for file do
-              docker run --rm \
-                -v ${{ github.workspace }}:/workspace \
-                -w /workspace \
-                my-bs \
-                python python_scripts/edit_html.py "$file"
-            done' sh {} +     
-            
-      - name: Move files to doc and Generate index.html
+          python python_scripts/edit_html.py ${{ steps.get_modified_html_files.outputs.files }}
+
+      - name: Move modified HTML files to doc
         run: |
-          rm -rf docs 2> /dev/null || true
           mkdir -p docs
-          find . -name "*.html" -type f -exec sh -c '
-            for file do
-              cp "$file" "docs/$(basename "$file")"
-              echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
-            done' sh {} + > index.html
+          for file in ${{ steps.get_modified_html_files.outputs.files }}; do
+            cp "$file" "docs/$(basename "$file")"
+            echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
+          done > index.html
           mv index.html docs/
 
       - name: Configure Git
