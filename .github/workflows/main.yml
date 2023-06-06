@@ -20,10 +20,9 @@ jobs:
           format: 'csv'
       - name: Set modified Markdown files as environment variable
         run: |
-          mapfile -t md_files < <(echo "${{ steps.get_modified_md_files.outputs.files }}")
-          MD_FILES=$(IFS=,; echo "${md_files[*]}")
-          echo "MD_FILES=$MD_FILES" >> $GITHUB_ENV
-          echo "Files are $MD_FILES"
+          echo "MD_FILES=${{ steps.get_modified_md_files.outputs.added_modified }}" >> $GITHUB_ENV
+          echo "Files are ${{ steps.get_modified_md_files.outputs.added_modified }}"
+
 
  
       - name: Convert modified Markdown to Baseline HTML
