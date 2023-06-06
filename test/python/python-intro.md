@@ -8,7 +8,7 @@
   - Same on every machine
   - Has packages installed on images already!asdf
 
-1. Use this image to run the code below
+1. Use this image to run the code belowasdf
   ```
   FROM python:3.10.0
   # this is all you need for basic python
