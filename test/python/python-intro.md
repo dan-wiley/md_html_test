@@ -17,7 +17,7 @@
 ```python
 print("hello world")
 text="new text"
-text += " againz"
+text += " again"
 if text:
     print(text)
     # prints new text again
