@@ -60,7 +60,7 @@ jobs:
       - name: Move modified HTML files to docs and Generate index.html
         run: |
           mkdir -p docs 2> /dev/null || true
-          find . -type f -name '*.html' | while read -r file; do
+          find . -type f -name '*.html' -not -path './docs/*' | while read -r file; do
             cp "$file" "docs/$(basename "$file")"
             echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
           done > index.html
