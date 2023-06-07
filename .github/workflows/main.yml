@@ -41,9 +41,9 @@ jobs:
 
       - name: Build Docker image for Beautiful Soup
         run: |
-          echo "FROM python:3" > Dockerfile.bs
+          echo "FROM python:3-slim" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
-          # docker build -t my-bs -f Dockerfile.bs .
+          docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
         run: |
@@ -52,7 +52,7 @@ jobs:
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                blairy/requests:20230608_0316 \
+                my-bs \
                 python python_scripts/edit_html.py "${file%.md}.html"
             fi
           done
