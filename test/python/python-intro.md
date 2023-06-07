@@ -3,7 +3,7 @@
 > In this module
 
 
-- Docker is funzzy
+- Docker is funzzya
 - Docker works
   - Same on every machine
   - Has packages installed on images already
