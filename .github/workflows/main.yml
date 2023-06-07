@@ -23,8 +23,7 @@ jobs:
  
       - name: Convert modified Markdown to Baseline HTML
         run: |
-          read -ra md_files <<< "${{ steps.get_modified_md_files.outputs.added_modified }}"
-          for file in "${md_files[@]}"; do
+          for file in "${{ steps.get_modified_md_files.outputs.added_modified }}"; do
             echo "Converting $file to HTML"
             docker run --rm \
               -v ${{ github.workspace }}:/workspace \
