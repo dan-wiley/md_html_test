@@ -6,7 +6,7 @@
 - Docker is fun
 - Docker works
   - Same on every machine
-  - Has packages installed on images already!asdf
+  - Has packages installed on images already
 
 1. Use this image to run the code below
   ```
