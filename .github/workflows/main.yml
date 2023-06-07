@@ -60,12 +60,9 @@ jobs:
       - name: Move modified HTML files to docs and Generate index.html
         run: |
           mkdir -p docs 2> /dev/null || true
-          for file in ${{ steps.get_modified_md_files.outputs.added_modified }}; do
-            if [[ "${file}" == *.md ]]; then
-              file="${file%.md}.html"
-              cp "$file" "docs/$(basename "$file")"
-              echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
-            fi
+          find . -type f -name '*.html' | while read -r file; do
+            cp "$file" "docs/$(basename "$file")"
+            echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
           done > index.html
 
           mv index.html docs/
