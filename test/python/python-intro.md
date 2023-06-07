@@ -20,7 +20,7 @@ text="new text"
 text += " again"
 if text:
     print(text)
-    # prints new text again
+    # prints new text againzz
 ```
 
 > This is a block quote
