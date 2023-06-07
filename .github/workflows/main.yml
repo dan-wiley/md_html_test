@@ -24,15 +24,20 @@ jobs:
       - name: Convert modified Markdown to Baseline HTML
         run: |
           for file in "${{ steps.get_modified_md_files.outputs.added_modified }}"; do
-            echo "Converting $file to HTML"
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              pandoc/minimal:3.1.1 \
-              -f markdown -t html -o "${file%.md}.html" "${file}"
+            if [[ "${file}" == *.md ]]; then
+              echo "Converting $file to HTML"
+              docker run --rm \
+                -v ${{ github.workspace }}:/workspace \
+                -w /workspace \
+                pandoc/minimal:3.1.1 \
+                -f markdown -t html -o "${file%.md}.html" "${file}"
+            fi 
           done
 
-
+      - name: Echo modified files
+        run: |
+          echo "Files are ${{ steps.get_modified_md_files.outputs.added_modified }}"
+ 
 
       - name: Build Docker image for Beautiful Soup
         run: |
@@ -42,12 +47,14 @@ jobs:
 
       - name: Modify HTML using Beautiful Soup
         run: |
-          for file in ${{ env.HTML_FILES }}; do
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              my-bs \
-              python python_scripts/edit_html.py "$file"
+          for file in  ${{ steps.get_modified_md_files.outputs.added_modified }}; do
+            if [[ "${file}" == *.html ]]; then
+              docker run --rm \
+                -v ${{ github.workspace }}:/workspace \
+                -w /workspace \
+                my-bs \
+                python python_scripts/edit_html.py "$file"
+            fi
           done
 
       - name: Move modified HTML files to docs and Generate index.html
