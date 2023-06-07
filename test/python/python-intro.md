@@ -1,10 +1,10 @@
 ## Docker Lesson 1
 
-> In this module ....zzzzll
+> In this module
 
 
-- Docker is funzzzz
-- Docker workszzzz
+- Docker is fun
+- Docker works
   - Same on every machine
   - Has packages installed on images already!asdf
 
