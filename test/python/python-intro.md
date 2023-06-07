@@ -15,7 +15,7 @@
   ```
 
 ```python
-print("hello worldzzzzzzzzzzzzzzzzzz")
+print("hello world")
 text="new textzz"
 text += " againz"
 if text:
