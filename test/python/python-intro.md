@@ -3,7 +3,7 @@
 > In this module
 
 
-- Docker is fun
+- Docker is funzz
 - Docker works
   - Same on every machine
   - Has packages installed on images already
