@@ -48,20 +48,21 @@ jobs:
       - name: Modify HTML using Beautiful Soup
         run: |
           for file in  ${{ steps.get_modified_md_files.outputs.added_modified }}; do
-            if [[ "${file}" == *.html ]]; then
+            if [[ "${file}" == *.md ]]; then
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
                 my-bs \
-                python python_scripts/edit_html.py "$file"
+                python python_scripts/edit_html.py "${file%.md}.html"
             fi
           done
 
       - name: Move modified HTML files to docs and Generate index.html
         run: |
-          rm -rf docs
-          mkdir -p docs
-          for file in ${{ env.HTML_FILES }}; do
+          mkdir -p docs 2> /dev/null
+          for file in ${{ steps.get_modified_md_files.outputs.added_modified }}; do
+            if [[ "${file}" == *.md ]]; then
+            file="${file%.md}.html"
             cp "$file" "docs/$(basename "$file")"
             echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
           done > index.html
