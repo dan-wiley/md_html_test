@@ -29,8 +29,9 @@ jobs:
               -v ${{ github.workspace }}:/workspace \
               -w /workspace \
               pandoc/minimal:3.1.1 \
-              pandoc -f markdown -t html -o "${file%.md}.html" "$file"
+              pandoc -f markdown -t html -o "${file%.md}.html" "${file}"
           done
+
 
 
       - name: Build Docker image for Beautiful Soup
