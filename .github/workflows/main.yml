@@ -43,7 +43,7 @@ jobs:
         run: |
           echo "FROM python:3" > Dockerfile.bs
           echo "RUN pip install beautifulsoup4" >> Dockerfile.bs
-          docker build -t my-bs -f Dockerfile.bs .
+          # docker build -t my-bs -f Dockerfile.bs .
 
       - name: Modify HTML using Beautiful Soup
         run: |
@@ -52,19 +52,20 @@ jobs:
               docker run --rm \
                 -v ${{ github.workspace }}:/workspace \
                 -w /workspace \
-                my-bs \
+                blairy/requests:20230608_0316 \
                 python python_scripts/edit_html.py "${file%.md}.html"
             fi
           done
 
       - name: Move modified HTML files to docs and Generate index.html
         run: |
-          mkdir -p docs 2> /dev/null
+          mkdir -p docs 2> /dev/null || true
           for file in ${{ steps.get_modified_md_files.outputs.added_modified }}; do
             if [[ "${file}" == *.md ]]; then
-            file="${file%.md}.html"
-            cp "$file" "docs/$(basename "$file")"
-            echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
+              file="${file%.md}.html"
+              cp "$file" "docs/$(basename "$file")"
+              echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>"
+            fi
           done > index.html
 
           mv index.html docs/
