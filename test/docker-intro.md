@@ -1,7 +1,7 @@
 # Intro to Docker 
 In this activity, you will create two docker images and deploy two containers, one from each image. One image will be a dev environment and the other testing. Both containers will be a web server serving different content on the same host operating system. 
 
-This activity demonstrates the power of containerization and the ability to run multiple services on a single host operating system.   
+This activity demos the power of containerization and the ability to run multiple services on a single host operating system.   
 
 Containerization allows us to run images on the host operating system. A major benefit of containerization is that containers use the same hardware (kernel) as the host operating system. Containers. 
 
