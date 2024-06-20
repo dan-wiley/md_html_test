@@ -68,14 +68,14 @@ We should never promote to prod without testing dev. After implementing some tes
 
 ## Unit Testing
 
-<p>Referring back to the course content, testing is done across a spectrum. This means that each stage of the SDLC, and their corresponding teams, is responsible for different testing. The testing above falls under Integration and Functionality testing. This is the responsibility of the operations or QA team.  </p>
+- Referring back to the course content, testing is done across a spectrum. This means that each stage of the SDLC, and their corresponding teams, is responsible for different testing. The testing above falls under Integration and Functionality testing. This is the responsibility of the operations or QA team.  
 
 
-<p>Unit testing involves testing each unit of executable code and is the responsibility of the code authors, aka developers.
-You may have developed some code in the currency API, so each function should include a unit test. If the unit test fails, the Jenkins pipeline that builds the images and delivers them to ECR should fail, preventing the build. This can be achieved by running a test in the Dockerfile.  </p>
+- Unit testing involves testing each unit of executable code and is the responsibility of the code authors, aka developers.
+You may have developed some code in the currency API, so each function should include a unit test. If the unit test fails, the Jenkins pipeline that builds the images and delivers them to ECR should fail, preventing the build. This can be achieved by running a test in the Dockerfile.  
 
 
-<p>Consider the multi-stage Dockerfile code below. The first image is used solely for testing. If the tests all pass, then the second FROM statement uses that image to build the app. For simplicity, you can use a single-stage docker file, but it is common to use a two-stage one for unit testing. The goal is to just run a code file containing the tests, and stop the build if it fails.  </p>
+- Consider the multi-stage Dockerfile code below. The first image is used solely for testing. If the tests all pass, then the second FROM statement uses that image to build the app. For simplicity, you can use a single-stage docker file, but it is common to use a two-stage one for unit testing. The goal is to just run a code file containing the tests, and stop the build if it fails.  
 
 ```
 # Stage 1: Build and test
