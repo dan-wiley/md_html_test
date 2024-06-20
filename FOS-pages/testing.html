@@ -1,0 +1,136 @@
+<div class="lesson-content"><h1 id="add-testing-to-prod-promotion">Add Testing to Prod
+Promotion</h1>
+In this activity, we will create a pipeline to test some endpoints.
+This activity aims to automate the testing of multiple endpoints at a
+time and gain time metrics. This test can be useful for mandating a
+successful dev env before promoting the code to prod.
+It would be best practice to make this test a separate pipeline and
+then call this pipeline from a new stage in the promote pipeline.
+Remember that in pipelines, the exit code of a command determines if
+a stage or step fails. After practicing some CLI commands, this
+assessment will require applying exit codes to a pipeline. ## Test in
+CLI
+Try running the command below in Git Bash, macOS Terminal, or
+Linux.
+<figure><pre class="prettyprint nocode"><code># returns the web page, -f will fail if http error
+curl https://c369team01dev-api.computerlab.online/docs -f
+
+# view the exit code. Anything other than 0 is a fail
+echo $? </code></pre></figure>
+How can we utilize the exit code to make sure the documentation web
+page is available? In the pipeline, simply run
+<figure><pre class="prettyprint nocode"><code>curl https://c369team01dev-api.computerlab.online/docs</code></pre></figure> and
+if the exit code is not zero it will fail.
+What if you want to continue the pipeline on a failed exit code? You
+can always force a successful exit code.
+<figure><pre class="prettyprint nocode"><code># adding || true will catch any failed codes (||) and return a success one (true). 
+# You can always force fail with false or with exit 1. 
+curl https://c369team01dev-api.computerlab.online/docs -f || true</code></pre></figure>
+<h2 id="jenkins-testing">Jenkins Testing</h2>
+Your goal is to complete a pipeline that performs the following
+test:
+<ol type="1">
+<li>Is the documentation page available?</li>
+<li>Is the Login page available?</li>
+<li>Is the Stock Quote endpoint available? Can you check the output to
+see if it returns the correct data?</li>
+<li>Use parameters instead of hard coding endpoints.</li>
+<li>One other test you create on your own.</li>
+</ol>
+Use the starter code below. You can use any combination of stages or
+steps you find appropriate.
+<figure><pre class="prettyprint nocode"><code>pipeline {
+    agent {
+        node {
+            label 'generic-agent'
+        }
+    }
+    stages {
+          stage('Test Availability of API Docs') {
+            steps {
+                script {
+                    sh """
+                    curl "https://${COHORT}${TEAM}dev-api.computerlab.online/docs" -f
+                    """
+                }
+            }
+        }
+    }
+}</code></pre></figure>
+<h2 id="next-steps">Next Steps</h2>
+We should never promote to prod without testing dev. After
+implementing some testing, modify the prod promotion pipeline to include
+your tests. If possible, keep your test as a separate pipeline and
+invoke the test pipeline from within your promote pipeline. This way,
+you can continue to modify and add testing to your test pipeline without
+modifying the promote pipeline.
+<h2 id="unit-testing">Unit Testing</h2>
+Referring back to the course content, testing is done across a
+spectrum. This means that each stage of the SDLC, and their
+corresponding teams, is responsible for different testing. The testing
+above falls under Integration and Functionality testing. This is the
+responsibility of the operations or QA team.
+Unit testing involves testing each unit of executable code and is the
+responsibility of the code authors, aka developers. You may have
+developed some code in the currency API, so each function should include
+a unit test. If the unit test fails, the Jenkins pipeline that builds
+the images and delivers them to ECR should fail, preventing the build.
+This can be achieved by running a test in the Dockerfile.
+Consider the multi-stage Dockerfile code below. The first image is
+used solely for testing. If the tests all pass, then the second FROM
+statement uses that image to build the app. For simplicity, you can use
+a single-stage docker file, but it is common to use a two-stage one for
+unit testing. The goal is to just run a code file containing the tests,
+and stop the build if it fails.
+<figure><pre class="prettyprint nocode"><code># Stage 1: Build and test
+FROM python:3.9 AS test
+
+WORKDIR /app
+
+# Install test dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the source code
+COPY . .
+
+# Run unit tests
+RUN python -m unittest discover -s tests
+
+# Stage 2: Production image
+FROM python:3.9-slim AS prod
+
+WORKDIR /app
+
+# Copy only the necessary files from the test stage
+COPY --from=test /app .
+
+# Set up the application
+# Example:
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code
+# COPY . .
+
+# Set the command to run the application
+# CMD ["python", "app.py"]
+</code></pre></figure>
+Example of an app
+<figure><pre class="prettyprint nocode"><code># app.py
+def add_numbers(a, b):
+    return a + b</code></pre></figure>
+Example of a test
+<figure><pre class="prettyprint nocode"><code># test_app.py
+
+import unittest
+from app import add_numbers
+
+class TestAddNumbers(unittest.TestCase):
+    def test_add_numbers(self):
+        self.assertEqual(add_numbers(1, 2), 3)
+        self.assertEqual(add_numbers(-1, 1), 0)
+        self.assertEqual(add_numbers(0, 0), 0)
+
+if __name__ == '__main__':
+    unittest.main()</code></pre></figure>
+</div>
