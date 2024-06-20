@@ -8,8 +8,6 @@ It would be best practice to make this test a separate pipeline and then call th
 
 Remember that in pipelines, the exit code of a command determines if a stage or step fails. After practicing some CLI commands, this assessment will require applying exit codes to a pipeline.  
 
-## Test in CLI
-
 Try running the command below in Git Bash, macOS Terminal, or Linux.  
 
 ```
