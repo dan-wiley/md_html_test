@@ -192,14 +192,16 @@ If you need more machines in your network, you can use a larger subnet (a smalle
  
 
 # Summary
-In this activity, we've explored essential Linux commands and techniques for effective system administration and network diagnostics. Let's recap what we've learned:
+In this activity, we've explored essential Linux commands and techniques for effective system administration and network diagnostics. Let's recap what we've learned:  
 
 #### Memory Management:
 - Monitoring Memory Usage: Commands like cat /proc/meminfo and free --mega -h provide insights into total, free, and available memory.
-- Process Management: Using ps to sort processes by memory (%mem) and CPU (%cpu) usage helps identify resource-intensive applications.## 
+- Process Management: Using ps to sort processes by memory (%mem) and CPU (%cpu) usage helps identify resource-intensive applications.
+
 #### Inodes:
 - Understanding Inodes: Files and directories on Linux are managed through inodes, which store metadata and data block pointers. The stat command reveals inode details.
 - Checking Inode Usage: df -i displays inode usage statistics, crucial for managing filesystem limits.
+
 #### Network Diagnostics:
 - Ping: Uses ICMP to test network connectivity (ping <hostname_or_IP>).
 - nslookup: Queries DNS for IP address mapping (nslookup <hostname_or_IP>).
