@@ -2,9 +2,11 @@
 
 In this activity, we will create a pipeline to test some endpoints. This activity aims to automate the testing of multiple endpoints at a time and gain time metrics. This test can be useful for mandating a successful dev env before promoting the code to prod.  
 
+
 It would be best practice to make this test a separate pipeline and then call this pipeline from a new stage in the promote pipeline.  
 
-Remember that in pipelines, the exit code of a command determines if a stage or step fails. After practicing some CLI commands, this assessment will require applying exit codes to a pipeline.
+
+Remember that in pipelines, the exit code of a command determines if a stage or step fails. After practicing some CLI commands, this assessment will require applying exit codes to a pipeline.  
 ## Test in CLI
 
 Try running the command below in Git Bash, macOS Terminal, or Linux.  
@@ -18,6 +20,7 @@ echo $?
 ```
 
 How can we utilize the exit code to make sure the documentation web page is available? In the pipeline, simply run `curl https://c369team01dev-api.computerlab.online/docs` and if the exit code is not zero it will fail.  
+
 
 What if you want to continue the pipeline on a failed exit code? You can always force a successful exit code.  
 ```
@@ -66,8 +69,10 @@ We should never promote to prod without testing dev. After implementing some tes
 
 Referring back to the course content, testing is done across a spectrum. This means that each stage of the SDLC, and their corresponding teams, is responsible for different testing. The testing above falls under Integration and Functionality testing. This is the responsibility of the operations or QA team.  
 
+
 Unit testing involves testing each unit of executable code and is the responsibility of the code authors, aka developers.
 You may have developed some code in the currency API, so each function should include a unit test. If the unit test fails, the Jenkins pipeline that builds the images and delivers them to ECR should fail, preventing the build. This can be achieved by running a test in the Dockerfile.  
+
 
 Consider the multi-stage Dockerfile code below. The first image is used solely for testing. If the tests all pass, then the second FROM statement uses that image to build the app. For simplicity, you can use a single-stage docker file, but it is common to use a two-stage one for unit testing. The goal is to just run a code file containing the tests, and stop the build if it fails.  
 
