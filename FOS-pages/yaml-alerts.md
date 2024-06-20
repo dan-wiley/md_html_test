@@ -2,7 +2,7 @@
 Our environment runs our containers in Kubernetes. We add YAML files to the sre-course-infra GitHub repo
 and FluxCD (our continuous deployment tool) automatically deploys the YAML files. 
 FluxCD uses Kustomization objects (./apps/resources/student-kustomizations) to track what YAML files it should continuously deploy.
-Notice in your Kustomization file flux is instructed to deploy each YAML file inside your team folder (./apps/eks-sre-course/<your-team-folder>).
+Notice in your Kustomization file flux is instructed to deploy each YAML file inside your team folder (./apps/eks-sre-course/<your-team-folder>).  
 
 
 What if there is an error in a YAML file in your team folder? FluxCD will not deploy the changes. How will you know about an error?
