@@ -3,7 +3,7 @@
 One simple approach to making a database backup to create another Persistent Volume Claim and using a cronjob to backup 
 the database.  
 
-In Kubernetes, a Persistent Volume Claim (PVC) is a request for storage by a Pod. It allows Pods to request specific resources on a Persistent Volume (PV), which abstracts the underlying storage implementation details. This setup is crucial for applications that require persistent storage, such as databases.
+In Kubernetes, a Persistent Volume Claim (PVC) is a request for storage by a Pod. It allows Pods to request specific resources on a Persistent Volume (PV), which abstracts the underlying storage implementation details. This setup is crucial for applications that require persistent storage, such as databases.  
 
 ## Persistent Volume (PV)
 A Persistent Volume (PV) in Kubernetes is a piece of networked storage provisioned by an administrator or dynamically provisioned using Storage Classes. PVs abstract the underlying storage details (like AWS EBS volumes) and provide a uniform interface for Pods to consume storage.  
