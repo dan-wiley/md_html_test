@@ -7,6 +7,7 @@ Not having enough can cause applications to fail or perform poorly. Simply run t
 ```
 cat /proc/meminfo
 ```
+
 From the output, pay special attention to the values below.  
 - **MemTotal** gives you the total RAM installed.  
 - **MemFree** shows the currently unused RAM.  
@@ -18,8 +19,8 @@ Alternatively, you can use this command below
  # man free # for options
 ```
 
-If you want to watch it live, you can use the `watch "free --bytes"` command or simply use `vmstat 1`.
-A better approach may be to use `ps` and sort by memory. this was we can see what processes are using the most memory.
+If you want to watch it live, you can use the **watch "free --bytes"** command or simply use **vmstat 1**.
+A better approach may be to use **ps** and sort by memory. this was we can see what processes are using the most memory.
 ```
 ps aux --sort -rss # rss is Resident Set Size (memory descending)
 ps aux --sort -%mem # % of rss used by the process. The minus sign before %mem indicates descending order, whereas a plus sign would do ascending.
@@ -48,6 +49,7 @@ Use the stat command below to examine the file.
 ```
 stat 8kb_file
 ```
+
 - You may notice it says 16 blocks. This is because the stat command considers each block to be 512 bytes.
  Notice that each 4096 io block contains 8 512-byte blocks, and the file size is 8192 bytes (2 blocks).
 
@@ -69,11 +71,13 @@ For example, to ping Google's DNS server:
 ```
 ping 8.8.8.8
 ```
+
 This will continue to send packets until you stop it (usually with Ctrl+C). You can specify the number of packets to send using the -c option:
 
 ```
 ping -c 4 8.8.8.8
 ```
+
 #### nslookup
 The nslookup command is used to query DNS to obtain domain name or IP address mapping.
 
@@ -156,7 +160,8 @@ Therefore, we can use the list open files (lsof) command to see what ports are o
 ```
 sudo lsof -i -P # sudo is likely needed
 ```
-You should see ssh open to `*:22`, indicating that any host connecting on port 22 can connect to your machine. You may also notice the PID attached to this port. You can use that PID in the ps command as `ps -p <pid>` 
+
+You should see ssh open to *:22, indicating that any host connecting on port 22 can connect to your machine. You may also notice the PID attached to this port. You can use that PID in the ps command as **ps -p <pid>** 
 
 ### Monitoring network traffic
 Run the command below and then try to spam SSH into your machine without the key. If you have a webserver running, spam your webserver while using this command.
@@ -231,6 +236,7 @@ Execute the stress command to stress the system with virtual memory for 300 seco
 stress --vm 1 --vm-bytes 512M --vm-keep -t 300s &
 # press enter
 ```
+
 4. Capture free memory during the stress test:
 While the stress test is running, again use the free command to get the amount of free memory in megabytes and save it to a file named free_mega_during_stress:
 
