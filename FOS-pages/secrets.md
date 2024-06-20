@@ -2,7 +2,7 @@
 
 Passwords in source code are bad practice. We can hide our passwords through secrets. Kubernetes comes with an object called secret, but this would require us to manually run a `kubectl apply` command with the secret. To make it worthwhile with our infra, we can use External Secrets.
 
-> Below is an example of how to make the secret object. Just update the namespace and place the manifest below in your project directory.
+> Below is an example of how to make the secret object. Just update the namespace and place the manifest below in your project directory.  
 
 NOTE: The ExternalSecret Kubernetes manifest below shows you how to reference the existing parameterstore values, and create secrets from them. **You do not need to create any secrets in AWS, they already exist**. The existing values are `/eks-sre-course/mysql`, `/eks-sre-course/mysql_connection` and `/eks-sre-course/mysql_exporter`. 
 
