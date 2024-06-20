@@ -1,12 +1,13 @@
 # YAML Error Alerts
 Our environment runs our containers in Kubernetes. We add YAML files to the sre-course-infra GitHub repo
 and FluxCD (our continuous deployment tool) automatically deploys the YAML files. 
-FluxCD uses Kustomization objects (./apps/resources/student-kustomizations) to track what YAML files it should continuously deploy.
+FluxCD uses Kustomization objects (./apps/resources/student-kustomizations) to track what YAML files it should continuously deploy.  
+
 Notice in your Kustomization file flux is instructed to deploy each YAML file inside your team folder (./apps/eks-sre-course/<your-team-folder>).  
 
 
-What if there is an error in a YAML file in your team folder? FluxCD will not deploy the changes. How will you know about an error?
-To find YAML errors you can use kubectl to search the logs of a kustomization.  
+What if there is an error in a YAML file in your team folder? FluxCD will not deploy the changes. How will you know about an error? To find YAML errors you can use kubectl to search the logs of a kustomization.  
+
 ```
  kubectl get kustomizations -A | grep <cohort-team-env>
 ```
@@ -39,7 +40,8 @@ or vector(0)
 
 If you follow those steps correctly, a Microsoft team alert will be sent if there is a YAML error. **Try introducing a YAML error** and adding another panel to your dashboard to see the specific error messages.
 
-You can add a panel with this command to your dashboard to read the logs, just select the logs visualization type and update your cohort and team like before.
+You can add a panel with this command to your dashboard to read the logs, just select the logs visualization type and update your cohort and team like before.  
+
 ```
 {job="flux-system/kustomize-controller"} |= `cohort` |= `team` |= `error`
 ```
