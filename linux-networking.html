@@ -18,11 +18,10 @@ applications, considering caches and buffers that can be freed.
 Alternatively, you can use this command below
 <figure><pre class="prettyprint nocode"><code> free --mega -h # --mega for megabytes, -h for human readable.
  # man free # for options</code></pre></figure>
-If you want to watch it live, you can use the
-<figure><pre class="prettyprint nocode"><code>watch "free --bytes"</code></pre></figure> command or simply use
-<figure><pre class="prettyprint nocode"><code>vmstat 1</code></pre></figure>. A better approach may be to use <figure><pre class="prettyprint nocode"><code>ps</code></pre></figure>
-and sort by memory. this was we can see what processes are using the
-most memory.
+If you want to watch it live, you can use the <strong>watch “free
+–bytes”</strong> command or simply use <strong>vmstat 1</strong>. A
+better approach may be to use <strong>ps</strong> and sort by memory.
+this was we can see what processes are using the most memory.
 <figure><pre class="prettyprint nocode"><code>ps aux --sort -rss # rss is Resident Set Size (memory descending)
 ps aux --sort -%mem # % of rss used by the process. The minus sign before %mem indicates descending order, whereas a plus sign would do ascending.
 ps -eo user,pid,%mem,stat,cmd --sort=-%mem # only include output (-o) columns that we want (user,pid,%mem,stat,cmd)
@@ -115,10 +114,10 @@ connections. Remember, everything in Linux is a file. Therefore, we can
 use the list open files (lsof) command to see what ports are open and to
 what hosts.
 <figure><pre class="prettyprint nocode"><code>sudo lsof -i -P # sudo is likely needed</code></pre></figure>
-You should see ssh open to <figure><pre class="prettyprint nocode"><code>*:22</code></pre></figure>, indicating that any
-host connecting on port 22 can connect to your machine. You may also
-notice the PID attached to this port. You can use that PID in the ps
-command as <figure><pre class="prettyprint nocode"><code>ps -p &lt;pid&gt;</code></pre></figure>
+You should see ssh open to *:22, indicating that any host connecting
+on port 22 can connect to your machine. You may also notice the PID
+attached to this port. You can use that PID in the ps command as
+<strong>ps -p <pid></pid></strong>
 <h3 id="monitoring-network-traffic">Monitoring network traffic</h3>
 Run the command below and then try to spam SSH into your machine
 without the key. If you have a webserver running, spam your webserver
