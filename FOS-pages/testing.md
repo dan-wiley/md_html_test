@@ -23,6 +23,7 @@ How can we utilize the exit code to make sure the documentation web page is avai
 
 
 What if you want to continue the pipeline on a failed exit code? You can always force a successful exit code.  
+
 ```
 # adding || true will catch any failed codes (||) and return a success one (true). 
 # You can always force fail with false or with exit 1. 
@@ -41,6 +42,7 @@ Your goal is to complete a pipeline that performs the following test:
 
 
 Use the starter code below. You can use any combination of stages or steps you find appropriate.  
+
 ```
 pipeline {
     agent {
@@ -113,6 +115,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 ```
 
 Example of an app  
+
 ```
 # app.py
 def add_numbers(a, b):
@@ -120,6 +123,7 @@ def add_numbers(a, b):
 ```
 
 Example of a test  
+
 ```
 # test_app.py
 
